@@ -1,9 +1,10 @@
 #include "Main.h"
-#include "engine.h"
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <map>
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -14,112 +15,115 @@ void Main(array<String^>^ args) {
     AttachConsole(GetCurrentProcessId());
     freopen("CON", "w", stdout);
 
-    Engine *e = new Engine;
+    //Engine *e = new Engine;
 
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
 
-    eLosh::Main form(e);
+    //eLosh::Main form(e);
+    eLosh::Main form;
     Application::Run(%form);
 
     FreeConsole();
 }
 
+eLosh::Main::Main() {
+    Engine *e  = new Engine;
+    this->objEngine = e;
+    Entity *e_ = new Entity(e);
+    this->objEntity = e_;
+
+    InitializeComponent();
+}
+
+eLosh::Main::~Main() {
+    if (components) {
+        delete components;
+    }
+}
+
 // Tick event, update everything here
 System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
+    this->objEntity->Tick();
+
     /* === UPDATE EVERYTHING FOR THE PLAYER === */
-    // Read X
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &this->objEngine->fX);
-    this->tb_x_readonly->Text = Convert::ToString(this->objEngine->fX);
+    // Feed X
+    this->tb_x_readonly->Text = Convert::ToString(this->objEntity->fX);
     // Read Y
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &this->objEngine->fY);
-    this->tb_y_readonly->Text = Convert::ToString(this->objEngine->fY);
+    this->tb_y_readonly->Text = Convert::ToString(this->objEntity->fY);
     // Read Z
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &this->objEngine->fZ);
-    this->tb_z_readonly->Text = Convert::ToString(this->objEngine->fZ);
+    this->tb_z_readonly->Text = Convert::ToString(this->objEntity->fZ);
     // Read A
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &this->objEngine->fA);
-    this->tb_a_readonly->Text = Convert::ToString(this->objEngine->fA);
+    this->tb_a_readonly->Text = Convert::ToString(this->objEntity->iA);
     // Read name
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwNameOffset, &this->objEngine->szName, true, 32);
-    this->tb_character_name->Text = gcnew String(this->objEngine->szName);
+    this->tb_character_name->Text = gcnew String(this->objEntity->szName);
     // Read HP
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwHPOffset, &this->objEngine->iHP);
-    this->tb_character_hp->Text = Convert::ToString(this->objEngine->iHP);
+    this->tb_character_hp->Text = Convert::ToString(this->objEntity->iHP);
     // Read MP
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwMPOffset, &this->objEngine->iMP);
-    this->tb_character_mp->Text = Convert::ToString(this->objEngine->iMP);
+    this->tb_character_mp->Text = Convert::ToString(this->objEntity->iMP);
     // Read FP
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwFPOffset, &this->objEngine->iFP);
-    this->tb_character_fp->Text = Convert::ToString(this->objEngine->iFP);
+    this->tb_character_fp->Text = Convert::ToString(this->objEntity->iFP);
     // Read Level
-    this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwLevelOffset, &this->objEngine->iLv);
-    this->tb_character_level->Text = Convert::ToString(this->objEngine->iLv);
+    this->tb_character_level->Text = Convert::ToString(this->objEntity->iLv);
 
     /* === UPDATE EVERYTHING FOR THE TARGET === */
     int __tmp;
     // Read X
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwXOffset, &this->objEngine->fTargetX, false);
-    this->tb_target_x->Text = Convert::ToString(this->objEngine->fTargetX);
+    this->tb_target_x->Text = Convert::ToString(this->objEntity->fTargetX);
     // Read Y
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwYOffset, &this->objEngine->fTargetY, false);
-    this->tb_target_y->Text = Convert::ToString(this->objEngine->fTargetY);
+    this->tb_target_y->Text = Convert::ToString(this->objEntity->fTargetY);
     // Read Z
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwZOffset, &this->objEngine->fTargetZ, false);
-    this->tb_target_z->Text = Convert::ToString(this->objEngine->fTargetZ);
+    this->tb_target_z->Text = Convert::ToString(this->objEntity->fTargetZ);
     // Read A
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwAOffset, &this->objEngine->iTargetA, false);
-    this->tb_target_a->Text = Convert::ToString(this->objEngine->iTargetA);
+    this->tb_target_a->Text = Convert::ToString(this->objEntity->iTargetA);
     // Read name
-    //char *test = new char[32];
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwNameOffset, this->objEngine->szTargetName, false, 32);
-    //std::cout << this->objEngine->szTargetName << std::endl;
-    //System::String^ a = Convert::ToString(this->objEngine->szTargetName);
-    this->tb_target_name->Text = gcnew String(this->objEngine->szTargetName);
+    this->tb_target_name->Text = gcnew String(this->objEntity->szTargetName);
     // Read HP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwHPOffset, &this->objEngine->iTargetHP, false);
-    this->tb_target_hp->Text = Convert::ToString(this->objEngine->iTargetHP);
+    this->tb_target_hp->Text = Convert::ToString(this->objEntity->iTargetHP);
     // Read MP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwMPOffset, &this->objEngine->iTargetMP, false);
-    this->tb_target_mp->Text = Convert::ToString(this->objEngine->iTargetMP);
+    this->tb_target_mp->Text = Convert::ToString(this->objEntity->iTargetMP);
     // Read FP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwFPOffset, &this->objEngine->iTargetFP, false);
-    this->tb_target_fp->Text = Convert::ToString(this->objEngine->iTargetFP);
+    this->tb_target_fp->Text = Convert::ToString(this->objEntity->iTargetFP);
     // Read Level
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwLevelOffset, &this->objEngine->iTargetLv, false);
-    this->tb_target_level->Text = Convert::ToString(this->objEngine->iTargetLv);
-    // Read CurrentTarget
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &this->objEngine->iCurrentTarget);
+    this->tb_target_level->Text = Convert::ToString(this->objEntity->iTargetLv);
 
     /* === TELEPORT TO CLICK? === */
     if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_LBUTTON) & 0x1)) {
         // Find out the current "click" position.
-        this->objEngine->ReadStaticMemory(this->objEngine->dwClickedPositionOffset, &this->objEngine->iClickedPosition);
+        int iClickedPosition;
+        this->objEngine->ReadStaticMemory(this->objEngine->dwClickedPositionOffset, &iClickedPosition);
         
         // Delta correction
-        this->objEngine->iClickedPosition += Convert::ToInt32(this->numeric_tpdelta->Text);
+        iClickedPosition += Convert::ToInt32(this->numeric_tpdelta->Text);
 
 #ifdef _DEBUG
-        this->richtb_debug->Text = this->richtb_debug->Text + "Want to go here: " + this->objEngine->iClickedPosition + "\r\n";
+        //this->richtb_debug->Text = this->richtb_debug->Text + "Want to go here: " + iClickedPosition + "\r\n";
 #endif
 
         // Check if the current position is NOT the same as the wanted position, if so update!
-        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &this->objEngine->iClickedPosition);
+        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iClickedPosition);
     }
 
     /* === BOT === */
     // Check whether the bot is even active
     if(this->cb_bot_active->Checked) {
-        this->Bot();
+        // Contains all integer values from the main form, like maxHP to eat when damaged and such.
+        std::map<std::string, int> data;
+        data["delay"]    = Convert::ToInt32(this->numeric_bot_delay);
+        data["hp"]       = Convert::ToInt32(this->tb_bot_eatfood);
+        data["hp_key"]   = Convert::ToInt32(this->combobox_bot_eathp);
+        data["mp"]       = Convert::ToInt32(this->tb_bot_eatmana);
+        data["mp_key"]   = Convert::ToInt32(this->combobox_bot_eatmp);
+        data["pet"]      = Convert::ToInt32(this->combobox_bot_pet);
+        data["distance"] = Convert::ToInt32(this->combobox_bot_dca);
+
+        this->objEntity->Bot(
+            (this->cb_bot_collision->Checked    ? 1 : 0),
+            (this->cb_bot_rotatecamera->Checked ? 1 : 0),
+            (this->cb_bot_targettp->Checked     ? 1 : 0),
+            (Algorithm)this->combobox_bot_dca->SelectedIndex,
+            data
+        );
     }
 
     return System::Void();
@@ -127,74 +131,6 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
 // Thanks to: lava phox
 System::Void eLosh::Main::Bot() {
-    if (this->objEngine->iCurrentTarget != 0) {
-        // Check if we attack in reasonable time.
-        if ((GetTickCount() - this->objEngine->iTargetBotTick) > 5000 && this->objEngine->iTargetBotHPTick == this->objEngine->iTargetHP) {
-            std::cout << this->objEngine->iTargetBotHPTick << std::endl;
-            std::cout << this->objEngine->iTargetHP << std::endl;
-
-            int aa = 0;
-            this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &aa);
-        }
-    }
-
-    // Read maxInView (static)
-    int iMaxInView;
-    this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
-
-    int iClosestPosition = 1000000; // Max distance
-    for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
-        // Do we have a target? If so, there is no point in this...
-        if(this->objEngine->iCurrentTarget != 0) return;
-
-        // This is our candidate.
-        int iCandidateTarget;
-        int iCandidateTargetType;
-        int iCandidateTargetHP;
-        int iCandidatePositionA; // ALL position
-        int iCandidateLevel;
-
-        // Read the ID, target type and their HP.
-        this->objEngine->ReadStaticMemory(i * 4 + this->objEngine->dwTargetLoopBaseOffset, &iCandidateTarget); // This holds the ID now
-        this->objEngine->ReadStaticMemory(iCandidateTarget + 4, &iCandidateTargetType, false);
-        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwHPOffset, &iCandidateTargetHP, false);
-        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwLevelOffset, &iCandidateLevel, false);
-
-        printf("N: %d\ni: %d\nID: %d\nType: %d\nHP: %d\n\n", iMaxInView, i, iCandidateTarget, iCandidateTargetType, iCandidateTargetHP);
-
-        // Now read our own ID and compare.
-        int iOwnId;
-        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwIdOffset, &iOwnId);
-        if (iOwnId == iCandidateTarget) continue;  // No point.
-
-        // Check if out of bounds.
-        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1) continue;
-
-        // All good, log their position...
-        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);
-        // Check if closest by subtracting ours A positions (just an idea now), 
-        // add more algorithms later like Quake FastInverse with Pythagora or Fast Distance Algorithm
-        if (abs(this->objEngine->fA - iCandidatePositionA) < iClosestPosition) {
-            // New closest!
-            iClosestPosition = this->objEngine->fA - iCandidatePositionA;
-
-            // Feed into current target.
-            this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
-
-            // Get the timestamp of atk
-            this->objEngine->iTargetBotTick = GetTickCount();
-            this->objEngine->iTargetBotHPTick = this->objEngine->iTargetHP;
-
-            // Attack
-            int iAtk = 1;
-            int iTemp = NULL;
-            this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
-            this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
-        }else {
-            continue; // not the closest, not interested.
-        }
-
-    }
 }
 
 System::Void eLosh::Main::btn_getcoordinates_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -275,5 +211,6 @@ System::Void eLosh::Main::listView_SelectedIndexChanged(System::Object^  sender,
 // Figure out the delta between teleports automatically
 System::Void eLosh::Main::btn_figuredelta_Click(System::Object^  sender, System::EventArgs^  e) {
     // current+X=wanted.
-    this->numeric_tpdelta->Text = Convert::ToString(this->objEngine->iClickedPosition - this->objEngine->fA);
+    //this->numeric_tpdelta->Text = Convert::ToString(this->objEngine->iClickedPosition - this->objEngine->fA);
+    // fix someday
 }

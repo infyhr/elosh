@@ -16,7 +16,6 @@ DWORD getNeuz(DWORD targetPID) {
     me32.dwSize = sizeof(MODULEENTRY32);
     Module32First(hModuleSnap, &me32);
     printf("Neuz.exe base address = %x\n", (DWORD)me32.modBaseAddr);
-    //std::cout << "Neuz.exe base address = " << (DWORD)me32.modBaseAddr << std::endl;
     CloseHandle(hModuleSnap);
     return (DWORD)me32.modBaseAddr;
 }
@@ -102,14 +101,14 @@ Engine::Engine() {
     }*/
 
     // read test
-    int temp; // Neuz.exe+9BDAA8
+    /*int temp; // Neuz.exe+9BDAA8
     if (this->ReadStaticMemory(0x009BDAA8, &temp)) {
         int temp2;
         printf("temp adresa je: %x\n", temp);
         printf("novo: temp+0x7624 = ", temp+0x7624);
         this->ReadStaticMemory(temp+0x7624, &temp2);
         std::cout << "temp2: " << temp2 << std::endl;
-    }
+    }*/
 }
 Engine::~Engine(){
     CloseHandle(this->hFlyff);

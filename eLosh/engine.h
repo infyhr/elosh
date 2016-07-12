@@ -36,7 +36,6 @@ class Engine {
 
         DWORD dwInvisibilityPointerOffset; // STATIC
         DWORD dwInvisibilityOffset;
-        int iInvisibility;
         #define INVISIBILITY_MAGIC_VALUE 1024
 
         DWORD dwCameraScrollOffset; // STATIC
@@ -45,34 +44,8 @@ class Engine {
 
         DWORD dwBattlePointerOffset; // STATIC
         DWORD dwBattleOffset;
-        int iBattle; // 0 || 1
-
-        DWORD dwRandomTargetOffset; // STATIC
-        int iRandomTarget;
 
         DWORD dwTargetBase;
         DWORD dwTargetIdOffset; // Like player x/y/z...
         DWORD dwTargetLoopBaseOffset;
-        // Other offsets are the same as the player's...
-        int iCurrentTarget;
-        float fTargetX;
-        float fTargetY;
-        float fTargetZ;
-        int iTargetA;
-        char szTargetName[32]; // target name
-        int iTargetHP, iTargetMP, iTargetFP, iTargetLv;
-        int iTargetBotTick = GetTickCount();
-        int iTargetBotHPTick;
-
-        float fX; // X pos
-        float fY; // Y pos
-        float fZ; // Z pos
-        int fA; // A pos
-        //char szName[4]; // player name
-        char szName[32];
-        int iHP, iMP, iFP, iLv;
-        
-        int iClickedPosition;
-
-        int iLastKilled = NULL;
 };
