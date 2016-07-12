@@ -61,6 +61,8 @@ class Engine {
         int iTargetA;
         char szTargetName[32]; // target name
         int iTargetHP, iTargetMP, iTargetFP, iTargetLv;
+        int iTargetBotTick = GetTickCount();
+        int iTargetBotHPTick;
 
         float fX; // X pos
         float fY; // Y pos

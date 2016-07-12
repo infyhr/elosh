@@ -127,6 +127,17 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
 // Thanks to: lava phox
 System::Void eLosh::Main::Bot() {
+    if (this->objEngine->iCurrentTarget != 0) {
+        // Check if we attack in reasonable time.
+        if ((GetTickCount() - this->objEngine->iTargetBotTick) > 5000 && this->objEngine->iTargetBotHPTick == this->objEngine->iTargetHP) {
+            std::cout << this->objEngine->iTargetBotHPTick << std::endl;
+            std::cout << this->objEngine->iTargetHP << std::endl;
+
+            int aa = 0;
+            this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &aa);
+        }
+    }
+
     // Read maxInView (static)
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
@@ -134,18 +145,20 @@ System::Void eLosh::Main::Bot() {
     int iClosestPosition = 1000000; // Max distance
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
         // Do we have a target? If so, there is no point in this...
-        if (this->objEngine->iCurrentTarget != 0) return;
+        if(this->objEngine->iCurrentTarget != 0) return;
 
         // This is our candidate.
         int iCandidateTarget;
         int iCandidateTargetType;
         int iCandidateTargetHP;
         int iCandidatePositionA; // ALL position
+        int iCandidateLevel;
 
         // Read the ID, target type and their HP.
         this->objEngine->ReadStaticMemory(i * 4 + this->objEngine->dwTargetLoopBaseOffset, &iCandidateTarget); // This holds the ID now
         this->objEngine->ReadStaticMemory(iCandidateTarget + 4, &iCandidateTargetType, false);
         this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwHPOffset, &iCandidateTargetHP, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwLevelOffset, &iCandidateLevel, false);
 
         printf("N: %d\ni: %d\nID: %d\nType: %d\nHP: %d\n\n", iMaxInView, i, iCandidateTarget, iCandidateTargetType, iCandidateTargetHP);
 
@@ -155,7 +168,7 @@ System::Void eLosh::Main::Bot() {
         if (iOwnId == iCandidateTarget) continue;  // No point.
 
         // Check if out of bounds.
-        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0) continue;
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1) continue;
 
         // All good, log their position...
         this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);
@@ -164,8 +177,13 @@ System::Void eLosh::Main::Bot() {
         if (abs(this->objEngine->fA - iCandidatePositionA) < iClosestPosition) {
             // New closest!
             iClosestPosition = this->objEngine->fA - iCandidatePositionA;
+
             // Feed into current target.
             this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
+
+            // Get the timestamp of atk
+            this->objEngine->iTargetBotTick = GetTickCount();
+            this->objEngine->iTargetBotHPTick = this->objEngine->iTargetHP;
 
             // Attack
             int iAtk = 1;
@@ -178,74 +196,6 @@ System::Void eLosh::Main::Bot() {
 
     }
 }
-
-/*System::Void eLosh::Main::Bot() {
-    int iHpTemp; // Get target health
-    int iHpOwn; // Own health
-    int iTemp = NULL; // temp
-    this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
-    this->objEngine->ReadStaticMemory(this->objEngine->dwBattleOffset + iTemp, &this->objEngine->iBattle, false);
-
-    // Get the current target.
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &this->objEngine->iCurrentTarget);
-    //if(this->objEngine->iBattle == 0) { // We are NOT in battle, so pick a new target.
-    if (this->objEngine->iCurrentTarget == 0) { // No target!
-        // Get a candidate.
-        this->objEngine->ReadStaticMemory(this->objEngine->dwRandomTargetOffset, &this->objEngine->iRandomTarget);
-
-        std::cout << "got a new random target " << this->objEngine->iRandomTarget << std::endl;
-        if (this->objEngine->iRandomTarget == this->objEngine->iLastKilled) {
-            std::cout << "new target is the same as the last killed! Avoiding SEGFAULT..." << std::endl;
-            return;
-        }
-
-        // Feed that into the current target.
-        this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &this->objEngine->iRandomTarget);
-
-        // Check our new (which is current) target HP.
-        this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iHpTemp);
-        this->objEngine->ReadStaticMemory(iHpTemp + this->objEngine->dwHPOffset, &iHpTemp, false);
-
-        // If the health is 0... then return.
-        if (iHpTemp <= 0) return;
-
-        std::cout << "their hp: " << iHpTemp << "  my hp: " << iHpOwn << std::endl;
-
-        int iAtk = 1; // construct atk magic
-        this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
-    }
-    else {
-        //std::cout << "we are in battle?" << std::endl;
-        // We are in battle, check HP?
-        this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iHpTemp);
-        this->objEngine->ReadStaticMemory(iHpTemp + this->objEngine->dwHPOffset, &iHpTemp, false);
-        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwHPOffset, &iHpOwn);
-
-        std::cout << "their hp: " << iHpTemp << std::endl;
-
-        // Or, perhaps, if we selected ourselves.
-        if (iHpTemp == iHpOwn) return;
-
-        // If the target HP is... 0, then stop.
-        if (iHpTemp == 0) {
-            this->objEngine->iLastKilled = this->objEngine->iCurrentTarget;
-            std::cout << "I killed " << this->objEngine->iLastKilled << std::endl;
-            this->objEngine->iCurrentTarget = 0; // reset
-            return;
-        }
-    }
-
-    // Rotate the camera now?
-    if (this->cb_bot_rotatecamera->Checked) {
-        int iCameraMovementCurrent;
-        this->objEngine->ReadStaticMemory(this->objEngine->dwCameraMovementOffset, &iCameraMovementCurrent);
-        if (iCameraMovementCurrent > 1135713252)
-            iCameraMovementCurrent = 1070000000;
-
-        iCameraMovementCurrent += 1000000;
-        this->objEngine->WriteStaticMemory(this->objEngine->dwCameraMovementOffset, &iCameraMovementCurrent);
-    }
-}*/
 
 System::Void eLosh::Main::btn_getcoordinates_Click(System::Object^  sender, System::EventArgs^  e) {
     this->tb_x->Text = this->tb_x_readonly->Text;
