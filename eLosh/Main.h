@@ -1163,6 +1163,7 @@ private: System::Windows::Forms::Label^  label10;
             this->btn_getcoordinates->TabIndex = 23;
             this->btn_getcoordinates->Text = L"Get coordinates";
             this->btn_getcoordinates->UseVisualStyleBackColor = true;
+            this->btn_getcoordinates->Click += gcnew System::EventHandler(this, &Main::btn_getcoordinates_Click);
             // 
             // btn_teleport
             // 
