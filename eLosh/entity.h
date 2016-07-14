@@ -7,6 +7,7 @@ enum Algorithm {
     BLANK = 0,
     FDA = 1,
     PYTHAGORA = 2,
+    NONE = 3
 };
 
 class Entity {
@@ -14,7 +15,8 @@ class Entity {
         Entity(Engine *e);
         //~Entity();
         void Tick();
-        void Bot(bool bNoCollision, bool bRotateCamera, bool bTeleport, Algorithm eAlgorithm, std::map<std::string, int> &data);
+        void Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data);
+        void Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
         
         int iBattle; // 0 || 1. Currently in battle?
         float fX; // X pos
@@ -34,5 +36,13 @@ class Entity {
 
     private:
         Engine *objEngine;
-        //int iTargetTick; // or smth
+        /* Anti-collision stuff */
+        int iNewTargetTick = NULL;
+        int iNewTargetHP = NULL;
+        int iNewTargetLastBlacklist = NULL;
 };
+
+inline int __fastcall fabs(int a) {
+    int mask = (a >> (sizeof(int) * CHAR_BIT - 1));
+    return (a + mask) ^ mask;
+}

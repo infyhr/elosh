@@ -10,6 +10,7 @@ class Engine {
         bool Engine::ReadStaticMemory(DWORD dwOffset, LPVOID lpBuffer, bool doNeuzBase = true, int length = false);
         bool Engine::WriteStaticMemory(DWORD dwOffset, LPVOID lpBuffer, bool doNeuzBase = true);
         bool Engine::WriteMemory(DWORD dwBase, DWORD dwOffset, LPVOID lpBuffer);
+        void Engine::SendKey(int iKeyCode);
 
     private:
         HWND hwndFlyff;

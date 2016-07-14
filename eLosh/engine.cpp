@@ -8,6 +8,7 @@ The engine itself, about everything related to the memory is handled here.
 #include <TlHelp32.h>
 #include <tchar.h>
 #include <windows.h>
+#include <map>
 #pragma comment(lib, "user32.lib")
 
 DWORD getNeuz(DWORD targetPID) {
@@ -81,10 +82,6 @@ Engine::Engine() {
     this->dwTargetIdOffset = 0x20; // this will get the monster id.
     this->dwTargetLoopBaseOffset = 0x00B67370; // ecx/edx/register loop STATIC Neuz.exe + B67778
 
-    // B67394
-    //Neuz.exe + B67384
-    this->dwRandomTargetOffset = 0x00B67384; // green, camera random target, Neuz.exe+B6737C, don't forget double click the address! -.-
-
     // read test
     /*int temp; // Neuz.exe+0x008D947C
     if (this->ReadStaticMemory(0x008D947C, &temp)) {
@@ -109,9 +106,32 @@ Engine::Engine() {
         this->ReadStaticMemory(temp+0x7624, &temp2);
         std::cout << "temp2: " << temp2 << std::endl;
     }*/
+
+    int num = 1;
+
+    if (*(char *)&num == 1)
+    {
+        printf("Little-Endian\n");
+    }
+    else
+    {
+        printf("Big-Endian\n");
+    }
 }
 Engine::~Engine(){
     CloseHandle(this->hFlyff);
+}
+
+void Engine::SendKey(int iKeyIndex) {
+    std::map<int, int> keymap;
+    for(int i = 0; i < 12; i++) {
+        keymap[i] = 112 + i;
+    }
+
+    auto iKeyCode = keymap[iKeyIndex];
+    PostMessage(this->hwndFlyff, WM_KEYDOWN, iKeyCode, MapVirtualKey(iKeyCode, MAPVK_VK_TO_VSC));
+    Sleep(20);
+    PostMessage(this->hwndFlyff, WM_KEYUP, iKeyCode, MapVirtualKey(iKeyCode, MAPVK_VK_TO_VSC));
 }
 
 bool Engine::ReadStaticMemory(DWORD dwOffset, LPVOID lpBuffer, bool doNeuzBase, int length) {

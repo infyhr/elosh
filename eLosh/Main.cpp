@@ -109,22 +109,34 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     if(this->cb_bot_active->Checked) {
         // Contains all integer values from the main form, like maxHP to eat when damaged and such.
         std::map<std::string, int> data;
-        data["delay"]    = Convert::ToInt32(this->numeric_bot_delay);
-        data["hp"]       = Convert::ToInt32(this->tb_bot_eatfood);
-        data["hp_key"]   = Convert::ToInt32(this->combobox_bot_eathp);
-        data["mp"]       = Convert::ToInt32(this->tb_bot_eatmana);
-        data["mp_key"]   = Convert::ToInt32(this->combobox_bot_eatmp);
-        data["pet"]      = Convert::ToInt32(this->combobox_bot_pet);
-        data["distance"] = Convert::ToInt32(this->combobox_bot_dca);
+        data["delay"]    = Convert::ToInt32(this->numeric_bot_delay->Text);
+        data["hp"]       = Convert::ToInt32(this->tb_bot_eatfood->Text->Length > 0 ? this->tb_bot_eatfood->Text : gcnew System::String("0"));
+        data["hp_key"]   = this->combobox_bot_eathp->SelectedIndex;
+        data["mp"]       = Convert::ToInt32(this->tb_bot_eatmana->Text->Length > 0 ? this->tb_bot_eatmana->Text : gcnew System::String("0"));
+        data["mp_key"]   = this->combobox_bot_eatmp->SelectedIndex;
+        data["pet_key"]  = this->combobox_bot_pet->SelectedIndex;
+        data["distance"] = Convert::ToInt32(this->tb_bot_ignore->Text);
+
+        std::map<std::string, bool> data_bool;
+        data_bool["hp"]             = this->cb_bot_eathp->Checked;
+        data_bool["mp"]             = this->cb_bot_eatmp->Checked;
+        data_bool["collision"]      = this->cb_bot_collision->Checked;
+        data_bool["ignore"]         = this->cb_bot_ignore->Checked;
+        data_bool["rotatecamera"]   = this->cb_bot_rotatecamera->Checked;
+        data_bool["pet"]            = this->cb_bot_restartpet->Checked;
+        data_bool["targettp"]       = this->cb_bot_targettp->Checked;
+
+        this->objEntity->Food(data_bool, data);
 
         this->objEntity->Bot(
-            (this->cb_bot_collision->Checked    ? 1 : 0),
-            (this->cb_bot_rotatecamera->Checked ? 1 : 0),
-            (this->cb_bot_targettp->Checked     ? 1 : 0),
+            data_bool,
             (Algorithm)this->combobox_bot_dca->SelectedIndex,
             data
         );
     }
+
+    /* === Camera rotation === */
+    // todo
 
     return System::Void();
 }

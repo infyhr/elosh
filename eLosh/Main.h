@@ -591,7 +591,7 @@ private: System::Windows::Forms::Label^  label10;
             // combobox_bot_dca
             // 
             this->combobox_bot_dca->FormattingEnabled = true;
-            this->combobox_bot_dca->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"2D Plain", L"FDA", L"Pythagoras" });
+            this->combobox_bot_dca->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"2D Plain", L"FDA", L"Pythagoras", L"No distance algorithm" });
             this->combobox_bot_dca->Location = System::Drawing::Point(157, 267);
             this->combobox_bot_dca->Name = L"combobox_bot_dca";
             this->combobox_bot_dca->Size = System::Drawing::Size(80, 21);
@@ -614,6 +614,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_bot_ignore->ReadOnly = true;
             this->tb_bot_ignore->Size = System::Drawing::Size(100, 20);
             this->tb_bot_ignore->TabIndex = 43;
+            this->tb_bot_ignore->Text = L"5000";
             // 
             // cb_bot_ignore
             // 
@@ -637,6 +638,7 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_pet->Name = L"combobox_bot_pet";
             this->combobox_bot_pet->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_pet->TabIndex = 42;
+            this->combobox_bot_pet->SelectedIndex = 2;
             // 
             // cb_bot_restartpet
             // 
@@ -647,7 +649,6 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_bot_restartpet->TabIndex = 41;
             this->cb_bot_restartpet->Text = L"Restart pet ";
             this->cb_bot_restartpet->UseVisualStyleBackColor = true;
-            this->cb_bot_restartpet->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_bot_restartpet_CheckedChanged);
             // 
             // combobox_bot_eatmp
             // 
@@ -660,6 +661,7 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_eatmp->Name = L"combobox_bot_eatmp";
             this->combobox_bot_eatmp->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_eatmp->TabIndex = 39;
+            this->combobox_bot_eatmp->SelectedIndex = 1;
             // 
             // combobox_bot_eathp
             // 
@@ -672,6 +674,7 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_eathp->Name = L"combobox_bot_eathp";
             this->combobox_bot_eathp->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_eathp->TabIndex = 38;
+            this->combobox_bot_eathp->SelectedIndex = 0;
             // 
             // tb_bot_eatmana
             // 
@@ -680,6 +683,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_bot_eatmana->ReadOnly = true;
             this->tb_bot_eatmana->Size = System::Drawing::Size(80, 20);
             this->tb_bot_eatmana->TabIndex = 36;
+            this->tb_bot_eatmana->Text = L"50";
             // 
             // cb_bot_eatmp
             // 
@@ -688,7 +692,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_bot_eatmp->Name = L"cb_bot_eatmp";
             this->cb_bot_eatmp->Size = System::Drawing::Size(111, 17);
             this->cb_bot_eatmp->TabIndex = 37;
-            this->cb_bot_eatmp->Text = L"Eat food if MP <= ";
+            this->cb_bot_eatmp->Text = L"Eat food if MP < ";
             this->cb_bot_eatmp->UseVisualStyleBackColor = true;
             this->cb_bot_eatmp->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_bot_eatmp_CheckedChanged);
             // 
@@ -699,6 +703,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_bot_eatfood->ReadOnly = true;
             this->tb_bot_eatfood->Size = System::Drawing::Size(80, 20);
             this->tb_bot_eatfood->TabIndex = 14;
+            this->tb_bot_eatfood->Text = L"5000";
             // 
             // cb_bot_eathp
             // 
@@ -707,7 +712,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_bot_eathp->Name = L"cb_bot_eathp";
             this->cb_bot_eathp->Size = System::Drawing::Size(110, 17);
             this->cb_bot_eathp->TabIndex = 35;
-            this->cb_bot_eathp->Text = L"Eat food if HP <= ";
+            this->cb_bot_eathp->Text = L"Eat food if HP < ";
             this->cb_bot_eathp->UseVisualStyleBackColor = true;
             this->cb_bot_eathp->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_bot_eathp_CheckedChanged);
             // 
@@ -1300,7 +1305,7 @@ private: System::Windows::Forms::Label^  label10;
         this->tb_bot_ignore->ReadOnly = !this->tb_bot_ignore->ReadOnly;
     }
     private: System::Void cb_bot_eatmp_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-        this->cb_bot_restartpet = !this->cb_bot_restartpet;
+        this->tb_bot_eatmana->ReadOnly = !this->tb_bot_eatmana->ReadOnly;
     }
 };
 }
