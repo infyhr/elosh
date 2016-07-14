@@ -34,6 +34,8 @@ eLosh::Main::Main() {
     this->objEntity = e_;
 
     InitializeComponent();
+
+    this->timer->Interval = 100; // 100ms
 }
 
 eLosh::Main::~Main() {
@@ -65,6 +67,8 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_character_fp->Text = Convert::ToString(this->objEntity->iFP);
     // Read Level
     this->tb_character_level->Text = Convert::ToString(this->objEntity->iLv);
+    // Read Player count
+    this->tb_players->Text = Convert::ToString(this->objEntity->iPlayerCount);
 
     /* === UPDATE EVERYTHING FOR THE TARGET === */
     int __tmp;
@@ -86,6 +90,8 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_target_fp->Text = Convert::ToString(this->objEntity->iTargetFP);
     // Read Level
     this->tb_target_level->Text = Convert::ToString(this->objEntity->iTargetLv);
+    // Read distance from Entity
+    this->tb_target_distance->Text = Convert::ToString(this->objEntity->iTargetDistance);
 
     /* === TELEPORT TO CLICK? === */
     if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_LBUTTON) & 0x1)) {
@@ -100,8 +106,25 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         //this->richtb_debug->Text = this->richtb_debug->Text + "Want to go here: " + iClickedPosition + "\r\n";
 #endif
 
-        // Check if the current position is NOT the same as the wanted position, if so update!
+        // Update the new position if we tp to A
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iClickedPosition);
+    }
+
+    /* === TELEPORT TO MAP? === */
+    if (this->cb_teleport_mark->Checked && (GetAsyncKeyState(VK_LBUTTON) & 0x1)) {
+        // Find out the new X and Z position. Y we'll grab current I guess.
+        float iNewX, iNewY, iNewZ;
+
+        // Read X, Y, Z
+        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwMapMarkerOffsetX, &iNewX);
+        iNewY = this->objEntity->fY; // use current Y I guess.
+        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwMapMarkerOffsetZ, &iNewZ);
+
+        // teleport...
+        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &iNewX);
+        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &iNewY);
+        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &iNewZ);
+        //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iMarkPosition);
     }
 
     /* === BOT === */
@@ -135,14 +158,21 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         );
     }
 
+    /* === Stance === */
+
+    /* === Super Jump === */
+    if(this->cb_jumphack->Checked && (GetAsyncKeyState(VK_SPACE) & 0x1)) {
+        float fToWrite;
+        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fToWrite);
+        fToWrite += 4;
+
+        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fToWrite);
+    }
+
     /* === Camera rotation === */
     // todo
 
     return System::Void();
-}
-
-// Thanks to: lava phox
-System::Void eLosh::Main::Bot() {
 }
 
 System::Void eLosh::Main::btn_getcoordinates_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -225,4 +255,49 @@ System::Void eLosh::Main::btn_figuredelta_Click(System::Object^  sender, System:
     // current+X=wanted.
     //this->numeric_tpdelta->Text = Convert::ToString(this->objEngine->iClickedPosition - this->objEngine->fA);
     // fix someday
+}
+
+// GM Auth
+System::Void eLosh::Main::cb_gm_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    int iToWrite = (this->cb_gm->Checked ? 80 : 70);
+    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAuthOffset, &iToWrite);
+}
+
+// Rangehax
+System::Void eLosh::Main::cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    int iToWrite = (this->cb_range->Checked ? this->objEngine->byteRangeArrayModified : this->objEngine->byteRangeArrayOriginal);
+
+    //std::cout << "I will write: " << iToWrite << std::endl;
+    printf("I will write %x\n", iToWrite);
+
+    this->objEngine->WriteStaticMemory(this->objEngine->dwRangeCALLOffset, &iToWrite);
+}
+
+// Speedhax
+System::Void eLosh::Main::trackbar_speed_Scroll(System::Object^  sender, System::EventArgs^  e) {
+    // Just write the new value directly.
+    int iToWrite = this->trackbar_speed->Value;
+
+    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwSpeedOffset, &iToWrite);
+}
+
+// Zoomhack
+System::Void eLosh::Main::trackbar_scroll_Scroll(System::Object^  sender, System::EventArgs^  e) {
+    // Increase/Decrease by X
+    int iCurrentZoom, iNewZoom;
+
+    this->objEngine->ReadStaticMemory(this->objEngine->dwCameraScrollOffset, &iCurrentZoom);
+    if(this->trackbar_scroll->Value > this->trackbarValue) {
+        iNewZoom = iCurrentZoom + this->trackbar_scroll->Value;
+    }else {
+        iNewZoom = iCurrentZoom - this->trackbar_scroll->Value;
+    }
+
+    this->objEngine->WriteStaticMemory(this->objEngine->dwCameraScrollOffset, &iNewZoom);
+}
+
+System::Void eLosh::Main::cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    int iToWrite = (this->cb_flyingcamera->Checked ? 0 : 1);
+
+    this->objEngine->WriteStaticMemory(this->objEngine->dwFlyingCameraOffset, &iToWrite);
 }

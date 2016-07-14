@@ -1,6 +1,7 @@
 #include "entity.h"
 #include <iostream>
 #include <chrono>
+#include <math.h>
 
 Entity::Entity(Engine *e) {
     this->objEngine = e;
@@ -72,13 +73,40 @@ void Entity::Food(std::map<std::string, bool> &dataBool, std::map<std::string, i
     }
 }
 
+void Entity::SendAtk(int iAtk) {
+    int iTemp = NULL;
+    this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
+    this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
+}
+
 // int iMaxDistance, int iSleep, int iFoodHP, int iFoodMP, int iRestartPet, 
 void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data) {
+    // Anti collision check
+    if(this->iCurrentTarget != 0 && dataBool["collision"]) {
+        std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
+        if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
+            // Blacklist!... and teleport...
+            if(dataBool["targettp"]) {
+                this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iTargetA);
+                return;
+            }
+
+            this->iNewTargetLastBlacklist = this->iCurrentTarget;
+
+            this->objEngine->SendESC();
+            this->SendAtk(0);
+            this->iCurrentTarget = 0;
+        }
+
+        return;
+    }
+
     // Read maxInView (static)
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
 
-    int iClosestPosition = 100000; // Max distance.
+    float iClosestPosition = 100000; // Max distance.
+    this->iPlayerCount = 0;
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
         // Do we have a target?
         if (this->iCurrentTarget != 0) continue;
@@ -88,6 +116,9 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         int iCandidateTargetType;
         int iCandidateTargetHP;
         int iCandidatePositionA; // ALL position
+        float iCandidatePositionX;
+        float iCandidatePositionY;
+        float iCandidatePositionZ;
         int iCandidateLevel;
 
         // Read the ID, target type and their HP and position
@@ -96,8 +127,9 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwHPOffset, &iCandidateTargetHP, false);
         this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwLevelOffset, &iCandidateLevel, false);
         this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);
-
-        //printf("N: %d\ni: %d\nID: %d\nType: %d\nHP: %d\n\n", iMaxInView, i, iCandidateTarget, iCandidateTargetType, iCandidateTargetHP);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwXOffset, &iCandidatePositionX, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwYOffset, &iCandidatePositionY, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwZOffset, &iCandidatePositionZ, false);
 
         // Now read our own ID and compare.
         int iOwnId;
@@ -108,24 +140,32 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         if(iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1)
             continue;
 
-        // Check if blacklisted.
-        /*std::cout << "Blacklist: " << this->iNewTargetLastBlacklist << std::endl;
-        std::cout << "Candidate: " << iCandidateTarget << std::endl;
-        if ((iCandidateTarget == this->iNewTargetLastBlacklist)) {
-            std::cout << "I am avoiding this target now." << std::endl;
+        // Check if blacklisted?
+        if(iCandidateTarget == this->iNewTargetLastBlacklist) {
+            std::cout << "This target is blacklisted!" << std::endl;
             continue;
-        }*/
+        }
+
+        // Check if a player.
+        if(iCandidateTargetType == 2)
+            this->iPlayerCount++;
 
         // Check out if too far away
-        int delta = iCandidatePositionA - this->iA;
+        float delta = pow((iCandidatePositionX - this->fX), 2) +
+                    pow((iCandidatePositionY - this->fY), 2) +
+                    pow((iCandidatePositionZ - this->fZ), 2);
+        delta = sqrt(delta);
+        this->iTargetDistance = delta;
         if (delta > data["distance"] && dataBool["ignore"]) {
             std::cout << "ignoring..." << std::endl;
             continue;
         }
 
+        std::cout << iCandidateTarget << std::endl;
+
         switch(eAlgorithm) {
             case BLANK: // Simplest, 2D point blank
-                if(fabs(delta) <= iClosestPosition) {
+                if(delta <= iClosestPosition) {
                     // Got new closest target.
                     iClosestPosition = delta;
 
@@ -150,14 +190,9 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         }
 
         // Teleport if teleport
-        if (dataBool["targettp"])
-            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iCandidatePositionA);
 
         // Attack
-        int iAtk = 1;
-        int iTemp = NULL;
-        this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
-        this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
+        this->SendAtk(1);
 
         // All good, log their position...
         /*this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);

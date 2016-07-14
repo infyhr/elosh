@@ -33,6 +33,9 @@ class Entity {
         int   iTargetA;
         char szTargetName[32]; // target name
         int iTargetHP, iTargetMP, iTargetFP, iTargetLv;
+        int iTargetDistance;
+
+        int iPlayerCount;
 
     private:
         Engine *objEngine;
@@ -40,6 +43,7 @@ class Entity {
         int iNewTargetTick = NULL;
         int iNewTargetHP = NULL;
         int iNewTargetLastBlacklist = NULL;
+        void SendAtk(int iAtk);
 };
 
 inline int __fastcall fabs(int a) {

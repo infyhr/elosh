@@ -11,6 +11,7 @@ class Engine {
         bool Engine::WriteStaticMemory(DWORD dwOffset, LPVOID lpBuffer, bool doNeuzBase = true);
         bool Engine::WriteMemory(DWORD dwBase, DWORD dwOffset, LPVOID lpBuffer);
         void Engine::SendKey(int iKeyCode);
+        void Engine::SendESC();
 
     private:
         HWND hwndFlyff;
@@ -34,6 +35,12 @@ class Engine {
         DWORD dwIdOffset;
         DWORD dwPlayerOffset;
         DWORD dwLevelOffset;
+        DWORD dwAuthOffset;
+        DWORD dwSpeedOffset;
+        DWORD dwMapMarkerOffsetA;
+        DWORD dwMapMarkerOffsetX;
+        // Y????
+        DWORD dwMapMarkerOffsetZ;
 
         DWORD dwInvisibilityPointerOffset; // STATIC
         DWORD dwInvisibilityOffset;
@@ -42,6 +49,7 @@ class Engine {
         DWORD dwCameraScrollOffset; // STATIC
         DWORD dwCameraMovementOffset; // STATIC
         DWORD dwMaxInView; // STATIC
+        DWORD dwFlyingCameraOffset; // STATIC
 
         DWORD dwBattlePointerOffset; // STATIC
         DWORD dwBattleOffset;
@@ -49,4 +57,8 @@ class Engine {
         DWORD dwTargetBase;
         DWORD dwTargetIdOffset; // Like player x/y/z...
         DWORD dwTargetLoopBaseOffset;
+
+        DWORD dwRangeCALLOffset; // STATIC
+        int byteRangeArrayOriginal;
+        int byteRangeArrayModified;
 };

@@ -18,6 +18,23 @@ namespace eLosh {
 	    public:
             Engine *objEngine;
     private: System::Windows::Forms::CheckBox^  cb_bot_collision;
+    private: System::Windows::Forms::CheckBox^  cb_range;
+
+    private: System::Windows::Forms::CheckBox^  cb_flyingcamera;
+
+    private: System::Windows::Forms::CheckBox^  cb_stance;
+    private: System::Windows::Forms::Label^  label12;
+    private: System::Windows::Forms::TrackBar^  trackbar_scroll;
+    private: System::Windows::Forms::Label^  label11;
+    private: System::Windows::Forms::TrackBar^  trackbar_speed;
+    private: int trackbarValue;
+    private: System::Windows::Forms::CheckBox^  cb_teleport_mark;
+    private: System::Windows::Forms::CheckBox^  cb_jumphack;
+    private: System::Windows::Forms::TextBox^  tb_players;
+    private: System::Windows::Forms::Label^  label13;
+    private: System::Windows::Forms::Label^  label14;
+    private: System::Windows::Forms::TextBox^  tb_target_distance;
+
 
     public:
         Entity *objEntity;
@@ -194,6 +211,8 @@ private: System::Windows::Forms::Label^  label10;
             System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Main::typeid));
             this->tabControl1 = (gcnew System::Windows::Forms::TabControl());
             this->tabPage1 = (gcnew System::Windows::Forms::TabPage());
+            this->tb_players = (gcnew System::Windows::Forms::TextBox());
+            this->label13 = (gcnew System::Windows::Forms::Label());
             this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
             this->label6 = (gcnew System::Windows::Forms::Label());
             this->label1 = (gcnew System::Windows::Forms::Label());
@@ -214,6 +233,14 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_target_name = (gcnew System::Windows::Forms::TextBox());
             this->label5 = (gcnew System::Windows::Forms::Label());
             this->Character = (gcnew System::Windows::Forms::GroupBox());
+            this->cb_jumphack = (gcnew System::Windows::Forms::CheckBox());
+            this->cb_range = (gcnew System::Windows::Forms::CheckBox());
+            this->cb_flyingcamera = (gcnew System::Windows::Forms::CheckBox());
+            this->cb_stance = (gcnew System::Windows::Forms::CheckBox());
+            this->label12 = (gcnew System::Windows::Forms::Label());
+            this->trackbar_scroll = (gcnew System::Windows::Forms::TrackBar());
+            this->label11 = (gcnew System::Windows::Forms::Label());
+            this->trackbar_speed = (gcnew System::Windows::Forms::TrackBar());
             this->cb_invisibility = (gcnew System::Windows::Forms::CheckBox());
             this->cb_gm = (gcnew System::Windows::Forms::CheckBox());
             this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
@@ -248,6 +275,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_character_name = (gcnew System::Windows::Forms::TextBox());
             this->label_hp = (gcnew System::Windows::Forms::Label());
             this->gb_teleport = (gcnew System::Windows::Forms::GroupBox());
+            this->cb_teleport_mark = (gcnew System::Windows::Forms::CheckBox());
             this->tb_posname = (gcnew System::Windows::Forms::TextBox());
             this->btn_remove = (gcnew System::Windows::Forms::Button());
             this->btn_add = (gcnew System::Windows::Forms::Button());
@@ -288,10 +316,14 @@ private: System::Windows::Forms::Label^  label10;
             this->label_version = (gcnew System::Windows::Forms::Label());
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
+            this->label14 = (gcnew System::Windows::Forms::Label());
+            this->tb_target_distance = (gcnew System::Windows::Forms::TextBox());
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
             this->Character->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->BeginInit();
             this->groupBox1->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
@@ -316,6 +348,8 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // tabPage1
             // 
+            this->tabPage1->Controls->Add(this->tb_players);
+            this->tabPage1->Controls->Add(this->label13);
             this->tabPage1->Controls->Add(this->groupBox2);
             this->tabPage1->Controls->Add(this->Character);
             this->tabPage1->Controls->Add(this->groupBox1);
@@ -330,8 +364,28 @@ private: System::Windows::Forms::Label^  label10;
             this->tabPage1->Text = L"Main";
             this->tabPage1->UseVisualStyleBackColor = true;
             // 
+            // tb_players
+            // 
+            this->tb_players->Location = System::Drawing::Point(828, 129);
+            this->tb_players->Name = L"tb_players";
+            this->tb_players->ReadOnly = true;
+            this->tb_players->Size = System::Drawing::Size(101, 20);
+            this->tb_players->TabIndex = 16;
+            this->tb_players->Text = L"\?\?";
+            // 
+            // label13
+            // 
+            this->label13->AutoSize = true;
+            this->label13->Location = System::Drawing::Point(740, 132);
+            this->label13->Name = L"label13";
+            this->label13->Size = System::Drawing::Size(82, 13);
+            this->label13->TabIndex = 17;
+            this->label13->Text = L"Players in range";
+            // 
             // groupBox2
             // 
+            this->groupBox2->Controls->Add(this->label14);
+            this->groupBox2->Controls->Add(this->tb_target_distance);
             this->groupBox2->Controls->Add(this->label6);
             this->groupBox2->Controls->Add(this->label1);
             this->groupBox2->Controls->Add(this->tb_target_a);
@@ -521,6 +575,14 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // Character
             // 
+            this->Character->Controls->Add(this->cb_jumphack);
+            this->Character->Controls->Add(this->cb_range);
+            this->Character->Controls->Add(this->cb_flyingcamera);
+            this->Character->Controls->Add(this->cb_stance);
+            this->Character->Controls->Add(this->label12);
+            this->Character->Controls->Add(this->trackbar_scroll);
+            this->Character->Controls->Add(this->label11);
+            this->Character->Controls->Add(this->trackbar_speed);
             this->Character->Controls->Add(this->cb_invisibility);
             this->Character->Controls->Add(this->cb_gm);
             this->Character->Location = System::Drawing::Point(593, 158);
@@ -529,6 +591,97 @@ private: System::Windows::Forms::Label^  label10;
             this->Character->TabIndex = 14;
             this->Character->TabStop = false;
             this->Character->Text = L"Miscellaneous";
+            // 
+            // cb_jumphack
+            // 
+            this->cb_jumphack->AutoSize = true;
+            this->cb_jumphack->ForeColor = System::Drawing::Color::ForestGreen;
+            this->cb_jumphack->ImageKey = L"(none)";
+            this->cb_jumphack->Location = System::Drawing::Point(6, 132);
+            this->cb_jumphack->Name = L"cb_jumphack";
+            this->cb_jumphack->Size = System::Drawing::Size(78, 17);
+            this->cb_jumphack->TabIndex = 9;
+            this->cb_jumphack->Text = L"Jump hack";
+            this->cb_jumphack->UseVisualStyleBackColor = true;
+            // 
+            // cb_range
+            // 
+            this->cb_range->AutoSize = true;
+            this->cb_range->ForeColor = System::Drawing::Color::Brown;
+            this->cb_range->ImageKey = L"(none)";
+            this->cb_range->Location = System::Drawing::Point(6, 109);
+            this->cb_range->Name = L"cb_range";
+            this->cb_range->Size = System::Drawing::Size(114, 17);
+            this->cb_range->TabIndex = 8;
+            this->cb_range->Text = L"Infinite range hack";
+            this->cb_range->UseVisualStyleBackColor = true;
+            this->cb_range->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_range_CheckedChanged);
+            // 
+            // cb_flyingcamera
+            // 
+            this->cb_flyingcamera->AutoSize = true;
+            this->cb_flyingcamera->Location = System::Drawing::Point(6, 87);
+            this->cb_flyingcamera->Name = L"cb_flyingcamera";
+            this->cb_flyingcamera->Size = System::Drawing::Size(110, 17);
+            this->cb_flyingcamera->TabIndex = 7;
+            this->cb_flyingcamera->Text = L"Use flying camera";
+            this->cb_flyingcamera->UseVisualStyleBackColor = true;
+            this->cb_flyingcamera->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_flyingcamera_CheckedChanged);
+            // 
+            // cb_stance
+            // 
+            this->cb_stance->AutoSize = true;
+            this->cb_stance->Location = System::Drawing::Point(6, 65);
+            this->cb_stance->Name = L"cb_stance";
+            this->cb_stance->Size = System::Drawing::Size(151, 17);
+            this->cb_stance->TabIndex = 6;
+            this->cb_stance->Text = L"Force casual battle stance";
+            this->cb_stance->UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            this->label12->AutoSize = true;
+            this->label12->Location = System::Drawing::Point(6, 192);
+            this->label12->Name = L"label12";
+            this->label12->Size = System::Drawing::Size(57, 13);
+            this->label12->TabIndex = 5;
+            this->label12->Text = L"Scrollhack";
+            // 
+            // trackbar_scroll
+            // 
+            this->trackbar_scroll->AutoSize = false;
+            this->trackbar_scroll->LargeChange = 5000;
+            this->trackbar_scroll->Location = System::Drawing::Point(68, 192);
+            this->trackbar_scroll->Maximum = 100000;
+            this->trackbar_scroll->Name = L"trackbar_scroll";
+            this->trackbar_scroll->Size = System::Drawing::Size(151, 28);
+            this->trackbar_scroll->SmallChange = 2000;
+            this->trackbar_scroll->TabIndex = 4;
+            this->trackbar_scroll->TickStyle = System::Windows::Forms::TickStyle::None;
+            this->trackbar_scroll->Scroll += gcnew System::EventHandler(this, &Main::trackbar_scroll_Scroll);
+            this->trackbar_scroll->ValueChanged += gcnew System::EventHandler(this, &Main::trackbar_scroll_ValueChanged);
+            // 
+            // label11
+            // 
+            this->label11->AutoSize = true;
+            this->label11->Location = System::Drawing::Point(6, 158);
+            this->label11->Name = L"label11";
+            this->label11->Size = System::Drawing::Size(62, 13);
+            this->label11->TabIndex = 3;
+            this->label11->Text = L"Speedhack";
+            // 
+            // trackbar_speed
+            // 
+            this->trackbar_speed->AutoSize = false;
+            this->trackbar_speed->Location = System::Drawing::Point(68, 158);
+            this->trackbar_speed->Maximum = 200;
+            this->trackbar_speed->Minimum = 30;
+            this->trackbar_speed->Name = L"trackbar_speed";
+            this->trackbar_speed->Size = System::Drawing::Size(151, 28);
+            this->trackbar_speed->TabIndex = 2;
+            this->trackbar_speed->TickStyle = System::Windows::Forms::TickStyle::None;
+            this->trackbar_speed->Value = 30;
+            this->trackbar_speed->Scroll += gcnew System::EventHandler(this, &Main::trackbar_speed_Scroll);
             // 
             // cb_invisibility
             // 
@@ -550,6 +703,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_gm->TabIndex = 0;
             this->cb_gm->Text = L"Become gamemaster (Administrator)";
             this->cb_gm->UseVisualStyleBackColor = true;
+            this->cb_gm->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_gm_CheckedChanged);
             // 
             // groupBox1
             // 
@@ -596,7 +750,6 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_dca->Name = L"combobox_bot_dca";
             this->combobox_bot_dca->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_dca->TabIndex = 46;
-            this->combobox_bot_dca->SelectedIndex = 0;
             // 
             // label_bot_dca
             // 
@@ -638,7 +791,6 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_pet->Name = L"combobox_bot_pet";
             this->combobox_bot_pet->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_pet->TabIndex = 42;
-            this->combobox_bot_pet->SelectedIndex = 2;
             // 
             // cb_bot_restartpet
             // 
@@ -661,7 +813,6 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_eatmp->Name = L"combobox_bot_eatmp";
             this->combobox_bot_eatmp->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_eatmp->TabIndex = 39;
-            this->combobox_bot_eatmp->SelectedIndex = 1;
             // 
             // combobox_bot_eathp
             // 
@@ -674,7 +825,6 @@ private: System::Windows::Forms::Label^  label10;
             this->combobox_bot_eathp->Name = L"combobox_bot_eathp";
             this->combobox_bot_eathp->Size = System::Drawing::Size(80, 21);
             this->combobox_bot_eathp->TabIndex = 38;
-            this->combobox_bot_eathp->SelectedIndex = 0;
             // 
             // tb_bot_eatmana
             // 
@@ -690,7 +840,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_bot_eatmp->AutoSize = true;
             this->cb_bot_eatmp->Location = System::Drawing::Point(9, 175);
             this->cb_bot_eatmp->Name = L"cb_bot_eatmp";
-            this->cb_bot_eatmp->Size = System::Drawing::Size(111, 17);
+            this->cb_bot_eatmp->Size = System::Drawing::Size(105, 17);
             this->cb_bot_eatmp->TabIndex = 37;
             this->cb_bot_eatmp->Text = L"Eat food if MP < ";
             this->cb_bot_eatmp->UseVisualStyleBackColor = true;
@@ -710,7 +860,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_bot_eathp->AutoSize = true;
             this->cb_bot_eathp->Location = System::Drawing::Point(9, 152);
             this->cb_bot_eathp->Name = L"cb_bot_eathp";
-            this->cb_bot_eathp->Size = System::Drawing::Size(110, 17);
+            this->cb_bot_eathp->Size = System::Drawing::Size(104, 17);
             this->cb_bot_eathp->TabIndex = 35;
             this->cb_bot_eathp->Text = L"Eat food if HP < ";
             this->cb_bot_eathp->UseVisualStyleBackColor = true;
@@ -883,6 +1033,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // gb_teleport
             // 
+            this->gb_teleport->Controls->Add(this->cb_teleport_mark);
             this->gb_teleport->Controls->Add(this->tb_posname);
             this->gb_teleport->Controls->Add(this->btn_remove);
             this->gb_teleport->Controls->Add(this->btn_add);
@@ -916,6 +1067,16 @@ private: System::Windows::Forms::Label^  label10;
             this->gb_teleport->TabIndex = 7;
             this->gb_teleport->TabStop = false;
             this->gb_teleport->Text = L"Teleport";
+            // 
+            // cb_teleport_mark
+            // 
+            this->cb_teleport_mark->AutoSize = true;
+            this->cb_teleport_mark->Location = System::Drawing::Point(7, 206);
+            this->cb_teleport_mark->Name = L"cb_teleport_mark";
+            this->cb_teleport_mark->Size = System::Drawing::Size(129, 17);
+            this->cb_teleport_mark->TabIndex = 29;
+            this->cb_teleport_mark->Text = L"Teleport on map mark";
+            this->cb_teleport_mark->UseVisualStyleBackColor = true;
             // 
             // tb_posname
             // 
@@ -1016,26 +1177,26 @@ private: System::Windows::Forms::Label^  label10;
             // numeric_tpdelta
             // 
             this->numeric_tpdelta->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
-            this->numeric_tpdelta->Location = System::Drawing::Point(150, 232);
+            this->numeric_tpdelta->Location = System::Drawing::Point(201, 258);
             this->numeric_tpdelta->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5000, 0, 0, 0 });
             this->numeric_tpdelta->Name = L"numeric_tpdelta";
-            this->numeric_tpdelta->Size = System::Drawing::Size(120, 20);
+            this->numeric_tpdelta->Size = System::Drawing::Size(67, 20);
             this->numeric_tpdelta->TabIndex = 21;
             this->numeric_tpdelta->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 139, 0, 0, 0 });
             // 
             // label_teleportdelta
             // 
             this->label_teleportdelta->AutoSize = true;
-            this->label_teleportdelta->Location = System::Drawing::Point(6, 232);
+            this->label_teleportdelta->Location = System::Drawing::Point(122, 260);
             this->label_teleportdelta->Name = L"label_teleportdelta";
-            this->label_teleportdelta->Size = System::Drawing::Size(136, 13);
+            this->label_teleportdelta->Size = System::Drawing::Size(73, 13);
             this->label_teleportdelta->TabIndex = 20;
-            this->label_teleportdelta->Text = L"Teleport on click delta error";
+            this->label_teleportdelta->Text = L"Click TP delta";
             // 
             // cb_teleport_a
             // 
             this->cb_teleport_a->AutoSize = true;
-            this->cb_teleport_a->Location = System::Drawing::Point(5, 152);
+            this->cb_teleport_a->Location = System::Drawing::Point(7, 152);
             this->cb_teleport_a->Name = L"cb_teleport_a";
             this->cb_teleport_a->Size = System::Drawing::Size(187, 17);
             this->cb_teleport_a->TabIndex = 18;
@@ -1079,7 +1240,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_teleport_click
             // 
             this->cb_teleport_click->AutoSize = true;
-            this->cb_teleport_click->Location = System::Drawing::Point(150, 258);
+            this->cb_teleport_click->Location = System::Drawing::Point(7, 229);
             this->cb_teleport_click->Name = L"cb_teleport_click";
             this->cb_teleport_click->Size = System::Drawing::Size(105, 17);
             this->cb_teleport_click->TabIndex = 13;
@@ -1249,6 +1410,24 @@ private: System::Windows::Forms::Label^  label10;
             this->timer->Enabled = true;
             this->timer->Tick += gcnew System::EventHandler(this, &Main::tick);
             // 
+            // label14
+            // 
+            this->label14->AutoSize = true;
+            this->label14->Location = System::Drawing::Point(161, 129);
+            this->label14->Name = L"label14";
+            this->label14->Size = System::Drawing::Size(15, 13);
+            this->label14->TabIndex = 39;
+            this->label14->Text = L"D";
+            // 
+            // tb_target_distance
+            // 
+            this->tb_target_distance->Location = System::Drawing::Point(181, 126);
+            this->tb_target_distance->Name = L"tb_target_distance";
+            this->tb_target_distance->ReadOnly = true;
+            this->tb_target_distance->Size = System::Drawing::Size(101, 20);
+            this->tb_target_distance->TabIndex = 38;
+            this->tb_target_distance->Text = L"\?\?";
+            // 
             // Main
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1261,10 +1440,13 @@ private: System::Windows::Forms::Label^  label10;
             this->Text = L"E Loœ [eLosh]";
             this->tabControl1->ResumeLayout(false);
             this->tabPage1->ResumeLayout(false);
+            this->tabPage1->PerformLayout();
             this->groupBox2->ResumeLayout(false);
             this->groupBox2->PerformLayout();
             this->Character->ResumeLayout(false);
             this->Character->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->EndInit();
             this->groupBox1->ResumeLayout(false);
             this->groupBox1->PerformLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->EndInit();
@@ -1281,8 +1463,7 @@ private: System::Windows::Forms::Label^  label10;
             this->PerformLayout();
 
         }
-#pragma endregion
-    private: System::Void Bot();
+#pragma endregion    
     private: System::Void btn_getcoordinates_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void btn_teleport_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void richtb_debug_TextChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -1307,5 +1488,13 @@ private: System::Windows::Forms::Label^  label10;
     private: System::Void cb_bot_eatmp_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
         this->tb_bot_eatmana->ReadOnly = !this->tb_bot_eatmana->ReadOnly;
     }
+    private: System::Void cb_gm_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void trackbar_speed_Scroll(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void trackbar_scroll_Scroll(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void trackbar_scroll_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+        this->trackbarValue = this->trackbar_scroll->Value;
+    }
+    private: System::Void cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

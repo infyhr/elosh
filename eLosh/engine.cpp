@@ -65,15 +65,21 @@ Engine::Engine() {
     this->dwLevelOffset = 0x6FC;
     this->dwNameOffset = 0xB6C;
     this->dwIdOffset = 0x41C;
+    this->dwAuthOffset = 0x768;
+    this->dwSpeedOffset = 0x1290;
+    this->dwMapMarkerOffsetA = 0x108c;
+    this->dwMapMarkerOffsetX = 0x1084;
+    this->dwMapMarkerOffsetZ = 0x108c; // The same!
 
     this->dwClickedPositionOffset = 0x8CDD64; // statik
 
     this->dwInvisibilityPointerOffset = 0x008D947C; // What writes to this address, 4byte hex scan to i onda u address listi klik na to pa change value i dobijes Neuz.exe+...
     this->dwInvisibilityOffset = 0x1264 + 0x100; // ^ + 0x1264 + ((ECX+EAX*4) = 100)
 
-    this->dwCameraScrollOffset = 0x01C4AA18; // statikkkk
+    this->dwCameraScrollOffset = 0x008DAA18; // statikkkk Neuz.exe+8DAA18
     this->dwCameraMovementOffset = 0x008DA9EC; // statikkk
     this->dwMaxInView = 0x00B67778; // Neuz.exe + B67778 statikk
+    this->dwFlyingCameraOffset = 0x008DAA04;// Neuz.exe+8DAA04
 
     this->dwBattlePointerOffset = 0x009BDAA8; // green, double click.
     this->dwBattleOffset = 0x7624; // delta
@@ -81,6 +87,15 @@ Engine::Engine() {
     this->dwTargetBase = 0x008D9A80; // this is just the base.
     this->dwTargetIdOffset = 0x20; // this will get the monster id.
     this->dwTargetLoopBaseOffset = 0x00B67370; // ecx/edx/register loop STATIC Neuz.exe + B67778
+
+    this->dwRangeCALLOffset = 0x002D96A6; // Neuz.exe+2D96A6 doubleclick
+    // call Neuz.exe+2875E8. E8 = opcode call
+    //this->byteRangeArrayOriginal = 0x002875E8;
+    this->byteRangeArrayOriginal = 0x002875E8; // reverse... endianess.
+    // Modified -- mov eax, 6FFFFFFF. B8 mov
+    //this->byteRangeArrayModified = 0xFFFFFFB8;
+    this->byteRangeArrayModified = 0xFFFFFFB8;
+
 
     // read test
     /*int temp; // Neuz.exe+0x008D947C
@@ -106,20 +121,15 @@ Engine::Engine() {
         this->ReadStaticMemory(temp+0x7624, &temp2);
         std::cout << "temp2: " << temp2 << std::endl;
     }*/
-
-    int num = 1;
-
-    if (*(char *)&num == 1)
-    {
-        printf("Little-Endian\n");
-    }
-    else
-    {
-        printf("Big-Endian\n");
-    }
 }
 Engine::~Engine(){
     CloseHandle(this->hFlyff);
+}
+
+void Engine::SendESC() {
+    PostMessage(this->hwndFlyff, WM_KEYDOWN, VK_ESCAPE, MapVirtualKey(VK_ESCAPE, MAPVK_VK_TO_VSC));
+    Sleep(20);
+    PostMessage(this->hwndFlyff, WM_KEYUP, VK_ESCAPE, MapVirtualKey(VK_ESCAPE, MAPVK_VK_TO_VSC));
 }
 
 void Engine::SendKey(int iKeyIndex) {
