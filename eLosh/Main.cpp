@@ -36,6 +36,10 @@ eLosh::Main::Main() {
     InitializeComponent();
 
     this->timer->Interval = 100; // 100ms
+    this->combobox_bot_pet->SelectedIndex = 2;
+    this->combobox_bot_eatmp->SelectedIndex = 1;
+    this->combobox_bot_eathp->SelectedIndex = 0;
+    this->combobox_bot_dca->SelectedIndex = 0;
 }
 
 eLosh::Main::~Main() {
@@ -94,7 +98,8 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_target_distance->Text = Convert::ToString(this->objEntity->iTargetDistance);
 
     /* === TELEPORT TO CLICK? === */
-    if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_LBUTTON) & 0x1)) {
+    if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
+        std::cout << "click!" << std::endl;
         // Find out the current "click" position.
         int iClickedPosition;
         this->objEngine->ReadStaticMemory(this->objEngine->dwClickedPositionOffset, &iClickedPosition);
@@ -111,7 +116,7 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     }
 
     /* === TELEPORT TO MAP? === */
-    if (this->cb_teleport_mark->Checked && (GetAsyncKeyState(VK_LBUTTON) & 0x1)) {
+    if (this->cb_teleport_mark->Checked && (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
         // Find out the new X and Z position. Y we'll grab current I guess.
         float iNewX, iNewY, iNewZ;
 
@@ -161,10 +166,10 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     /* === Stance === */
 
     /* === Super Jump === */
-    if(this->cb_jumphack->Checked && (GetAsyncKeyState(VK_SPACE) & 0x1)) {
+    if(this->cb_jumphack->Checked && (GetAsyncKeyState(VK_SPACE) & 0x8000)) {
         float fToWrite;
         this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fToWrite);
-        fToWrite += 4;
+        fToWrite += 8;
 
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fToWrite);
     }

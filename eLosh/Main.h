@@ -652,7 +652,7 @@ private: System::Windows::Forms::Label^  label10;
             this->trackbar_scroll->AutoSize = false;
             this->trackbar_scroll->LargeChange = 5000;
             this->trackbar_scroll->Location = System::Drawing::Point(68, 192);
-            this->trackbar_scroll->Maximum = 100000;
+            this->trackbar_scroll->Maximum = 200000;
             this->trackbar_scroll->Name = L"trackbar_scroll";
             this->trackbar_scroll->Size = System::Drawing::Size(151, 28);
             this->trackbar_scroll->SmallChange = 2000;
