@@ -17,7 +17,8 @@ class Entity {
         void Tick();
         void Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data);
         void Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
-        
+        void SendAtk(int iAtk);
+
         int iBattle; // 0 || 1. Currently in battle?
         float fX; // X pos
         float fY; // Y pos
@@ -43,7 +44,6 @@ class Entity {
         int iNewTargetTick = NULL;
         int iNewTargetHP = NULL;
         int iNewTargetLastBlacklist = NULL;
-        void SendAtk(int iAtk);
 };
 
 inline int __fastcall fabs(int a) {

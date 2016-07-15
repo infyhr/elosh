@@ -83,11 +83,14 @@ void Entity::SendAtk(int iAtk) {
 void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data) {
     // Anti collision check
     if(this->iCurrentTarget != 0 && dataBool["collision"]) {
-        std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
+        //std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
         if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
             // Blacklist!... and teleport...
             if(dataBool["targettp"]) {
-                this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iTargetA);
+                //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iTargetA);
+                this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
+                this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
+                this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
                 return;
             }
 
@@ -136,8 +139,17 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwIdOffset, &iOwnId);
         if (iOwnId == iCandidateTarget) continue;  // No poin.
 
+        // Check if a player.
+        if (iCandidateTargetType == 2)
+            this->iPlayerCount++;
+
+        /*if (iCandidateLevel < data["maxlvl"]) {
+            std::cout << "manji je" << std::endl;
+            continue;
+        }*/
+
         // Check if out of bounds.
-        if(iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1)
+        if(iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1 || iCandidateLevel > data["maxlvl"])
             continue;
 
         // Check if blacklisted?
@@ -146,23 +158,21 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
             continue;
         }
 
-        // Check if a player.
-        if(iCandidateTargetType == 2)
-            this->iPlayerCount++;
-
         // Check out if too far away
         float delta = pow((iCandidatePositionX - this->fX), 2) +
                     pow((iCandidatePositionY - this->fY), 2) +
                     pow((iCandidatePositionZ - this->fZ), 2);
         delta = sqrt(delta);
         this->iTargetDistance = delta;
+        std::cout << "Distance to target " << delta << std::endl;
         if (delta > data["distance"] && dataBool["ignore"]) {
             std::cout << "ignoring..." << std::endl;
             continue;
         }
 
-        std::cout << iCandidateTarget << std::endl;
-
+        /*
+        MAXSCROLL: 1107859072 dodat checkbox.
+        */
         switch(eAlgorithm) {
             case BLANK: // Simplest, 2D point blank
                 if(delta <= iClosestPosition) {

@@ -34,6 +34,11 @@ namespace eLosh {
     private: System::Windows::Forms::Label^  label13;
     private: System::Windows::Forms::Label^  label14;
     private: System::Windows::Forms::TextBox^  tb_target_distance;
+    private: System::Windows::Forms::CheckBox^  cb_autobuff;
+    private: System::Windows::Forms::Label^  label15;
+    private: System::Windows::Forms::NumericUpDown^  numeric_maxlvl;
+    public: System::Windows::Forms::Timer^  timerBuff;
+    private:
 
 
     public:
@@ -48,6 +53,7 @@ namespace eLosh {
             ~Main();
 
     private: System::Void tick(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void tickBuff(System::Object^  sender, System::EventArgs^  e);
     private: System::Windows::Forms::TabControl^  tabControl1;
     protected:
     private: System::Windows::Forms::TabPage^  tabPage1;
@@ -214,6 +220,8 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_players = (gcnew System::Windows::Forms::TextBox());
             this->label13 = (gcnew System::Windows::Forms::Label());
             this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+            this->label14 = (gcnew System::Windows::Forms::Label());
+            this->tb_target_distance = (gcnew System::Windows::Forms::TextBox());
             this->label6 = (gcnew System::Windows::Forms::Label());
             this->label1 = (gcnew System::Windows::Forms::Label());
             this->tb_target_a = (gcnew System::Windows::Forms::TextBox());
@@ -244,6 +252,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_invisibility = (gcnew System::Windows::Forms::CheckBox());
             this->cb_gm = (gcnew System::Windows::Forms::CheckBox());
             this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+            this->cb_autobuff = (gcnew System::Windows::Forms::CheckBox());
             this->cb_bot_collision = (gcnew System::Windows::Forms::CheckBox());
             this->combobox_bot_dca = (gcnew System::Windows::Forms::ComboBox());
             this->label_bot_dca = (gcnew System::Windows::Forms::Label());
@@ -316,8 +325,9 @@ private: System::Windows::Forms::Label^  label10;
             this->label_version = (gcnew System::Windows::Forms::Label());
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
-            this->label14 = (gcnew System::Windows::Forms::Label());
-            this->tb_target_distance = (gcnew System::Windows::Forms::TextBox());
+            this->label15 = (gcnew System::Windows::Forms::Label());
+            this->numeric_maxlvl = (gcnew System::Windows::Forms::NumericUpDown());
+            this->timerBuff = (gcnew System::Windows::Forms::Timer(this->components));
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
@@ -333,6 +343,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tabPage3->SuspendLayout();
             this->gb_debug->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->BeginInit();
             this->SuspendLayout();
             // 
             // tabControl1
@@ -410,6 +421,24 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox2->TabIndex = 15;
             this->groupBox2->TabStop = false;
             this->groupBox2->Text = L"Target";
+            // 
+            // label14
+            // 
+            this->label14->AutoSize = true;
+            this->label14->Location = System::Drawing::Point(161, 129);
+            this->label14->Name = L"label14";
+            this->label14->Size = System::Drawing::Size(15, 13);
+            this->label14->TabIndex = 39;
+            this->label14->Text = L"D";
+            // 
+            // tb_target_distance
+            // 
+            this->tb_target_distance->Location = System::Drawing::Point(181, 126);
+            this->tb_target_distance->Name = L"tb_target_distance";
+            this->tb_target_distance->ReadOnly = true;
+            this->tb_target_distance->Size = System::Drawing::Size(101, 20);
+            this->tb_target_distance->TabIndex = 38;
+            this->tb_target_distance->Text = L"\?\?";
             // 
             // label6
             // 
@@ -707,6 +736,9 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // groupBox1
             // 
+            this->groupBox1->Controls->Add(this->label15);
+            this->groupBox1->Controls->Add(this->numeric_maxlvl);
+            this->groupBox1->Controls->Add(this->cb_autobuff);
             this->groupBox1->Controls->Add(this->cb_bot_collision);
             this->groupBox1->Controls->Add(this->combobox_bot_dca);
             this->groupBox1->Controls->Add(this->label_bot_dca);
@@ -731,6 +763,16 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox1->TabIndex = 13;
             this->groupBox1->TabStop = false;
             this->groupBox1->Text = L"Bot";
+            // 
+            // cb_autobuff
+            // 
+            this->cb_autobuff->AutoSize = true;
+            this->cb_autobuff->Location = System::Drawing::Point(164, 19);
+            this->cb_autobuff->Name = L"cb_autobuff";
+            this->cb_autobuff->Size = System::Drawing::Size(81, 17);
+            this->cb_autobuff->TabIndex = 48;
+            this->cb_autobuff->Text = L"Autobuff 15";
+            this->cb_autobuff->UseVisualStyleBackColor = true;
             // 
             // cb_bot_collision
             // 
@@ -1411,23 +1453,27 @@ private: System::Windows::Forms::Label^  label10;
             this->timer->Enabled = true;
             this->timer->Tick += gcnew System::EventHandler(this, &Main::tick);
             // 
-            // label14
+            // label15
             // 
-            this->label14->AutoSize = true;
-            this->label14->Location = System::Drawing::Point(161, 129);
-            this->label14->Name = L"label14";
-            this->label14->Size = System::Drawing::Size(15, 13);
-            this->label14->TabIndex = 39;
-            this->label14->Text = L"D";
+            this->label15->AutoSize = true;
+            this->label15->Location = System::Drawing::Point(138, 48);
+            this->label15->Name = L"label15";
+            this->label15->Size = System::Drawing::Size(55, 13);
+            this->label15->TabIndex = 50;
+            this->label15->Text = L"Max level:";
             // 
-            // tb_target_distance
+            // numeric_maxlvl
             // 
-            this->tb_target_distance->Location = System::Drawing::Point(181, 126);
-            this->tb_target_distance->Name = L"tb_target_distance";
-            this->tb_target_distance->ReadOnly = true;
-            this->tb_target_distance->Size = System::Drawing::Size(101, 20);
-            this->tb_target_distance->TabIndex = 38;
-            this->tb_target_distance->Text = L"\?\?";
+            this->numeric_maxlvl->Location = System::Drawing::Point(197, 46);
+            this->numeric_maxlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
+            this->numeric_maxlvl->Name = L"numeric_maxlvl";
+            this->numeric_maxlvl->Size = System::Drawing::Size(48, 20);
+            this->numeric_maxlvl->TabIndex = 49;
+            // 
+            // timerBuff
+            // 
+            this->timerBuff->Enabled = true;
+            this->timerBuff->Tick += gcnew System::EventHandler(this, &Main::tickBuff);
             // 
             // Main
             // 
@@ -1460,6 +1506,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tabPage3->ResumeLayout(false);
             this->gb_debug->ResumeLayout(false);
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 

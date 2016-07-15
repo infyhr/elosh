@@ -40,12 +40,32 @@ eLosh::Main::Main() {
     this->combobox_bot_eatmp->SelectedIndex = 1;
     this->combobox_bot_eathp->SelectedIndex = 0;
     this->combobox_bot_dca->SelectedIndex = 0;
+
+    this->timerBuff->Interval = 600000; // 10 min
 }
 
 eLosh::Main::~Main() {
     if (components) {
         delete components;
     }
+}
+
+System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
+    std::cout << "in buff!" << std::endl;
+    if (!cb_autobuff->Checked) return;
+    this->cb_bot_active->Checked = false;
+    Sleep(500);
+    this->objEngine->SendESC();
+    Sleep(500);
+    this->objEntity->SendAtk(0);
+    Sleep(500);
+    this->objEntity->iCurrentTarget = 0;
+    Sleep(500);
+    this->objEngine->SendESC();
+    Sleep(15000);
+    this->objEngine->SendKey(9);
+    Sleep(15000);
+    this->cb_bot_active->Checked = true;
 }
 
 // Tick event, update everything here
@@ -144,6 +164,7 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         data["mp_key"]   = this->combobox_bot_eatmp->SelectedIndex;
         data["pet_key"]  = this->combobox_bot_pet->SelectedIndex;
         data["distance"] = Convert::ToInt32(this->tb_bot_ignore->Text);
+        data["maxlvl"]   = Convert::ToInt32(this->numeric_maxlvl->Text);
 
         std::map<std::string, bool> data_bool;
         data_bool["hp"]             = this->cb_bot_eathp->Checked;
@@ -176,6 +197,13 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
     /* === Camera rotation === */
     // todo
+    if(this->cb_bot_rotatecamera->Checked) {
+        int iCamera;
+        this->objEngine->ReadStaticMemory(this->objEngine->dwCameraMovementOffset, &iCamera);
+        if (iCamera >= 1135745891) iCamera = 1103252096;
+        iCamera += 500000;
+        this->objEngine->WriteStaticMemory(this->objEngine->dwCameraMovementOffset, &iCamera);
+    }
 
     return System::Void();
 }

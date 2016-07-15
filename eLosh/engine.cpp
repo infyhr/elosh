@@ -76,7 +76,7 @@ Engine::Engine() {
     this->dwInvisibilityPointerOffset = 0x008D947C; // What writes to this address, 4byte hex scan to i onda u address listi klik na to pa change value i dobijes Neuz.exe+...
     this->dwInvisibilityOffset = 0x1264 + 0x100; // ^ + 0x1264 + ((ECX+EAX*4) = 100)
 
-    this->dwCameraScrollOffset = 0x008DAA18; // statikkkk Neuz.exe+8DAA18
+    this->dwCameraScrollOffset = 0x008DA9EC; // statikkkk Neuz.exe+8DA9EC
     this->dwCameraMovementOffset = 0x008DA9EC; // statikkk
     this->dwMaxInView = 0x00B67778; // Neuz.exe + B67778 statikk
     this->dwFlyingCameraOffset = 0x008DAA04;// Neuz.exe+8DAA04
