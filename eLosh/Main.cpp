@@ -65,6 +65,9 @@ System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ 
     Sleep(15000);
     this->objEngine->SendKey(9);
     Sleep(15000);
+    this->objEngine->SendESC();
+    Sleep(500);
+    this->objEntity->iNewTargetLastBlacklist = NULL; // Remove any blacklists.
     this->cb_bot_active->Checked = true;
 }
 

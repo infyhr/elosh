@@ -38,12 +38,14 @@ class Entity {
 
         int iPlayerCount;
 
+        int iNewTargetLastBlacklist = NULL;
+
     private:
         Engine *objEngine;
         /* Anti-collision stuff */
         int iNewTargetTick = NULL;
         int iNewTargetHP = NULL;
-        int iNewTargetLastBlacklist = NULL;
+        
 };
 
 inline int __fastcall fabs(int a) {

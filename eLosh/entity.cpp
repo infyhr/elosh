@@ -140,8 +140,10 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
         if (iOwnId == iCandidateTarget) continue;  // No poin.
 
         // Check if a player.
-        if (iCandidateTargetType == 2)
+        if (iCandidateTargetType == 2) {
             this->iPlayerCount++;
+            return; // Don't do anything fishy.
+        }
 
         /*if (iCandidateLevel < data["maxlvl"]) {
             std::cout << "manji je" << std::endl;
