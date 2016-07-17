@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "engine.h"
 #include <map>
+#include <vector>
 
 enum Algorithm {
     BLANK = 0,
@@ -18,6 +19,7 @@ class Entity {
         void Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data);
         void Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
         void SendAtk(int iAtk);
+        void AoE();
 
         int iBattle; // 0 || 1. Currently in battle?
         float fX; // X pos
@@ -39,12 +41,15 @@ class Entity {
         int iPlayerCount;
 
         int iNewTargetLastBlacklist = NULL;
+        bool inAOE = false;
 
     private:
         Engine *objEngine;
         /* Anti-collision stuff */
         int iNewTargetTick = NULL;
         int iNewTargetHP = NULL;
+        std::vector<int> blacklists;
+        int j=0;
         
 };
 

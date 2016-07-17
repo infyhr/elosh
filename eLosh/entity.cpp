@@ -79,6 +79,92 @@ void Entity::SendAtk(int iAtk) {
     this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
 }
 
+void Entity::AoE() {
+    this->inAOE = true;
+    int iMaxInView;
+    this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
+
+    float iClosestPosition = 100000; // Max distance.
+    this->iPlayerCount = 0;
+
+    if(this->iCurrentTarget != 0) {
+        if (this->iNewTargetHP == this->iTargetHP) return;
+        j++;
+        this->blacklists.push_back(this->iCurrentTarget);
+        std::cout << "Added " << this->iCurrentTarget << std::endl;
+        this->SendAtk(0);
+        Sleep(200);
+        this->objEngine->SendESC();
+        Sleep(200);
+        this->iCurrentTarget = 0;
+    }
+
+    for(register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
+        if (j == 5) {
+            std::cout << "I caught 5 now I stop!" << std::endl;
+            //Sleep(10000);
+            break;
+        }
+
+        //asdadsa
+        // This is our candidate.
+        int iCandidateTarget;
+        int iCandidateTargetType;
+        int iCandidateTargetHP;
+        int iCandidatePositionA; // ALL position
+        float iCandidatePositionX;
+        float iCandidatePositionY;
+        float iCandidatePositionZ;
+        int iCandidateLevel;
+
+        // Read the ID, target type and their HP and position
+        this->objEngine->ReadStaticMemory(i * 4 + this->objEngine->dwTargetLoopBaseOffset, &iCandidateTarget); // This holds the ID now
+        this->objEngine->ReadStaticMemory(iCandidateTarget + 4, &iCandidateTargetType, false); // I don't know how this works. ID+4 = Type? But it should be address... :/
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwHPOffset, &iCandidateTargetHP, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwLevelOffset, &iCandidateLevel, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwXOffset, &iCandidatePositionX, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwYOffset, &iCandidatePositionY, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwZOffset, &iCandidatePositionZ, false);
+
+        // Now read our own ID and compare.
+        int iOwnId;
+        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwIdOffset, &iOwnId);
+        if (iOwnId == iCandidateTarget) continue;  // No poin.
+
+        // Check if a player.
+        if (iCandidateTargetType == 2) {
+            this->iPlayerCount++;
+            return; // Don't do anything fishy.
+        }
+
+        // Check if out of bounds.
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1)
+            continue;
+
+        // Check if blacklisted?
+        /*if (iCandidateTarget == this->iNewTargetLastBlacklist) {
+            std::cout << "This target is blacklisted!" << std::endl;
+            continue;
+        }*/
+        if (std::find(blacklists.begin(), blacklists.end(), iCandidateTarget) != blacklists.end()) {
+            std::cout << "blacklisted!" << std::endl;
+            continue; // blacklisted.
+        }
+
+        // Log the time when we got the target and their starting HP.
+        this->iNewTargetTick = GetTickCount();
+        this->iNewTargetHP = iCandidateTargetHP;
+
+        // Feed into current target selector
+        this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
+
+        // Attack
+        this->SendAtk(1);
+    }
+    //Sleep(10000);
+}
+
 // int iMaxDistance, int iSleep, int iFoodHP, int iFoodMP, int iRestartPet, 
 void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data) {
     // Anti collision check
@@ -205,31 +291,6 @@ void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, st
 
         // Attack
         this->SendAtk(1);
-
-        // All good, log their position...
-        /*this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwAOffset, &iCandidatePositionA, false);
-        // Check if closest by subtracting ours A positions (just an idea now), 
-        // add more algorithms later like Quake FastInverse with Pythagora or Fast Distance Algorithm
-        if (abs(this->objEngine->fA - iCandidatePositionA) < iClosestPosition) {
-            // New closest!
-            iClosestPosition = this->objEngine->fA - iCandidatePositionA;
-
-            // Feed into current target.
-            this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
-
-            // Get the timestamp of atk
-            this->objEngine->iTargetBotTick = GetTickCount();
-            this->objEngine->iTargetBotHPTick = this->objEngine->iTargetHP;
-
-            // Attack
-            int iAtk = 1;
-            int iTemp = NULL;
-            this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
-            this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
-        }
-        else {
-            continue; // not the closest, not interested.
-        }*/
 
     }
 }
