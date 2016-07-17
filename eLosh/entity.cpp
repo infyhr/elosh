@@ -88,6 +88,18 @@ void Entity::AoE() {
     this->iPlayerCount = 0;
 
     if(this->iCurrentTarget != 0) {
+        std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
+        if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
+            std::cout << "too far blacklisted~" << std::endl;
+            this->blacklists.push_back(this->iCurrentTarget);
+            this->SendAtk(0);
+            Sleep(200);
+            this->objEngine->SendESC();
+            Sleep(200);
+            this->iCurrentTarget = 0;
+
+            return;
+        }
         if (this->iNewTargetHP == this->iTargetHP) return;
         j++;
         this->blacklists.push_back(this->iCurrentTarget);
