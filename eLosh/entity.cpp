@@ -64,8 +64,11 @@ void Entity::Tick() {
 }
 
 void Entity::Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data) {
-    if(dataBool["hp"] && this->iHP < data["hp"])
+    if (dataBool["hp"] && this->iHP < data["hp"]) {
+        //this->objEngine->SendESC();
+        //this->objEngine->SendKey(4);
         this->objEngine->SendKey(data["hp_key"]);
+    }
     if(dataBool["mp"] && this->iMP < data["mp"])
         this->objEngine->SendKey(data["mp_key"]);
     if(dataBool["pet"]) {
@@ -90,13 +93,16 @@ void Entity::AoE() {
     if(this->iCurrentTarget != 0) {
         std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
         if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
-            std::cout << "too far blacklisted~" << std::endl;
+            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
+            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
+            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
+            /*std::cout << "too far blacklisted~" << std::endl;
             this->blacklists.push_back(this->iCurrentTarget);
             this->SendAtk(0);
             Sleep(200);
             this->objEngine->SendESC();
             Sleep(200);
-            this->iCurrentTarget = 0;
+            this->iCurrentTarget = 0;*/
 
             return;
         }
@@ -112,10 +118,22 @@ void Entity::AoE() {
     }
 
     for(register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
-        if (j == 5) {
-            std::cout << "I caught 5 now I stop!" << std::endl;
+        if (j == 10) {
+            std::cout << "AOE GO!" << std::endl;
+            this->objEngine->SendESC();
+            Sleep(500);
+            this->objEngine->SendKey(3);
+            Sleep(5000);
+            for(int k = 0; k < 5; k++) {
+                this->objEngine->SendKey(9);
+                Sleep(1000);
+            }
+            Sleep(10000);
+            this->j = 0;
+            //std::cout << "I caught 5 now I stop!" << std::endl;
             //Sleep(10000);
-            break;
+            this->blacklists.clear();
+            return;
         }
 
         //asdadsa
