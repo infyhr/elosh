@@ -180,14 +180,13 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
         this->objEntity->Food(data_bool, data);
 
-        /*this->objEntity->Bot(
+        this->objEntity->Bot(
             data_bool,
             (Algorithm)this->combobox_bot_dca->SelectedIndex,
             data
-        );*/
+        );
 
-        //if(!this->objEntity->inAOE) this->objEntity->AoE();
-        this->objEntity->AoE();
+        //this->objEntity->AoE();
     }
 
     /* === Stance === */
