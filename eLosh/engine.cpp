@@ -25,7 +25,7 @@ Engine::Engine() {
     std::cout << "Loaded " << std::endl;
 
     // Try to find the window
-    this->hwndFlyff = FindWindow(0, "Insanity FlyFF");
+    this->hwndFlyff = FindWindow(0, "FLYFF");
     if (!this->hwndFlyff) {
 #ifdef _DEBUG
         std::cout << "Cannot find the FlyFF window!" << std::endl;
@@ -73,7 +73,7 @@ Engine::Engine() {
 
     this->dwClickedPositionOffset = 0x8CDD64; // statik
 
-    this->dwInvisibilityPointerOffset = 0x008D947C; // What writes to this address, 4byte hex scan to i onda u address listi klik na to pa change value i dobijes Neuz.exe+...
+    this->dwInvisibilityPointerOffset = 0x008D947C;
     this->dwInvisibilityOffset = 0x1264 + 0x100; // ^ + 0x1264 + ((ECX+EAX*4) = 100)
 
     this->dwCameraScrollOffset = 0x008DA9EC; // statikkkk Neuz.exe+8DA9EC
@@ -91,7 +91,7 @@ Engine::Engine() {
     this->dwRangeCALLOffset = 0x002D96A6; // Neuz.exe+2D96A6 doubleclick
     // call Neuz.exe+2875E8. E8 = opcode call
     //this->byteRangeArrayOriginal = 0x002875E8;
-    this->byteRangeArrayOriginal = 0x002875E8; // reverse... endianess.
+    this->byteRangeArrayOriginal = 0x002875E8;
     // Modified -- mov eax, 6FFFFFFF. B8 mov
     //this->byteRangeArrayModified = 0xFFFFFFB8;
     this->byteRangeArrayModified = 0xFFFFFFB8;

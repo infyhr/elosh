@@ -93,16 +93,16 @@ void Entity::AoE() {
     if(this->iCurrentTarget != 0) {
         std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
         if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
-            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
+            /*this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
             this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
-            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
-            /*std::cout << "too far blacklisted~" << std::endl;
+            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);*/
+            std::cout << "too far blacklisted~" << std::endl;
             this->blacklists.push_back(this->iCurrentTarget);
             this->SendAtk(0);
             Sleep(200);
             this->objEngine->SendESC();
             Sleep(200);
-            this->iCurrentTarget = 0;*/
+            this->iCurrentTarget = 0;
 
             return;
         }
@@ -123,12 +123,12 @@ void Entity::AoE() {
             this->objEngine->SendESC();
             Sleep(500);
             this->objEngine->SendKey(3);
-            Sleep(5000);
-            for(int k = 0; k < 5; k++) {
+            Sleep(1000);
+            for(int k = 0; k < 10; k++) {
                 this->objEngine->SendKey(9);
-                Sleep(1000);
+                Sleep(800);
             }
-            Sleep(10000);
+            Sleep(1000);
             this->j = 0;
             //std::cout << "I caught 5 now I stop!" << std::endl;
             //Sleep(10000);
@@ -173,10 +173,6 @@ void Entity::AoE() {
             continue;
 
         // Check if blacklisted?
-        /*if (iCandidateTarget == this->iNewTargetLastBlacklist) {
-            std::cout << "This target is blacklisted!" << std::endl;
-            continue;
-        }*/
         if (std::find(blacklists.begin(), blacklists.end(), iCandidateTarget) != blacklists.end()) {
             std::cout << "blacklisted!" << std::endl;
             continue; // blacklisted.
