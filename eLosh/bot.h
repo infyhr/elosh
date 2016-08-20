@@ -18,6 +18,4 @@ class Bot {
 
         int iNewTargetTick; // New target that has /just/ been selected.
         int iNewTargetHP; // and its HP.
-        
-        void SendAtk(int iAtk);
 };

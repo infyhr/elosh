@@ -101,7 +101,7 @@ namespace eLosh {
 
 
     private: System::Windows::Forms::GroupBox^  gb_misc;
-    private: System::Windows::Forms::CheckBox^  cb_invisibility;
+
     private: System::Windows::Forms::CheckBox^  cb_gm;
 
 
@@ -229,6 +229,8 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_players = (gcnew System::Windows::Forms::TextBox());
             this->label13 = (gcnew System::Windows::Forms::Label());
             this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+            this->label6 = (gcnew System::Windows::Forms::Label());
+            this->tb_target_type = (gcnew System::Windows::Forms::TextBox());
             this->label14 = (gcnew System::Windows::Forms::Label());
             this->tb_target_distance = (gcnew System::Windows::Forms::TextBox());
             this->label1 = (gcnew System::Windows::Forms::Label());
@@ -248,6 +250,11 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_target_name = (gcnew System::Windows::Forms::TextBox());
             this->label5 = (gcnew System::Windows::Forms::Label());
             this->Character = (gcnew System::Windows::Forms::GroupBox());
+            this->cb_dommt = (gcnew System::Windows::Forms::CheckBox());
+            this->label17 = (gcnew System::Windows::Forms::Label());
+            this->numeric_range = (gcnew System::Windows::Forms::NumericUpDown());
+            this->label16 = (gcnew System::Windows::Forms::Label());
+            this->numeric_speedhack = (gcnew System::Windows::Forms::NumericUpDown());
             this->cb_jumphack = (gcnew System::Windows::Forms::CheckBox());
             this->cb_range = (gcnew System::Windows::Forms::CheckBox());
             this->cb_flyingcamera = (gcnew System::Windows::Forms::CheckBox());
@@ -256,7 +263,6 @@ private: System::Windows::Forms::Label^  label10;
             this->trackbar_scroll = (gcnew System::Windows::Forms::TrackBar());
             this->label11 = (gcnew System::Windows::Forms::Label());
             this->trackbar_speed = (gcnew System::Windows::Forms::TrackBar());
-            this->cb_invisibility = (gcnew System::Windows::Forms::CheckBox());
             this->cb_gm = (gcnew System::Windows::Forms::CheckBox());
             this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
             this->label15 = (gcnew System::Windows::Forms::Label());
@@ -320,17 +326,12 @@ private: System::Windows::Forms::Label^  label10;
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
             this->timerBuff = (gcnew System::Windows::Forms::Timer(this->components));
-            this->label6 = (gcnew System::Windows::Forms::Label());
-            this->tb_target_type = (gcnew System::Windows::Forms::TextBox());
-            this->label16 = (gcnew System::Windows::Forms::Label());
-            this->numeric_speedhack = (gcnew System::Windows::Forms::NumericUpDown());
-            this->label17 = (gcnew System::Windows::Forms::Label());
-            this->numeric_range = (gcnew System::Windows::Forms::NumericUpDown());
-            this->cb_dommt = (gcnew System::Windows::Forms::CheckBox());
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
             this->Character->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->BeginInit();
             this->groupBox1->SuspendLayout();
@@ -340,8 +341,6 @@ private: System::Windows::Forms::Label^  label10;
             this->gb_misc->SuspendLayout();
             this->gb_teleport->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->BeginInit();
             this->SuspendLayout();
             // 
             // tabControl1
@@ -417,6 +416,24 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox2->TabIndex = 15;
             this->groupBox2->TabStop = false;
             this->groupBox2->Text = L"Target";
+            // 
+            // label6
+            // 
+            this->label6->AutoSize = true;
+            this->label6->Location = System::Drawing::Point(161, 129);
+            this->label6->Name = L"label6";
+            this->label6->Size = System::Drawing::Size(14, 13);
+            this->label6->TabIndex = 41;
+            this->label6->Text = L"T";
+            // 
+            // tb_target_type
+            // 
+            this->tb_target_type->Location = System::Drawing::Point(181, 126);
+            this->tb_target_type->Name = L"tb_target_type";
+            this->tb_target_type->ReadOnly = true;
+            this->tb_target_type->Size = System::Drawing::Size(101, 20);
+            this->tb_target_type->TabIndex = 40;
+            this->tb_target_type->Text = L"\?\?";
             // 
             // label14
             // 
@@ -595,7 +612,6 @@ private: System::Windows::Forms::Label^  label10;
             this->Character->Controls->Add(this->trackbar_scroll);
             this->Character->Controls->Add(this->label11);
             this->Character->Controls->Add(this->trackbar_speed);
-            this->Character->Controls->Add(this->cb_invisibility);
             this->Character->Controls->Add(this->cb_gm);
             this->Character->Location = System::Drawing::Point(593, 158);
             this->Character->Name = L"Character";
@@ -604,12 +620,60 @@ private: System::Windows::Forms::Label^  label10;
             this->Character->TabStop = false;
             this->Character->Text = L"Hacks";
             // 
+            // cb_dommt
+            // 
+            this->cb_dommt->AutoSize = true;
+            this->cb_dommt->ForeColor = System::Drawing::Color::DarkViolet;
+            this->cb_dommt->ImageKey = L"(none)";
+            this->cb_dommt->Location = System::Drawing::Point(6, 111);
+            this->cb_dommt->Name = L"cb_dommt";
+            this->cb_dommt->Size = System::Drawing::Size(112, 17);
+            this->cb_dommt->TabIndex = 55;
+            this->cb_dommt->Text = L"Maximum DoMMT";
+            this->cb_dommt->UseVisualStyleBackColor = true;
+            // 
+            // label17
+            // 
+            this->label17->AutoSize = true;
+            this->label17->Location = System::Drawing::Point(5, 161);
+            this->label17->Name = L"label17";
+            this->label17->Size = System::Drawing::Size(39, 13);
+            this->label17->TabIndex = 54;
+            this->label17->Text = L"Range";
+            // 
+            // numeric_range
+            // 
+            this->numeric_range->Location = System::Drawing::Point(49, 159);
+            this->numeric_range->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
+            this->numeric_range->Name = L"numeric_range";
+            this->numeric_range->Size = System::Drawing::Size(67, 20);
+            this->numeric_range->TabIndex = 53;
+            this->numeric_range->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 18, 0, 0, 0 });
+            // 
+            // label16
+            // 
+            this->label16->AutoSize = true;
+            this->label16->Location = System::Drawing::Point(206, 52);
+            this->label16->Name = L"label16";
+            this->label16->Size = System::Drawing::Size(81, 13);
+            this->label16->TabIndex = 52;
+            this->label16->Text = L"Speed multiplier";
+            // 
+            // numeric_speedhack
+            // 
+            this->numeric_speedhack->Location = System::Drawing::Point(296, 50);
+            this->numeric_speedhack->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+            this->numeric_speedhack->Name = L"numeric_speedhack";
+            this->numeric_speedhack->Size = System::Drawing::Size(48, 20);
+            this->numeric_speedhack->TabIndex = 51;
+            this->numeric_speedhack->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            // 
             // cb_jumphack
             // 
             this->cb_jumphack->AutoSize = true;
             this->cb_jumphack->ForeColor = System::Drawing::Color::ForestGreen;
             this->cb_jumphack->ImageKey = L"(none)";
-            this->cb_jumphack->Location = System::Drawing::Point(6, 107);
+            this->cb_jumphack->Location = System::Drawing::Point(6, 88);
             this->cb_jumphack->Name = L"cb_jumphack";
             this->cb_jumphack->Size = System::Drawing::Size(78, 17);
             this->cb_jumphack->TabIndex = 9;
@@ -621,7 +685,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_range->AutoSize = true;
             this->cb_range->ForeColor = System::Drawing::Color::Brown;
             this->cb_range->ImageKey = L"(none)";
-            this->cb_range->Location = System::Drawing::Point(6, 153);
+            this->cb_range->Location = System::Drawing::Point(6, 134);
             this->cb_range->Name = L"cb_range";
             this->cb_range->Size = System::Drawing::Size(151, 17);
             this->cb_range->TabIndex = 8;
@@ -632,7 +696,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_flyingcamera
             // 
             this->cb_flyingcamera->AutoSize = true;
-            this->cb_flyingcamera->Location = System::Drawing::Point(6, 84);
+            this->cb_flyingcamera->Location = System::Drawing::Point(6, 65);
             this->cb_flyingcamera->Name = L"cb_flyingcamera";
             this->cb_flyingcamera->Size = System::Drawing::Size(110, 17);
             this->cb_flyingcamera->TabIndex = 7;
@@ -643,7 +707,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_stance
             // 
             this->cb_stance->AutoSize = true;
-            this->cb_stance->Location = System::Drawing::Point(6, 61);
+            this->cb_stance->Location = System::Drawing::Point(6, 42);
             this->cb_stance->Name = L"cb_stance";
             this->cb_stance->Size = System::Drawing::Size(151, 17);
             this->cb_stance->TabIndex = 6;
@@ -694,17 +758,6 @@ private: System::Windows::Forms::Label^  label10;
             this->trackbar_speed->TickStyle = System::Windows::Forms::TickStyle::None;
             this->trackbar_speed->Value = 30;
             this->trackbar_speed->Scroll += gcnew System::EventHandler(this, &Main::trackbar_speed_Scroll);
-            // 
-            // cb_invisibility
-            // 
-            this->cb_invisibility->AutoSize = true;
-            this->cb_invisibility->Location = System::Drawing::Point(6, 42);
-            this->cb_invisibility->Name = L"cb_invisibility";
-            this->cb_invisibility->Size = System::Drawing::Size(70, 17);
-            this->cb_invisibility->TabIndex = 1;
-            this->cb_invisibility->Text = L"Invisibility";
-            this->cb_invisibility->UseVisualStyleBackColor = true;
-            this->cb_invisibility->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_invisibility_CheckedChanged);
             // 
             // cb_gm
             // 
@@ -758,9 +811,11 @@ private: System::Windows::Forms::Label^  label10;
             // 
             this->numeric_maxlvl->Location = System::Drawing::Point(197, 46);
             this->numeric_maxlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
+            this->numeric_maxlvl->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             this->numeric_maxlvl->Name = L"numeric_maxlvl";
             this->numeric_maxlvl->Size = System::Drawing::Size(48, 20);
             this->numeric_maxlvl->TabIndex = 49;
+            this->numeric_maxlvl->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             // 
             // cb_autobuff
             // 
@@ -1314,72 +1369,6 @@ private: System::Windows::Forms::Label^  label10;
             this->timerBuff->Enabled = true;
             this->timerBuff->Tick += gcnew System::EventHandler(this, &Main::tickBuff);
             // 
-            // label6
-            // 
-            this->label6->AutoSize = true;
-            this->label6->Location = System::Drawing::Point(161, 129);
-            this->label6->Name = L"label6";
-            this->label6->Size = System::Drawing::Size(14, 13);
-            this->label6->TabIndex = 41;
-            this->label6->Text = L"T";
-            // 
-            // tb_target_type
-            // 
-            this->tb_target_type->Location = System::Drawing::Point(181, 126);
-            this->tb_target_type->Name = L"tb_target_type";
-            this->tb_target_type->ReadOnly = true;
-            this->tb_target_type->Size = System::Drawing::Size(101, 20);
-            this->tb_target_type->TabIndex = 40;
-            this->tb_target_type->Text = L"\?\?";
-            // 
-            // label16
-            // 
-            this->label16->AutoSize = true;
-            this->label16->Location = System::Drawing::Point(206, 52);
-            this->label16->Name = L"label16";
-            this->label16->Size = System::Drawing::Size(81, 13);
-            this->label16->TabIndex = 52;
-            this->label16->Text = L"Speed multiplier";
-            // 
-            // numeric_speedhack
-            // 
-            this->numeric_speedhack->Location = System::Drawing::Point(296, 50);
-            this->numeric_speedhack->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            this->numeric_speedhack->Name = L"numeric_speedhack";
-            this->numeric_speedhack->Size = System::Drawing::Size(48, 20);
-            this->numeric_speedhack->TabIndex = 51;
-            this->numeric_speedhack->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-            // 
-            // label17
-            // 
-            this->label17->AutoSize = true;
-            this->label17->Location = System::Drawing::Point(5, 178);
-            this->label17->Name = L"label17";
-            this->label17->Size = System::Drawing::Size(39, 13);
-            this->label17->TabIndex = 54;
-            this->label17->Text = L"Range";
-            // 
-            // numeric_range
-            // 
-            this->numeric_range->Location = System::Drawing::Point(49, 176);
-            this->numeric_range->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
-            this->numeric_range->Name = L"numeric_range";
-            this->numeric_range->Size = System::Drawing::Size(67, 20);
-            this->numeric_range->TabIndex = 53;
-            this->numeric_range->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 18, 0, 0, 0 });
-            // 
-            // cb_dommt
-            // 
-            this->cb_dommt->AutoSize = true;
-            this->cb_dommt->ForeColor = System::Drawing::Color::DarkViolet;
-            this->cb_dommt->ImageKey = L"(none)";
-            this->cb_dommt->Location = System::Drawing::Point(6, 130);
-            this->cb_dommt->Name = L"cb_dommt";
-            this->cb_dommt->Size = System::Drawing::Size(112, 17);
-            this->cb_dommt->TabIndex = 55;
-            this->cb_dommt->Text = L"Maximum DoMMT";
-            this->cb_dommt->UseVisualStyleBackColor = true;
-            // 
             // Main
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1397,6 +1386,8 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox2->PerformLayout();
             this->Character->ResumeLayout(false);
             this->Character->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->EndInit();
             this->groupBox1->ResumeLayout(false);
@@ -1409,8 +1400,6 @@ private: System::Windows::Forms::Label^  label10;
             this->gb_teleport->ResumeLayout(false);
             this->gb_teleport->PerformLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 

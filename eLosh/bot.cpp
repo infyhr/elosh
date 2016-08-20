@@ -7,12 +7,6 @@ Bot::Bot(Engine *e, Entity *_e, std::map<std::string, bool>& dataBool, std::map<
     this->data     = data; // And regular data.
 }
 
-void Entity::SendAtk(int iAtk) {
-    int iTemp = NULL;
-    this->objEngine->ReadStaticMemory(this->objEngine->dwBattlePointerOffset, &iTemp);
-    this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
-}
-
 void Bot::_1v1() {
     // Anti collision check
     if (this->objEntity->iCurrentTarget != 0 && this->dataBool["collision"]) {
@@ -29,7 +23,6 @@ void Bot::_1v1() {
             this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
 
             this->objEngine->SendESC();
-            this->SendAtk(0);
             this->objEntity->iCurrentTarget = 0;
         }
 

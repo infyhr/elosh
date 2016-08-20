@@ -199,18 +199,9 @@ System::Void eLosh::Main::btn_getcoordinates_Click(System::Object^  sender, Syst
     this->tb_x->Text = this->tb_x_readonly->Text;
     this->tb_y->Text = this->tb_y_readonly->Text;
     this->tb_z->Text = this->tb_z_readonly->Text;
-    this->tb_a->Text = this->tb_a_readonly->Text;
 }
 
 System::Void eLosh::Main::btn_teleport_Click(System::Object^  sender, System::EventArgs^  e) {
-    // Do the teleport
-    // Check if we are teleporting to A? If so, do it and return.
-    if(this->cb_teleport_a->Checked) {
-        int temp = Convert::ToInt32(this->tb_a->Text);
-        this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &temp); // Looking for the ADDRESS of the variable temp
-        return;
-    }
-
     // We are teleporting to some exact coordinates, so just teleport!
     float temp_x = Convert::ToDouble(this->tb_x->Text);
     float temp_y = Convert::ToDouble(this->tb_y->Text);
@@ -218,20 +209,6 @@ System::Void eLosh::Main::btn_teleport_Click(System::Object^  sender, System::Ev
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &temp_x);
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &temp_y);
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &temp_z);
-}
-
-// 
-System::Void eLosh::Main::cb_invisibility_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-    int iTemp;
-    if(!this->objEngine->ReadStaticMemory(this->objEngine->dwInvisibilityPointerOffset, &iTemp)) return;
-    // iTemp + this->objEngine->dwInivisibilityOffset;
-
-    //std::cout << "To write: " << iToWrite << std::endl << iTemp + this->objEngine->dwInvisibilityOffset << std::endl;
-
-    int iToWrite = (this->cb_invisibility->Checked ? INVISIBILITY_MAGIC_VALUE : 0);
-
-    //WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)(iTemp + this->objEngine->dwInvisibilityOffset), &iToWrite, sizeof(&iToWrite), NULL);
-    this->objEngine->WriteStaticMemory(iTemp + this->objEngine->dwInvisibilityOffset, &iToWrite, false);
 }
 
 // Add a coordinate to the coordinate logger.
@@ -243,7 +220,6 @@ System::Void eLosh::Main::btn_add_Click(System::Object^  sender, System::EventAr
     this->listView->Items[iRowCount]->SubItems->Add(this->tb_x_readonly->Text);
     this->listView->Items[iRowCount]->SubItems->Add(this->tb_y_readonly->Text);
     this->listView->Items[iRowCount]->SubItems->Add(this->tb_z_readonly->Text);
-    this->listView->Items[iRowCount]->SubItems->Add(this->tb_a_readonly->Text);
 
     // Remove the name, make it more convenient.
     this->tb_posname->Text = "";
@@ -267,14 +243,6 @@ System::Void eLosh::Main::listView_SelectedIndexChanged(System::Object^  sender,
     this->tb_x->Text = this->listView->SelectedItems[0]->SubItems[1]->Text; // X
     this->tb_y->Text = this->listView->SelectedItems[0]->SubItems[2]->Text; // Y
     this->tb_z->Text = this->listView->SelectedItems[0]->SubItems[3]->Text; // Z
-    this->tb_a->Text = this->listView->SelectedItems[0]->SubItems[4]->Text; // A
-}
-
-// Figure out the delta between teleports automatically
-System::Void eLosh::Main::btn_figuredelta_Click(System::Object^  sender, System::EventArgs^  e) {
-    // current+X=wanted.
-    //this->numeric_tpdelta->Text = Convert::ToString(this->objEngine->iClickedPosition - this->objEngine->fA);
-    // fix someday
 }
 
 // GM Auth

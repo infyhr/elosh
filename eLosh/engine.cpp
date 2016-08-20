@@ -25,7 +25,7 @@ Engine::Engine() {
     std::cout << "Loaded " << std::endl;
 
     // Try to find the window
-    this->hwndFlyff = FindWindow(0, "FLYFF");
+    this->hwndFlyff = FindWindow(0, "Insanity FlyFF");
     if (!this->hwndFlyff) {
 #ifdef _DEBUG
         std::cout << "Cannot find the FlyFF window!" << std::endl;

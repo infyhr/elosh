@@ -40,30 +40,17 @@ class Engine {
         DWORD dwLevelOffset = 0x6FC;
         DWORD dwAuthOffset = 0x768;
         DWORD dwSpeedOffset = 0x1290;
-        DWORD dwSpeedMultiplier = 0x824;
+        DWORD dwSpeedMultiplier = 0x824; // it's an offset as well.
 
         DWORD dwMarkerXOffset = 0x1084;
         DWORD dwMarkerZOffset = 0x108C;
 
-        // do tu
+        DWORD dwCameraScroll = 0x8DBA10; // Neuz.exe+8DBA10
+        DWORD dwCameraMovement = 0x8DB9E4; // Neuz.exe+8DB9E4
+        DWORD dwMaxInView = 0xB68778; // Neuz.exe+B68778
+        DWORD dwFlyingCamera = 0x8DB9FC; // Neuz.exe+8DB9FC
 
-        DWORD dwInvisibilityPointer = 0x008D947C; // STATIC
-        DWORD dwInvisibilityOffset = 0x1264 + 0x100;
-        #define INVISIBILITY_MAGIC_VALUE 1024
-
-        DWORD dwCameraScrollOffset = 0x008DA9EC; // STATIC
-        DWORD dwCameraMovementOffset = 0x008DA9EC; // STATIC
-        DWORD dwMaxInView; // STATIC
-        DWORD dwFlyingCameraOffset; // STATIC
-
-        DWORD dwBattlePointerOffset; // STATIC
-        DWORD dwBattleOffset;
-
-        DWORD dwTargetBase;
-        DWORD dwTargetIdOffset; // Like player x/y/z...
-        DWORD dwTargetLoopBaseOffset;
-
-        DWORD dwRangeCALLOffset; // STATIC
-        int byteRangeArrayOriginal;
-        int byteRangeArrayModified;
+        DWORD dwTargetBase = 0x008DAA78;
+        DWORD dwTargetIdOffset = 0x20;   
+        DWORD dwTargetLoopBaseOffset = 0xB68370; // This is gotten from inspecting dwMaxInView.
 };
