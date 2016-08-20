@@ -1412,11 +1412,9 @@ private: System::Windows::Forms::Label^  label10;
         // scroll it automatically
         richtb_debug->ScrollToCaret();
     }
-    private: System::Void cb_invisibility_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void btn_add_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void btn_remove_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void listView_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e);
-    private: System::Void btn_figuredelta_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void cb_bot_eathp_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
         this->tb_bot_eatfood->ReadOnly = !this->tb_bot_eatfood->ReadOnly;
     }

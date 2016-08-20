@@ -1,8 +1,10 @@
 #pragma once
 #include "engine.h"
 #include "entity.h"
+#include <iostream>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 class Bot {
     public:
