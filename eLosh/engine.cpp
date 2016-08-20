@@ -25,11 +25,12 @@ Engine::Engine() {
     std::cout << "Loaded " << std::endl;
 
     // Try to find the window
-    this->hwndFlyff = FindWindow(0, "FLYFF");
+    this->hwndFlyff = FindWindow(0, "Insanity Flyff");
     if (!this->hwndFlyff) {
 #ifdef _DEBUG
         std::cout << "Cannot find the FlyFF window!" << std::endl;
 #endif
+        exit(1);
         return;
     }
 
@@ -43,7 +44,8 @@ Engine::Engine() {
     }
 
     // Get the handle
-    this->hFlyff = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, this->dwFlyffPID);
+    //this->hFlyff = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, this->dwFlyffPID);
+    this->hFlyff = OpenProcess(PROCESS_ALL_ACCESS, false, this->dwFlyffPID);
     if (this->hFlyff == NULL) {
 #ifdef _DEBUG
         std::cout << "Cannot retrieve the handle" << std::endl;

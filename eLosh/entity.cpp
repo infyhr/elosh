@@ -54,7 +54,7 @@ void Entity::Tick() {
 }
 
 int Entity::getPlayers() {
-    int iPlayerCount = 0;
+    int iPlayerCount = -1; // Because we count as a player as well.
 
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);

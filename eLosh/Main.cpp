@@ -28,12 +28,15 @@ void Main(array<String^>^ args) {
 }
 
 eLosh::Main::Main() {
+    // Init all objects.
     Engine *e  = new Engine;
     this->objEngine = e;
     Entity *e_ = new Entity(e);
     this->objEntity = e_;
     Bot *b = new Bot(e, e_);
     this->objBot = b;
+    Patch *p = new Patch(e);
+    this->objPatch = p;
 
     InitializeComponent();
 
@@ -175,11 +178,6 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         this->objBot->_1v1(data_bool, data);
 
         //this->objEntity->Food(data_bool, data);
-
-        /*this->objEntity->Bot(
-            data_bool,
-            data
-        );*/
 
         //this->objEntity->AoE();
     }
@@ -346,4 +344,15 @@ System::Void eLosh::Main::cb_flyingcamera_CheckedChanged(System::Object^  sender
     int iToWrite = (this->cb_flyingcamera->Checked ? 0 : 1);
 
     this->objEngine->WriteStaticMemory(this->objEngine->dwFlyingCamera, &iToWrite);
+}
+
+
+System::Void eLosh::Main::numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+    int fToWrite = Convert::ToInt32(this->numeric_range->Value);
+
+    if (this->objEngine->WriteStaticMemory(0x755644, &fToWrite)) {
+        printf("OK!\n");
+    }
+
+    WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)(this->objEngine->dwNeuzBase + this->objPatch->dwRange), &fToWrite, 2, NULL);
 }

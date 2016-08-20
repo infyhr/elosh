@@ -2,6 +2,7 @@
 #include "engine.h"
 #include "entity.h"
 #include "bot.h"
+#include "patch.h"
 
 namespace eLosh {
 
@@ -54,6 +55,7 @@ namespace eLosh {
         Entity *objEntity;
         Engine *objEngine;
         Bot *objBot;
+        Patch *objPatch;
 
             Main();
 
@@ -651,6 +653,7 @@ private: System::Windows::Forms::Label^  label10;
             this->numeric_range->Size = System::Drawing::Size(67, 20);
             this->numeric_range->TabIndex = 53;
             this->numeric_range->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 18, 0, 0, 0 });
+            this->numeric_range->ValueChanged += gcnew System::EventHandler(this, &Main::numeric_range_ValueChanged);
             // 
             // label16
             // 
@@ -1436,5 +1439,6 @@ private: System::Windows::Forms::Label^  label10;
     }
     private: System::Void cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void numeric_speedhack_ValueChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

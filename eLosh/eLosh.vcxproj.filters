@@ -27,6 +27,9 @@
     <ClInclude Include="bot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="bot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="patch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
