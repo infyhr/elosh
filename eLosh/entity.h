@@ -26,7 +26,7 @@ class Entity {
         float fTargetZ;
         char szTargetName[32]; // target name
         int iTargetHP, iTargetMP, iTargetFP, iTargetLv;
-        int iTargetDistance;
+        float iTargetDistance;
 
         // Players around us?
         int iPlayerCount;

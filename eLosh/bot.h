@@ -8,8 +8,8 @@
 
 class Bot {
     public:
-        Bot(Engine *e, Entity *_e, std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
-        void _1v1();
+        Bot(Engine *e, Entity *_e);
+        void _1v1(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
 
     private:
         Engine *objEngine;

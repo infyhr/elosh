@@ -1,6 +1,7 @@
 #pragma once
 #include "engine.h"
 #include "entity.h"
+#include "bot.h"
 
 namespace eLosh {
 
@@ -16,7 +17,6 @@ namespace eLosh {
 	/// </summary>
 	public ref class Main : public System::Windows::Forms::Form {
 	    public:
-            Engine *objEngine;
     private: System::Windows::Forms::CheckBox^  cb_bot_collision;
     private: System::Windows::Forms::CheckBox^  cb_range;
 
@@ -52,6 +52,8 @@ namespace eLosh {
 
     public:
         Entity *objEntity;
+        Engine *objEngine;
+        Bot *objBot;
 
             Main();
 
@@ -667,6 +669,7 @@ private: System::Windows::Forms::Label^  label10;
             this->numeric_speedhack->Size = System::Drawing::Size(48, 20);
             this->numeric_speedhack->TabIndex = 51;
             this->numeric_speedhack->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            this->numeric_speedhack->ValueChanged += gcnew System::EventHandler(this, &Main::numeric_speedhack_ValueChanged);
             // 
             // cb_jumphack
             // 
@@ -750,7 +753,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             this->trackbar_speed->AutoSize = false;
             this->trackbar_speed->Location = System::Drawing::Point(268, 20);
-            this->trackbar_speed->Maximum = 200;
+            this->trackbar_speed->Maximum = 250;
             this->trackbar_speed->Minimum = 30;
             this->trackbar_speed->Name = L"trackbar_speed";
             this->trackbar_speed->Size = System::Drawing::Size(151, 28);
@@ -1407,11 +1410,6 @@ private: System::Windows::Forms::Label^  label10;
 #pragma endregion    
     private: System::Void btn_getcoordinates_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void btn_teleport_Click(System::Object^  sender, System::EventArgs^  e);
-    private: System::Void richtb_debug_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-        richtb_debug->SelectionStart = richtb_debug->Text->Length;
-        // scroll it automatically
-        richtb_debug->ScrollToCaret();
-    }
     private: System::Void btn_add_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void btn_remove_Click(System::Object^  sender, System::EventArgs^  e);
     private: System::Void listView_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e);
@@ -1433,7 +1431,10 @@ private: System::Windows::Forms::Label^  label10;
     private: System::Void trackbar_scroll_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
         this->trackbarValue = this->trackbar_scroll->Value;
     }
-    private: System::Void cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+
+    }
     private: System::Void cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void numeric_speedhack_ValueChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

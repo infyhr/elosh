@@ -136,7 +136,6 @@
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="patch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bot.h" />
@@ -145,7 +144,6 @@
     <ClInclude Include="Main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="patch.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Main.resx">

@@ -1,13 +1,13 @@
 #include "bot.h"
 
-Bot::Bot(Engine *e, Entity *_e, std::map<std::string, bool>& dataBool, std::map<std::string, int>& data) {
+Bot::Bot(Engine *e, Entity *_e) {
     this->objEngine = e; // Assign engine.
     this->objEntity = _e; // Assign entity.
     this->dataBool = dataBool; // Get booleans.
     this->data     = data; // And regular data.
 }
 
-void Bot::_1v1() {
+void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>& data) {
     // Anti collision check
     if (this->objEntity->iCurrentTarget != 0 && this->dataBool["collision"]) {
         if (this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->objEntity->iTargetHP) {

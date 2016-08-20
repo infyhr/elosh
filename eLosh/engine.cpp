@@ -25,7 +25,7 @@ Engine::Engine() {
     std::cout << "Loaded " << std::endl;
 
     // Try to find the window
-    this->hwndFlyff = FindWindow(0, "Insanity FlyFF");
+    this->hwndFlyff = FindWindow(0, "FLYFF");
     if (!this->hwndFlyff) {
 #ifdef _DEBUG
         std::cout << "Cannot find the FlyFF window!" << std::endl;
@@ -50,49 +50,8 @@ Engine::Engine() {
 #endif
     }
 
-    // Set some ptrs -- read from file or something?
+    // Find the base load address.
     this->dwNeuzBase = getNeuz(this->dwFlyffPID);
-
-    this->dwPlayerBase = 0x00ADC794;
-
-    this->dwXOffset  = 0x164;
-    this->dwYOffset  = 0x168;
-    this->dwZOffset  = 0x16C;
-    this->dwHPOffset = 0x720;
-    this->dwMPOffset = 0x724;
-    this->dwFPOffset = 0x728;
-    this->dwLevelOffset = 0x6FC;
-    this->dwNameOffset = 0xB6C;
-    this->dwIdOffset = 0x41C;
-    this->dwAuthOffset = 0x768;
-    this->dwSpeedOffset = 0x1290;
-
-    this->dwClickedPosition = 0x8CDD64; // statik
-
-    this->dwInvisibilityPointer = 0x008D947C;
-    this->dwInvisibilityOffset = 0x1264 + 0x100; // ^ + 0x1264 + ((ECX+EAX*4) = 100)
-
-    this->dwCameraScroll = 0x008DA9EC; // statikkkk Neuz.exe+8DA9EC
-    this->dwCameraMovement = 0x008DA9EC; // statikkk
-    this->dwMaxInView = 0x00B67778; // Neuz.exe + B67778 statikk
-    this->dwFlyingCamera = 0x008DAA04;// Neuz.exe+8DAA04
-
-    this->dwBattlePointer = 0x009BDAA8; // green, double click.
-    this->dwBattleOffset = 0x7624; // delta
-
-    this->dwTargetBase = 0x008D9A80; // this is just the base.
-    this->dwTargetIdOffset = 0x20; // this will get the monster id.
-    this->dwTargetLoopBaseOffset = 0x00B67370; // ecx/edx/register loop STATIC Neuz.exe + B67778
-
-    /* fix this later */
-    this->dwRangeCALLOffset = 0x002D96A6; // Neuz.exe+2D96A6 doubleclick
-    // call Neuz.exe+2875E8. E8 = opcode call
-    //this->byteRangeArrayOriginal = 0x002875E8;
-    this->byteRangeArrayOriginal = 0x002875E8;
-    // Modified -- mov eax, 6FFFFFFF. B8 mov
-    //this->byteRangeArrayModified = 0xFFFFFFB8;
-    this->byteRangeArrayModified = 0xFFFFFFB8;
-
 
     // read test
     /*int temp; // Neuz.exe+0x008D947C

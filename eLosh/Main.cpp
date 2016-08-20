@@ -32,6 +32,8 @@ eLosh::Main::Main() {
     this->objEngine = e;
     Entity *e_ = new Entity(e);
     this->objEntity = e_;
+    Bot *b = new Bot(e, e_);
+    this->objBot = b;
 
     InitializeComponent();
 
@@ -170,6 +172,8 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         data_bool["pet"]            = this->cb_bot_restartpet->Checked;
         data_bool["targettp"]       = this->cb_bot_targettp->Checked;
 
+        this->objBot->_1v1(data_bool, data);
+
         //this->objEntity->Food(data_bool, data);
 
         /*this->objEntity->Bot(
@@ -289,7 +293,7 @@ System::Void eLosh::Main::listView_SelectedIndexChanged(System::Object^  sender,
 /// <param name="e"></param>
 /// <returns></returns>
 System::Void eLosh::Main::cb_gm_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-    int iToWrite = (this->cb_gm->Checked ? 90 : 70);
+    int iToWrite = (this->cb_gm->Checked ? 83 : 70);
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAuthOffset, &iToWrite);
 }
 
@@ -304,6 +308,12 @@ System::Void eLosh::Main::trackbar_speed_Scroll(System::Object^  sender, System:
     int iToWrite = this->trackbar_speed->Value;
 
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwSpeedOffset, &iToWrite);
+}
+System::Void eLosh::Main::numeric_speedhack_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+    // Write the new value
+    float iNewMultiplier = Convert::ToDouble(this->numeric_speedhack->Value);
+
+    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwSpeedMultiplier, &iNewMultiplier);
 }
 
 /// <summary>
