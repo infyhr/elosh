@@ -29,44 +29,44 @@ void Entity::Tick() {
     this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwFPOffset, &this->iFP);
     // Read Level
     this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwLevelOffset, &this->iLv);
+    // Read number of current players around us
+    this->iPlayerCount = this->getPlayers();
 
     /* Target */
-    int __tmp;
-    // Read X
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwXOffset, &this->fTargetX, false);
-    // Read Y
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwYOffset, &this->fTargetY, false);
-    // Read Z
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwZOffset, &this->fTargetZ, false);
-    // Read A
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwAOffset, &this->iTargetA, false);
-    // Read name
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwNameOffset, this->szTargetName, false, 32);
-    // Read HP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwHPOffset, &this->iTargetHP, false);
-    // Read MP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwMPOffset, &this->iTargetMP, false);
-    // Read FP
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwFPOffset, &this->iTargetFP, false);
-    // Read Level
-    this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &__tmp);
-    this->objEngine->ReadStaticMemory(__tmp + this->objEngine->dwLevelOffset, &this->iTargetLv, false);
-    // Read CurrentTarget
+    // Current target
     this->objEngine->ReadMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &this->iCurrentTarget);
+    // Read X
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwXOffset, &this->fTargetX, false);
+    // Read Y
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwYOffset, &this->fTargetY, false);
+    // Read Z
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwZOffset, &this->fTargetZ, false);
+    // Read A
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwAOffset, &this->iTargetA, false);
+    // Read name
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwNameOffset, this->szTargetName, false, 32);
+    // Read HP
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwHPOffset, &this->iTargetHP, false);
+    // Read MP
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwMPOffset, &this->iTargetMP, false);
+    // Read FP
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwFPOffset, &this->iTargetFP, false);
+    // Read Level
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwLevelOffset, &this->iTargetLv, false);
+    // Read their type
+    this->objEngine->ReadStaticMemory(this->iCurrentTarget + this->objEngine->dwTypeOffset, &this->iTargeType, false);
+    
+}
+
+int Entity::getPlayers() {
+    int iPlayerCount = 0;
+
+    int iMaxInView;
+    this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
 }
 
 void Entity::Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data) {
     if (dataBool["hp"] && this->iHP < data["hp"]) {
-        //this->objEngine->SendESC();
-        //this->objEngine->SendKey(4);
         this->objEngine->SendKey(data["hp_key"]);
     }
     if(dataBool["mp"] && this->iMP < data["mp"])
@@ -82,7 +82,7 @@ void Entity::SendAtk(int iAtk) {
     this->objEngine->WriteStaticMemory(this->objEngine->dwBattleOffset + iTemp, &iAtk, false);
 }
 
-void Entity::AoE() {
+/*void Entity::AoE() {
     this->inAOE = true;
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
@@ -93,9 +93,9 @@ void Entity::AoE() {
     if(this->iCurrentTarget != 0) {
         std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
         if(this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->iTargetHP) {
-            /*this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
-            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
-            this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);*/
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
             std::cout << "too far blacklisted~" << std::endl;
             this->blacklists.push_back(this->iCurrentTarget);
             this->SendAtk(0);
@@ -189,10 +189,9 @@ void Entity::AoE() {
         this->SendAtk(1);
     }
     //Sleep(10000);
-}
+}*/
 
-// int iMaxDistance, int iSleep, int iFoodHP, int iFoodMP, int iRestartPet, 
-void Entity::Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data) {
+void Entity::Bot(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data) {
     // Anti collision check
     if(this->iCurrentTarget != 0 && dataBool["collision"]) {
         //std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;

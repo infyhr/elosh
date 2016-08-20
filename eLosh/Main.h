@@ -38,6 +38,15 @@ namespace eLosh {
     private: System::Windows::Forms::Label^  label15;
     private: System::Windows::Forms::NumericUpDown^  numeric_maxlvl;
     public: System::Windows::Forms::Timer^  timerBuff;
+    private: System::Windows::Forms::Label^  label6;
+    public:
+    private: System::Windows::Forms::TextBox^  tb_target_type;
+    private: System::Windows::Forms::Label^  label17;
+    private: System::Windows::Forms::NumericUpDown^  numeric_range;
+
+    private: System::Windows::Forms::Label^  label16;
+    private: System::Windows::Forms::NumericUpDown^  numeric_speedhack;
+    private: System::Windows::Forms::CheckBox^  cb_dommt;
     private:
 
 
@@ -60,8 +69,8 @@ namespace eLosh {
     private: System::Windows::Forms::Label^  label_x;
     private: System::Windows::Forms::TextBox^  tb_x;
 
-    private: System::Windows::Forms::TabPage^  tabPage2;
-    private: System::Windows::Forms::TabPage^  tabPage3;
+
+
     private: System::Windows::Forms::GroupBox^  gb_teleport;
 
 
@@ -70,11 +79,11 @@ namespace eLosh {
     private: System::Windows::Forms::TextBox^  tb_z;
 
     private: System::Windows::Forms::Label^  label_y;
-    private: System::Windows::Forms::Label^  label_a_readonly;
-    private: System::Windows::Forms::TextBox^  tb_a_readonly;
 
-    private: System::Windows::Forms::Label^  label_a;
-    private: System::Windows::Forms::TextBox^  tb_a;
+
+
+
+
 
     private: System::Windows::Forms::CheckBox^  cb_teleport_click;
     private: System::Windows::Forms::TextBox^  tb_x_readonly;
@@ -84,7 +93,7 @@ namespace eLosh {
     private: System::Windows::Forms::TextBox^  tb_z_readonly;
 
     private: System::Windows::Forms::Label^  label_y_readonly;
-    private: System::Windows::Forms::CheckBox^  cb_teleport_a;
+
 
     private: System::Windows::Forms::PictureBox^  pictureBox1;
 
@@ -101,8 +110,8 @@ namespace eLosh {
 
 
 
-    private: System::Windows::Forms::NumericUpDown^  numeric_tpdelta;
-    private: System::Windows::Forms::Label^  label_teleportdelta;
+
+
 
     private: System::Windows::Forms::Label^  label9;
     public: System::Windows::Forms::Label^  label_version;
@@ -112,7 +121,7 @@ namespace eLosh {
     private: System::Windows::Forms::Button^  btn_teleport;
     public: System::Windows::Forms::Timer^  timer;
     private: System::Windows::Forms::Button^  btn_getcoordinates;
-    private: System::Windows::Forms::Button^  btn_figuredelta;
+
 
 
     private: System::Windows::Forms::BindingSource^  bindingSource1;
@@ -122,7 +131,7 @@ namespace eLosh {
     private: System::Windows::Forms::ColumnHeader^  column_x;
     private: System::Windows::Forms::ColumnHeader^  column_y;
     private: System::Windows::Forms::ColumnHeader^  column_z;
-    private: System::Windows::Forms::ColumnHeader^  column_a;
+
     private: System::Windows::Forms::Button^  btn_remove;
     private: System::Windows::Forms::Button^  btn_add;
     private: System::Windows::Forms::TextBox^  tb_posname;
@@ -135,8 +144,8 @@ namespace eLosh {
     private: System::Windows::Forms::Label^  label_bot_delay;
     private: System::Windows::Forms::NumericUpDown^  numeric_bot_delay;
     private: System::Windows::Forms::CheckBox^  cb_bot_active;
-    private: System::Windows::Forms::GroupBox^  gb_debug;
-    private: System::Windows::Forms::RichTextBox^  richtb_debug;
+
+
     private: System::Windows::Forms::TextBox^  tb_bot_eatmana;
 
 private: System::Windows::Forms::CheckBox^  cb_bot_eatmp;
@@ -144,9 +153,9 @@ private: System::Windows::Forms::CheckBox^  cb_bot_eatmp;
 private: System::Windows::Forms::ComboBox^  combobox_bot_eathp;
 private: System::Windows::Forms::ComboBox^  combobox_bot_eatmp;
 private: System::Windows::Forms::GroupBox^  Character;
-private: System::Windows::Forms::ComboBox^  combobox_bot_dca;
 
-private: System::Windows::Forms::Label^  label_bot_dca;
+
+
 private: System::Windows::Forms::TextBox^  tb_bot_ignore;
 
 private: System::Windows::Forms::CheckBox^  cb_bot_ignore;
@@ -177,8 +186,8 @@ private: System::Windows::Forms::TextBox^  tb_target_name;
 private: System::Windows::Forms::Label^  label5;
 private: System::Windows::Forms::Label^  label_fp;
 private: System::Windows::Forms::TextBox^  tb_character_fp;
-private: System::Windows::Forms::Label^  label6;
-private: System::Windows::Forms::TextBox^  tb_target_a;
+
+
 
 private: System::Windows::Forms::TextBox^  tb_target_x;
 
@@ -222,9 +231,7 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
             this->label14 = (gcnew System::Windows::Forms::Label());
             this->tb_target_distance = (gcnew System::Windows::Forms::TextBox());
-            this->label6 = (gcnew System::Windows::Forms::Label());
             this->label1 = (gcnew System::Windows::Forms::Label());
-            this->tb_target_a = (gcnew System::Windows::Forms::TextBox());
             this->tb_target_fp = (gcnew System::Windows::Forms::TextBox());
             this->tb_target_x = (gcnew System::Windows::Forms::TextBox());
             this->label7 = (gcnew System::Windows::Forms::Label());
@@ -252,10 +259,10 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_invisibility = (gcnew System::Windows::Forms::CheckBox());
             this->cb_gm = (gcnew System::Windows::Forms::CheckBox());
             this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+            this->label15 = (gcnew System::Windows::Forms::Label());
+            this->numeric_maxlvl = (gcnew System::Windows::Forms::NumericUpDown());
             this->cb_autobuff = (gcnew System::Windows::Forms::CheckBox());
             this->cb_bot_collision = (gcnew System::Windows::Forms::CheckBox());
-            this->combobox_bot_dca = (gcnew System::Windows::Forms::ComboBox());
-            this->label_bot_dca = (gcnew System::Windows::Forms::Label());
             this->tb_bot_ignore = (gcnew System::Windows::Forms::TextBox());
             this->cb_bot_ignore = (gcnew System::Windows::Forms::CheckBox());
             this->combobox_bot_pet = (gcnew System::Windows::Forms::ComboBox());
@@ -293,17 +300,8 @@ private: System::Windows::Forms::Label^  label10;
             this->column_x = (gcnew System::Windows::Forms::ColumnHeader());
             this->column_y = (gcnew System::Windows::Forms::ColumnHeader());
             this->column_z = (gcnew System::Windows::Forms::ColumnHeader());
-            this->column_a = (gcnew System::Windows::Forms::ColumnHeader());
-            this->btn_figuredelta = (gcnew System::Windows::Forms::Button());
             this->btn_getcoordinates = (gcnew System::Windows::Forms::Button());
             this->btn_teleport = (gcnew System::Windows::Forms::Button());
-            this->numeric_tpdelta = (gcnew System::Windows::Forms::NumericUpDown());
-            this->label_teleportdelta = (gcnew System::Windows::Forms::Label());
-            this->cb_teleport_a = (gcnew System::Windows::Forms::CheckBox());
-            this->label_a_readonly = (gcnew System::Windows::Forms::Label());
-            this->tb_a_readonly = (gcnew System::Windows::Forms::TextBox());
-            this->label_a = (gcnew System::Windows::Forms::Label());
-            this->tb_a = (gcnew System::Windows::Forms::TextBox());
             this->cb_teleport_click = (gcnew System::Windows::Forms::CheckBox());
             this->tb_x_readonly = (gcnew System::Windows::Forms::TextBox());
             this->label_x_readonly = (gcnew System::Windows::Forms::Label());
@@ -317,17 +315,18 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_y = (gcnew System::Windows::Forms::TextBox());
             this->tb_z = (gcnew System::Windows::Forms::TextBox());
             this->label_y = (gcnew System::Windows::Forms::Label());
-            this->tabPage2 = (gcnew System::Windows::Forms::TabPage());
-            this->tabPage3 = (gcnew System::Windows::Forms::TabPage());
-            this->gb_debug = (gcnew System::Windows::Forms::GroupBox());
-            this->richtb_debug = (gcnew System::Windows::Forms::RichTextBox());
             this->label9 = (gcnew System::Windows::Forms::Label());
             this->label_version = (gcnew System::Windows::Forms::Label());
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
-            this->label15 = (gcnew System::Windows::Forms::Label());
-            this->numeric_maxlvl = (gcnew System::Windows::Forms::NumericUpDown());
             this->timerBuff = (gcnew System::Windows::Forms::Timer(this->components));
+            this->label6 = (gcnew System::Windows::Forms::Label());
+            this->tb_target_type = (gcnew System::Windows::Forms::TextBox());
+            this->label16 = (gcnew System::Windows::Forms::Label());
+            this->numeric_speedhack = (gcnew System::Windows::Forms::NumericUpDown());
+            this->label17 = (gcnew System::Windows::Forms::Label());
+            this->numeric_range = (gcnew System::Windows::Forms::NumericUpDown());
+            this->cb_dommt = (gcnew System::Windows::Forms::CheckBox());
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
@@ -335,22 +334,19 @@ private: System::Windows::Forms::Label^  label10;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->BeginInit();
             this->groupBox1->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
             this->gb_misc->SuspendLayout();
             this->gb_teleport->SuspendLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_tpdelta))->BeginInit();
-            this->tabPage3->SuspendLayout();
-            this->gb_debug->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->BeginInit();
             this->SuspendLayout();
             // 
             // tabControl1
             // 
             this->tabControl1->Controls->Add(this->tabPage1);
-            this->tabControl1->Controls->Add(this->tabPage2);
-            this->tabControl1->Controls->Add(this->tabPage3);
             this->tabControl1->Location = System::Drawing::Point(12, 12);
             this->tabControl1->Name = L"tabControl1";
             this->tabControl1->SelectedIndex = 0;
@@ -395,11 +391,11 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // groupBox2
             // 
+            this->groupBox2->Controls->Add(this->label6);
+            this->groupBox2->Controls->Add(this->tb_target_type);
             this->groupBox2->Controls->Add(this->label14);
             this->groupBox2->Controls->Add(this->tb_target_distance);
-            this->groupBox2->Controls->Add(this->label6);
             this->groupBox2->Controls->Add(this->label1);
-            this->groupBox2->Controls->Add(this->tb_target_a);
             this->groupBox2->Controls->Add(this->tb_target_fp);
             this->groupBox2->Controls->Add(this->tb_target_x);
             this->groupBox2->Controls->Add(this->label7);
@@ -415,9 +411,9 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox2->Controls->Add(this->tb_target_level);
             this->groupBox2->Controls->Add(this->tb_target_name);
             this->groupBox2->Controls->Add(this->label5);
-            this->groupBox2->Location = System::Drawing::Point(293, 316);
+            this->groupBox2->Location = System::Drawing::Point(293, 290);
             this->groupBox2->Name = L"groupBox2";
-            this->groupBox2->Size = System::Drawing::Size(294, 196);
+            this->groupBox2->Size = System::Drawing::Size(294, 222);
             this->groupBox2->TabIndex = 15;
             this->groupBox2->TabStop = false;
             this->groupBox2->Text = L"Target";
@@ -425,7 +421,7 @@ private: System::Windows::Forms::Label^  label10;
             // label14
             // 
             this->label14->AutoSize = true;
-            this->label14->Location = System::Drawing::Point(161, 129);
+            this->label14->Location = System::Drawing::Point(161, 103);
             this->label14->Name = L"label14";
             this->label14->Size = System::Drawing::Size(15, 13);
             this->label14->TabIndex = 39;
@@ -433,21 +429,12 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // tb_target_distance
             // 
-            this->tb_target_distance->Location = System::Drawing::Point(181, 126);
+            this->tb_target_distance->Location = System::Drawing::Point(181, 100);
             this->tb_target_distance->Name = L"tb_target_distance";
             this->tb_target_distance->ReadOnly = true;
             this->tb_target_distance->Size = System::Drawing::Size(101, 20);
             this->tb_target_distance->TabIndex = 38;
             this->tb_target_distance->Text = L"\?\?";
-            // 
-            // label6
-            // 
-            this->label6->AutoSize = true;
-            this->label6->Location = System::Drawing::Point(161, 103);
-            this->label6->Name = L"label6";
-            this->label6->Size = System::Drawing::Size(14, 13);
-            this->label6->TabIndex = 36;
-            this->label6->Text = L"A";
             // 
             // label1
             // 
@@ -457,15 +444,6 @@ private: System::Windows::Forms::Label^  label10;
             this->label1->Size = System::Drawing::Size(23, 13);
             this->label1->TabIndex = 37;
             this->label1->Text = L"FP:";
-            // 
-            // tb_target_a
-            // 
-            this->tb_target_a->Location = System::Drawing::Point(181, 100);
-            this->tb_target_a->Name = L"tb_target_a";
-            this->tb_target_a->ReadOnly = true;
-            this->tb_target_a->Size = System::Drawing::Size(101, 20);
-            this->tb_target_a->TabIndex = 35;
-            this->tb_target_a->Text = L"\?\?";
             // 
             // tb_target_fp
             // 
@@ -604,6 +582,11 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // Character
             // 
+            this->Character->Controls->Add(this->cb_dommt);
+            this->Character->Controls->Add(this->label17);
+            this->Character->Controls->Add(this->numeric_range);
+            this->Character->Controls->Add(this->label16);
+            this->Character->Controls->Add(this->numeric_speedhack);
             this->Character->Controls->Add(this->cb_jumphack);
             this->Character->Controls->Add(this->cb_range);
             this->Character->Controls->Add(this->cb_flyingcamera);
@@ -619,14 +602,14 @@ private: System::Windows::Forms::Label^  label10;
             this->Character->Size = System::Drawing::Size(433, 354);
             this->Character->TabIndex = 14;
             this->Character->TabStop = false;
-            this->Character->Text = L"Miscellaneous";
+            this->Character->Text = L"Hacks";
             // 
             // cb_jumphack
             // 
             this->cb_jumphack->AutoSize = true;
             this->cb_jumphack->ForeColor = System::Drawing::Color::ForestGreen;
             this->cb_jumphack->ImageKey = L"(none)";
-            this->cb_jumphack->Location = System::Drawing::Point(6, 132);
+            this->cb_jumphack->Location = System::Drawing::Point(6, 107);
             this->cb_jumphack->Name = L"cb_jumphack";
             this->cb_jumphack->Size = System::Drawing::Size(78, 17);
             this->cb_jumphack->TabIndex = 9;
@@ -638,18 +621,18 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_range->AutoSize = true;
             this->cb_range->ForeColor = System::Drawing::Color::Brown;
             this->cb_range->ImageKey = L"(none)";
-            this->cb_range->Location = System::Drawing::Point(6, 109);
+            this->cb_range->Location = System::Drawing::Point(6, 153);
             this->cb_range->Name = L"cb_range";
-            this->cb_range->Size = System::Drawing::Size(114, 17);
+            this->cb_range->Size = System::Drawing::Size(151, 17);
             this->cb_range->TabIndex = 8;
-            this->cb_range->Text = L"Infinite range hack";
+            this->cb_range->Text = L"Range hack + No collision";
             this->cb_range->UseVisualStyleBackColor = true;
             this->cb_range->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_range_CheckedChanged);
             // 
             // cb_flyingcamera
             // 
             this->cb_flyingcamera->AutoSize = true;
-            this->cb_flyingcamera->Location = System::Drawing::Point(6, 87);
+            this->cb_flyingcamera->Location = System::Drawing::Point(6, 84);
             this->cb_flyingcamera->Name = L"cb_flyingcamera";
             this->cb_flyingcamera->Size = System::Drawing::Size(110, 17);
             this->cb_flyingcamera->TabIndex = 7;
@@ -660,7 +643,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_stance
             // 
             this->cb_stance->AutoSize = true;
-            this->cb_stance->Location = System::Drawing::Point(6, 65);
+            this->cb_stance->Location = System::Drawing::Point(6, 61);
             this->cb_stance->Name = L"cb_stance";
             this->cb_stance->Size = System::Drawing::Size(151, 17);
             this->cb_stance->TabIndex = 6;
@@ -670,7 +653,7 @@ private: System::Windows::Forms::Label^  label10;
             // label12
             // 
             this->label12->AutoSize = true;
-            this->label12->Location = System::Drawing::Point(6, 192);
+            this->label12->Location = System::Drawing::Point(206, 100);
             this->label12->Name = L"label12";
             this->label12->Size = System::Drawing::Size(57, 13);
             this->label12->TabIndex = 5;
@@ -680,7 +663,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             this->trackbar_scroll->AutoSize = false;
             this->trackbar_scroll->LargeChange = 5000;
-            this->trackbar_scroll->Location = System::Drawing::Point(68, 192);
+            this->trackbar_scroll->Location = System::Drawing::Point(269, 98);
             this->trackbar_scroll->Maximum = 200000;
             this->trackbar_scroll->Name = L"trackbar_scroll";
             this->trackbar_scroll->Size = System::Drawing::Size(151, 28);
@@ -693,7 +676,7 @@ private: System::Windows::Forms::Label^  label10;
             // label11
             // 
             this->label11->AutoSize = true;
-            this->label11->Location = System::Drawing::Point(6, 158);
+            this->label11->Location = System::Drawing::Point(206, 20);
             this->label11->Name = L"label11";
             this->label11->Size = System::Drawing::Size(62, 13);
             this->label11->TabIndex = 3;
@@ -702,7 +685,7 @@ private: System::Windows::Forms::Label^  label10;
             // trackbar_speed
             // 
             this->trackbar_speed->AutoSize = false;
-            this->trackbar_speed->Location = System::Drawing::Point(68, 158);
+            this->trackbar_speed->Location = System::Drawing::Point(268, 20);
             this->trackbar_speed->Maximum = 200;
             this->trackbar_speed->Minimum = 30;
             this->trackbar_speed->Name = L"trackbar_speed";
@@ -728,9 +711,9 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_gm->AutoSize = true;
             this->cb_gm->Location = System::Drawing::Point(6, 19);
             this->cb_gm->Name = L"cb_gm";
-            this->cb_gm->Size = System::Drawing::Size(194, 17);
+            this->cb_gm->Size = System::Drawing::Size(136, 17);
             this->cb_gm->TabIndex = 0;
-            this->cb_gm->Text = L"Become gamemaster (Administrator)";
+            this->cb_gm->Text = L"Become a Gamemaster";
             this->cb_gm->UseVisualStyleBackColor = true;
             this->cb_gm->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_gm_CheckedChanged);
             // 
@@ -740,8 +723,6 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox1->Controls->Add(this->numeric_maxlvl);
             this->groupBox1->Controls->Add(this->cb_autobuff);
             this->groupBox1->Controls->Add(this->cb_bot_collision);
-            this->groupBox1->Controls->Add(this->combobox_bot_dca);
-            this->groupBox1->Controls->Add(this->label_bot_dca);
             this->groupBox1->Controls->Add(this->tb_bot_ignore);
             this->groupBox1->Controls->Add(this->cb_bot_ignore);
             this->groupBox1->Controls->Add(this->combobox_bot_pet);
@@ -759,10 +740,27 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox1->Controls->Add(this->cb_bot_active);
             this->groupBox1->Location = System::Drawing::Point(293, 6);
             this->groupBox1->Name = L"groupBox1";
-            this->groupBox1->Size = System::Drawing::Size(294, 303);
+            this->groupBox1->Size = System::Drawing::Size(294, 278);
             this->groupBox1->TabIndex = 13;
             this->groupBox1->TabStop = false;
             this->groupBox1->Text = L"Bot";
+            // 
+            // label15
+            // 
+            this->label15->AutoSize = true;
+            this->label15->Location = System::Drawing::Point(138, 48);
+            this->label15->Name = L"label15";
+            this->label15->Size = System::Drawing::Size(55, 13);
+            this->label15->TabIndex = 50;
+            this->label15->Text = L"Max level:";
+            // 
+            // numeric_maxlvl
+            // 
+            this->numeric_maxlvl->Location = System::Drawing::Point(197, 46);
+            this->numeric_maxlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
+            this->numeric_maxlvl->Name = L"numeric_maxlvl";
+            this->numeric_maxlvl->Size = System::Drawing::Size(48, 20);
+            this->numeric_maxlvl->TabIndex = 49;
             // 
             // cb_autobuff
             // 
@@ -777,30 +775,12 @@ private: System::Windows::Forms::Label^  label10;
             // cb_bot_collision
             // 
             this->cb_bot_collision->AutoSize = true;
-            this->cb_bot_collision->Location = System::Drawing::Point(9, 123);
+            this->cb_bot_collision->Location = System::Drawing::Point(9, 125);
             this->cb_bot_collision->Name = L"cb_bot_collision";
             this->cb_bot_collision->Size = System::Drawing::Size(122, 17);
             this->cb_bot_collision->TabIndex = 47;
             this->cb_bot_collision->Text = L"Try to avoid collision";
             this->cb_bot_collision->UseVisualStyleBackColor = true;
-            // 
-            // combobox_bot_dca
-            // 
-            this->combobox_bot_dca->FormattingEnabled = true;
-            this->combobox_bot_dca->Items->AddRange(gcnew cli::array< System::Object^  >(4) { L"2D Plain", L"FDA", L"Pythagoras", L"No distance algorithm" });
-            this->combobox_bot_dca->Location = System::Drawing::Point(157, 267);
-            this->combobox_bot_dca->Name = L"combobox_bot_dca";
-            this->combobox_bot_dca->Size = System::Drawing::Size(80, 21);
-            this->combobox_bot_dca->TabIndex = 46;
-            // 
-            // label_bot_dca
-            // 
-            this->label_bot_dca->AutoSize = true;
-            this->label_bot_dca->Location = System::Drawing::Point(6, 270);
-            this->label_bot_dca->Name = L"label_bot_dca";
-            this->label_bot_dca->Size = System::Drawing::Size(154, 13);
-            this->label_bot_dca->TabIndex = 45;
-            this->label_bot_dca->Text = L"Distance calculation algorithm: ";
             // 
             // tb_bot_ignore
             // 
@@ -809,7 +789,7 @@ private: System::Windows::Forms::Label^  label10;
             this->tb_bot_ignore->ReadOnly = true;
             this->tb_bot_ignore->Size = System::Drawing::Size(100, 20);
             this->tb_bot_ignore->TabIndex = 43;
-            this->tb_bot_ignore->Text = L"5000";
+            this->tb_bot_ignore->Text = L"20";
             // 
             // cb_bot_ignore
             // 
@@ -922,7 +902,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_bot_rotatecamera
             // 
             this->cb_bot_rotatecamera->AutoSize = true;
-            this->cb_bot_rotatecamera->Location = System::Drawing::Point(9, 71);
+            this->cb_bot_rotatecamera->Location = System::Drawing::Point(8, 74);
             this->cb_bot_rotatecamera->Name = L"cb_bot_rotatecamera";
             this->cb_bot_rotatecamera->Size = System::Drawing::Size(96, 17);
             this->cb_bot_rotatecamera->TabIndex = 32;
@@ -1080,16 +1060,8 @@ private: System::Windows::Forms::Label^  label10;
             this->gb_teleport->Controls->Add(this->btn_remove);
             this->gb_teleport->Controls->Add(this->btn_add);
             this->gb_teleport->Controls->Add(this->listView);
-            this->gb_teleport->Controls->Add(this->btn_figuredelta);
             this->gb_teleport->Controls->Add(this->btn_getcoordinates);
             this->gb_teleport->Controls->Add(this->btn_teleport);
-            this->gb_teleport->Controls->Add(this->numeric_tpdelta);
-            this->gb_teleport->Controls->Add(this->label_teleportdelta);
-            this->gb_teleport->Controls->Add(this->cb_teleport_a);
-            this->gb_teleport->Controls->Add(this->label_a_readonly);
-            this->gb_teleport->Controls->Add(this->tb_a_readonly);
-            this->gb_teleport->Controls->Add(this->label_a);
-            this->gb_teleport->Controls->Add(this->tb_a);
             this->gb_teleport->Controls->Add(this->cb_teleport_click);
             this->gb_teleport->Controls->Add(this->tb_x_readonly);
             this->gb_teleport->Controls->Add(this->label_x_readonly);
@@ -1113,7 +1085,7 @@ private: System::Windows::Forms::Label^  label10;
             // cb_teleport_mark
             // 
             this->cb_teleport_mark->AutoSize = true;
-            this->cb_teleport_mark->Location = System::Drawing::Point(7, 206);
+            this->cb_teleport_mark->Location = System::Drawing::Point(6, 129);
             this->cb_teleport_mark->Name = L"cb_teleport_mark";
             this->cb_teleport_mark->Size = System::Drawing::Size(129, 17);
             this->cb_teleport_mark->TabIndex = 29;
@@ -1149,14 +1121,14 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // listView
             // 
-            this->listView->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(5) {
+            this->listView->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(4) {
                 this->column_name, this->column_x,
-                    this->column_y, this->column_z, this->column_a
+                    this->column_y, this->column_z
             });
             this->listView->FullRowSelect = true;
-            this->listView->Location = System::Drawing::Point(7, 281);
+            this->listView->Location = System::Drawing::Point(7, 175);
             this->listView->Name = L"listView";
-            this->listView->Size = System::Drawing::Size(261, 179);
+            this->listView->Size = System::Drawing::Size(261, 285);
             this->listView->TabIndex = 25;
             this->listView->UseCompatibleStateImageBehavior = false;
             this->listView->View = System::Windows::Forms::View::Details;
@@ -1165,12 +1137,12 @@ private: System::Windows::Forms::Label^  label10;
             // column_name
             // 
             this->column_name->Text = L"Name";
-            this->column_name->Width = 73;
+            this->column_name->Width = 101;
             // 
             // column_x
             // 
             this->column_x->Text = L"X";
-            this->column_x->Width = 39;
+            this->column_x->Width = 51;
             // 
             // column_y
             // 
@@ -1182,24 +1154,9 @@ private: System::Windows::Forms::Label^  label10;
             this->column_z->Text = L"Z";
             this->column_z->Width = 49;
             // 
-            // column_a
-            // 
-            this->column_a->Text = L"A";
-            this->column_a->Width = 64;
-            // 
-            // btn_figuredelta
-            // 
-            this->btn_figuredelta->Location = System::Drawing::Point(9, 252);
-            this->btn_figuredelta->Name = L"btn_figuredelta";
-            this->btn_figuredelta->Size = System::Drawing::Size(100, 23);
-            this->btn_figuredelta->TabIndex = 24;
-            this->btn_figuredelta->Text = L"Figure out delta";
-            this->btn_figuredelta->UseVisualStyleBackColor = true;
-            this->btn_figuredelta->Click += gcnew System::EventHandler(this, &Main::btn_figuredelta_Click);
-            // 
             // btn_getcoordinates
             // 
-            this->btn_getcoordinates->Location = System::Drawing::Point(165, 123);
+            this->btn_getcoordinates->Location = System::Drawing::Point(165, 100);
             this->btn_getcoordinates->Name = L"btn_getcoordinates";
             this->btn_getcoordinates->Size = System::Drawing::Size(103, 23);
             this->btn_getcoordinates->TabIndex = 23;
@@ -1209,7 +1166,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // btn_teleport
             // 
-            this->btn_teleport->Location = System::Drawing::Point(31, 123);
+            this->btn_teleport->Location = System::Drawing::Point(31, 100);
             this->btn_teleport->Name = L"btn_teleport";
             this->btn_teleport->Size = System::Drawing::Size(100, 23);
             this->btn_teleport->TabIndex = 22;
@@ -1217,73 +1174,10 @@ private: System::Windows::Forms::Label^  label10;
             this->btn_teleport->UseVisualStyleBackColor = true;
             this->btn_teleport->Click += gcnew System::EventHandler(this, &Main::btn_teleport_Click);
             // 
-            // numeric_tpdelta
-            // 
-            this->numeric_tpdelta->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 25, 0, 0, 0 });
-            this->numeric_tpdelta->Location = System::Drawing::Point(201, 258);
-            this->numeric_tpdelta->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 5000, 0, 0, 0 });
-            this->numeric_tpdelta->Name = L"numeric_tpdelta";
-            this->numeric_tpdelta->Size = System::Drawing::Size(67, 20);
-            this->numeric_tpdelta->TabIndex = 21;
-            this->numeric_tpdelta->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 139, 0, 0, 0 });
-            // 
-            // label_teleportdelta
-            // 
-            this->label_teleportdelta->AutoSize = true;
-            this->label_teleportdelta->Location = System::Drawing::Point(122, 260);
-            this->label_teleportdelta->Name = L"label_teleportdelta";
-            this->label_teleportdelta->Size = System::Drawing::Size(73, 13);
-            this->label_teleportdelta->TabIndex = 20;
-            this->label_teleportdelta->Text = L"Click TP delta";
-            // 
-            // cb_teleport_a
-            // 
-            this->cb_teleport_a->AutoSize = true;
-            this->cb_teleport_a->Location = System::Drawing::Point(7, 152);
-            this->cb_teleport_a->Name = L"cb_teleport_a";
-            this->cb_teleport_a->Size = System::Drawing::Size(187, 17);
-            this->cb_teleport_a->TabIndex = 18;
-            this->cb_teleport_a->Text = L"Teleport to ALL instead of specific";
-            this->cb_teleport_a->UseVisualStyleBackColor = true;
-            // 
-            // label_a_readonly
-            // 
-            this->label_a_readonly->AutoSize = true;
-            this->label_a_readonly->Location = System::Drawing::Point(147, 100);
-            this->label_a_readonly->Name = L"label_a_readonly";
-            this->label_a_readonly->Size = System::Drawing::Size(14, 13);
-            this->label_a_readonly->TabIndex = 17;
-            this->label_a_readonly->Text = L"A";
-            // 
-            // tb_a_readonly
-            // 
-            this->tb_a_readonly->Location = System::Drawing::Point(167, 97);
-            this->tb_a_readonly->Name = L"tb_a_readonly";
-            this->tb_a_readonly->ReadOnly = true;
-            this->tb_a_readonly->Size = System::Drawing::Size(101, 20);
-            this->tb_a_readonly->TabIndex = 16;
-            this->tb_a_readonly->Text = L"\?\?";
-            // 
-            // label_a
-            // 
-            this->label_a->AutoSize = true;
-            this->label_a->Location = System::Drawing::Point(11, 100);
-            this->label_a->Name = L"label_a";
-            this->label_a->Size = System::Drawing::Size(14, 13);
-            this->label_a->TabIndex = 15;
-            this->label_a->Text = L"A";
-            // 
-            // tb_a
-            // 
-            this->tb_a->Location = System::Drawing::Point(31, 97);
-            this->tb_a->Name = L"tb_a";
-            this->tb_a->Size = System::Drawing::Size(100, 20);
-            this->tb_a->TabIndex = 14;
-            // 
             // cb_teleport_click
             // 
             this->cb_teleport_click->AutoSize = true;
-            this->cb_teleport_click->Location = System::Drawing::Point(7, 229);
+            this->cb_teleport_click->Location = System::Drawing::Point(6, 152);
             this->cb_teleport_click->Name = L"cb_teleport_click";
             this->cb_teleport_click->Size = System::Drawing::Size(105, 17);
             this->cb_teleport_click->TabIndex = 13;
@@ -1392,44 +1286,6 @@ private: System::Windows::Forms::Label^  label10;
             this->label_y->TabIndex = 3;
             this->label_y->Text = L"Y";
             // 
-            // tabPage2
-            // 
-            this->tabPage2->Location = System::Drawing::Point(4, 22);
-            this->tabPage2->Name = L"tabPage2";
-            this->tabPage2->Padding = System::Windows::Forms::Padding(3);
-            this->tabPage2->Size = System::Drawing::Size(1032, 518);
-            this->tabPage2->TabIndex = 1;
-            this->tabPage2->Text = L"F-Key";
-            this->tabPage2->UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this->tabPage3->Controls->Add(this->gb_debug);
-            this->tabPage3->Location = System::Drawing::Point(4, 22);
-            this->tabPage3->Name = L"tabPage3";
-            this->tabPage3->Size = System::Drawing::Size(1032, 518);
-            this->tabPage3->TabIndex = 2;
-            this->tabPage3->Text = L"Logger";
-            this->tabPage3->UseVisualStyleBackColor = true;
-            // 
-            // gb_debug
-            // 
-            this->gb_debug->Controls->Add(this->richtb_debug);
-            this->gb_debug->Location = System::Drawing::Point(3, 3);
-            this->gb_debug->Name = L"gb_debug";
-            this->gb_debug->Size = System::Drawing::Size(447, 479);
-            this->gb_debug->TabIndex = 4;
-            this->gb_debug->TabStop = false;
-            this->gb_debug->Text = L"DEBUG";
-            // 
-            // richtb_debug
-            // 
-            this->richtb_debug->Location = System::Drawing::Point(9, 19);
-            this->richtb_debug->Name = L"richtb_debug";
-            this->richtb_debug->Size = System::Drawing::Size(427, 454);
-            this->richtb_debug->TabIndex = 0;
-            this->richtb_debug->Text = L"";
-            // 
             // label9
             // 
             this->label9->AutoSize = true;
@@ -1453,27 +1309,76 @@ private: System::Windows::Forms::Label^  label10;
             this->timer->Enabled = true;
             this->timer->Tick += gcnew System::EventHandler(this, &Main::tick);
             // 
-            // label15
-            // 
-            this->label15->AutoSize = true;
-            this->label15->Location = System::Drawing::Point(138, 48);
-            this->label15->Name = L"label15";
-            this->label15->Size = System::Drawing::Size(55, 13);
-            this->label15->TabIndex = 50;
-            this->label15->Text = L"Max level:";
-            // 
-            // numeric_maxlvl
-            // 
-            this->numeric_maxlvl->Location = System::Drawing::Point(197, 46);
-            this->numeric_maxlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
-            this->numeric_maxlvl->Name = L"numeric_maxlvl";
-            this->numeric_maxlvl->Size = System::Drawing::Size(48, 20);
-            this->numeric_maxlvl->TabIndex = 49;
-            // 
             // timerBuff
             // 
             this->timerBuff->Enabled = true;
             this->timerBuff->Tick += gcnew System::EventHandler(this, &Main::tickBuff);
+            // 
+            // label6
+            // 
+            this->label6->AutoSize = true;
+            this->label6->Location = System::Drawing::Point(161, 129);
+            this->label6->Name = L"label6";
+            this->label6->Size = System::Drawing::Size(14, 13);
+            this->label6->TabIndex = 41;
+            this->label6->Text = L"T";
+            // 
+            // tb_target_type
+            // 
+            this->tb_target_type->Location = System::Drawing::Point(181, 126);
+            this->tb_target_type->Name = L"tb_target_type";
+            this->tb_target_type->ReadOnly = true;
+            this->tb_target_type->Size = System::Drawing::Size(101, 20);
+            this->tb_target_type->TabIndex = 40;
+            this->tb_target_type->Text = L"\?\?";
+            // 
+            // label16
+            // 
+            this->label16->AutoSize = true;
+            this->label16->Location = System::Drawing::Point(206, 52);
+            this->label16->Name = L"label16";
+            this->label16->Size = System::Drawing::Size(81, 13);
+            this->label16->TabIndex = 52;
+            this->label16->Text = L"Speed multiplier";
+            // 
+            // numeric_speedhack
+            // 
+            this->numeric_speedhack->Location = System::Drawing::Point(296, 50);
+            this->numeric_speedhack->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+            this->numeric_speedhack->Name = L"numeric_speedhack";
+            this->numeric_speedhack->Size = System::Drawing::Size(48, 20);
+            this->numeric_speedhack->TabIndex = 51;
+            this->numeric_speedhack->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            // 
+            // label17
+            // 
+            this->label17->AutoSize = true;
+            this->label17->Location = System::Drawing::Point(5, 178);
+            this->label17->Name = L"label17";
+            this->label17->Size = System::Drawing::Size(39, 13);
+            this->label17->TabIndex = 54;
+            this->label17->Text = L"Range";
+            // 
+            // numeric_range
+            // 
+            this->numeric_range->Location = System::Drawing::Point(49, 176);
+            this->numeric_range->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
+            this->numeric_range->Name = L"numeric_range";
+            this->numeric_range->Size = System::Drawing::Size(67, 20);
+            this->numeric_range->TabIndex = 53;
+            this->numeric_range->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 18, 0, 0, 0 });
+            // 
+            // cb_dommt
+            // 
+            this->cb_dommt->AutoSize = true;
+            this->cb_dommt->ForeColor = System::Drawing::Color::DarkViolet;
+            this->cb_dommt->ImageKey = L"(none)";
+            this->cb_dommt->Location = System::Drawing::Point(6, 130);
+            this->cb_dommt->Name = L"cb_dommt";
+            this->cb_dommt->Size = System::Drawing::Size(112, 17);
+            this->cb_dommt->TabIndex = 55;
+            this->cb_dommt->Text = L"Maximum DoMMT";
+            this->cb_dommt->UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -1496,17 +1401,16 @@ private: System::Windows::Forms::Label^  label10;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->EndInit();
             this->groupBox1->ResumeLayout(false);
             this->groupBox1->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
             this->gb_misc->ResumeLayout(false);
             this->gb_misc->PerformLayout();
             this->gb_teleport->ResumeLayout(false);
             this->gb_teleport->PerformLayout();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_tpdelta))->EndInit();
-            this->tabPage3->ResumeLayout(false);
-            this->gb_debug->ResumeLayout(false);
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_speedhack))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_range))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 

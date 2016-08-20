@@ -15,10 +15,10 @@ void Main(array<String^>^ args) {
     AttachConsole(GetCurrentProcessId());
     freopen("CON", "w", stdout);
 
-    //Engine *e = new Engine;
-
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
+
+    std::cout << "eLosh initialized..." << std::endl;
 
     //eLosh::Main form(e);
     eLosh::Main form;
@@ -39,7 +39,6 @@ eLosh::Main::Main() {
     this->combobox_bot_pet->SelectedIndex = 2;
     this->combobox_bot_eatmp->SelectedIndex = 1;
     this->combobox_bot_eathp->SelectedIndex = 0;
-    this->combobox_bot_dca->SelectedIndex = 0;
 
     this->timerBuff->Interval = 600000; // 10 min
 }
@@ -51,7 +50,7 @@ eLosh::Main::~Main() {
 }
 
 System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
-    std::cout << "in buff!" << std::endl;
+    std::cout << "Taking autobuff..." << std::endl;
     if (!cb_autobuff->Checked) return;
     this->cb_bot_active->Checked = false;
     Sleep(500);
@@ -82,8 +81,6 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_y_readonly->Text = Convert::ToString(this->objEntity->fY);
     // Read Z
     this->tb_z_readonly->Text = Convert::ToString(this->objEntity->fZ);
-    // Read A
-    this->tb_a_readonly->Text = Convert::ToString(this->objEntity->iA);
     // Read name
     this->tb_character_name->Text = gcnew String(this->objEntity->szName);
     // Read HP
@@ -105,8 +102,6 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_target_y->Text = Convert::ToString(this->objEntity->fTargetY);
     // Read Z
     this->tb_target_z->Text = Convert::ToString(this->objEntity->fTargetZ);
-    // Read A
-    this->tb_target_a->Text = Convert::ToString(this->objEntity->iTargetA);
     // Read name
     this->tb_target_name->Text = gcnew String(this->objEntity->szTargetName);
     // Read HP
@@ -121,22 +116,14 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     this->tb_target_distance->Text = Convert::ToString(this->objEntity->iTargetDistance);
 
     /* === TELEPORT TO CLICK? === */
-    if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
-        std::cout << "click!" << std::endl;
+    /*if(this->cb_teleport_click->Checked && (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
         // Find out the current "click" position.
         int iClickedPosition;
         this->objEngine->ReadStaticMemory(this->objEngine->dwClickedPositionOffset, &iClickedPosition);
-        
-        // Delta correction
-        iClickedPosition += Convert::ToInt32(this->numeric_tpdelta->Text);
-
-#ifdef _DEBUG
-        //this->richtb_debug->Text = this->richtb_debug->Text + "Want to go here: " + iClickedPosition + "\r\n";
-#endif
 
         // Update the new position if we tp to A
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iClickedPosition);
-    }
+    }*/
 
     /* === TELEPORT TO MAP? === */
     if (this->cb_teleport_mark->Checked && (GetAsyncKeyState(VK_CONTROL) & 0x8000) && (GetAsyncKeyState(VK_LBUTTON) & 0x8000)) {
@@ -145,14 +132,13 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
         // Read X, Y, Z
         this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwMapMarkerOffsetX, &iNewX);
-        iNewY = this->objEntity->fY; // use current Y I guess.
+        iNewY = this->objEntity->fY + 50.0f; // use current Y I guess. Bump it up by 50.
         this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwMapMarkerOffsetZ, &iNewZ);
 
         // teleport...
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &iNewX);
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &iNewY);
         this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &iNewZ);
-        //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAOffset, &iMarkPosition);
     }
 
     /* === BOT === */
@@ -182,14 +168,11 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
 
         this->objEntity->Bot(
             data_bool,
-            (Algorithm)this->combobox_bot_dca->SelectedIndex,
             data
         );
 
         //this->objEntity->AoE();
     }
-
-    /* === Stance === */
 
     /* === Super Jump === */
     if(this->cb_jumphack->Checked && (GetAsyncKeyState(VK_SPACE) & 0x8000)) {
@@ -201,7 +184,6 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
     }
 
     /* === Camera rotation === */
-    // todo
     if(this->cb_bot_rotatecamera->Checked) {
         int iCamera;
         this->objEngine->ReadStaticMemory(this->objEngine->dwCameraMovementOffset, &iCamera);

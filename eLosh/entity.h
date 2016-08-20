@@ -4,22 +4,14 @@
 #include <map>
 #include <vector>
 
-enum Algorithm {
-    BLANK = 0,
-    FDA = 1,
-    PYTHAGORA = 2,
-    NONE = 3
-};
-
 class Entity {
     public:
         Entity(Engine *e);
         //~Entity();
         void Tick();
-        void Bot(std::map<std::string, bool> &dataBool, Algorithm eAlgorithm, std::map<std::string, int> &data);
+        void Bot(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
         void Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
         void SendAtk(int iAtk);
-        void AoE();
 
         int iBattle; // 0 || 1. Currently in battle?
         float fX; // X pos
@@ -30,6 +22,7 @@ class Entity {
         int iHP, iMP, iFP, iLv;
 
         int iCurrentTarget;
+        int iTargeType;
         float fTargetX;
         float fTargetY;
         float fTargetZ;
@@ -38,22 +31,11 @@ class Entity {
         int iTargetHP, iTargetMP, iTargetFP, iTargetLv;
         int iTargetDistance;
 
+        // Players around us?
         int iPlayerCount;
-
-        int iNewTargetLastBlacklist = NULL;
-        bool inAOE = false;
 
     private:
         Engine *objEngine;
-        /* Anti-collision stuff */
-        int iNewTargetTick = NULL;
-        int iNewTargetHP = NULL;
-        std::vector<int> blacklists;
-        int j=0;
+        void 
         
 };
-
-inline int __fastcall fabs(int a) {
-    int mask = (a >> (sizeof(int) * CHAR_BIT - 1));
-    return (a + mask) ^ mask;
-}

@@ -58,7 +58,6 @@ Engine::Engine() {
     this->dwXOffset  = 0x164;
     this->dwYOffset  = 0x168;
     this->dwZOffset  = 0x16C;
-    this->dwAOffset  = 0x16C; // The same!?
     this->dwHPOffset = 0x720;
     this->dwMPOffset = 0x724;
     this->dwFPOffset = 0x728;
@@ -67,27 +66,25 @@ Engine::Engine() {
     this->dwIdOffset = 0x41C;
     this->dwAuthOffset = 0x768;
     this->dwSpeedOffset = 0x1290;
-    this->dwMapMarkerOffsetA = 0x108c;
-    this->dwMapMarkerOffsetX = 0x1084;
-    this->dwMapMarkerOffsetZ = 0x108c; // The same!
 
-    this->dwClickedPositionOffset = 0x8CDD64; // statik
+    this->dwClickedPosition = 0x8CDD64; // statik
 
-    this->dwInvisibilityPointerOffset = 0x008D947C;
+    this->dwInvisibilityPointer = 0x008D947C;
     this->dwInvisibilityOffset = 0x1264 + 0x100; // ^ + 0x1264 + ((ECX+EAX*4) = 100)
 
-    this->dwCameraScrollOffset = 0x008DA9EC; // statikkkk Neuz.exe+8DA9EC
-    this->dwCameraMovementOffset = 0x008DA9EC; // statikkk
+    this->dwCameraScroll = 0x008DA9EC; // statikkkk Neuz.exe+8DA9EC
+    this->dwCameraMovement = 0x008DA9EC; // statikkk
     this->dwMaxInView = 0x00B67778; // Neuz.exe + B67778 statikk
-    this->dwFlyingCameraOffset = 0x008DAA04;// Neuz.exe+8DAA04
+    this->dwFlyingCamera = 0x008DAA04;// Neuz.exe+8DAA04
 
-    this->dwBattlePointerOffset = 0x009BDAA8; // green, double click.
+    this->dwBattlePointer = 0x009BDAA8; // green, double click.
     this->dwBattleOffset = 0x7624; // delta
 
     this->dwTargetBase = 0x008D9A80; // this is just the base.
     this->dwTargetIdOffset = 0x20; // this will get the monster id.
     this->dwTargetLoopBaseOffset = 0x00B67370; // ecx/edx/register loop STATIC Neuz.exe + B67778
 
+    /* fix this later */
     this->dwRangeCALLOffset = 0x002D96A6; // Neuz.exe+2D96A6 doubleclick
     // call Neuz.exe+2875E8. E8 = opcode call
     //this->byteRangeArrayOriginal = 0x002875E8;
