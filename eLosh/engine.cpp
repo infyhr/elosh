@@ -22,15 +22,14 @@ DWORD getNeuz(DWORD targetPID) {
 }
 
 Engine::Engine() {
-    std::cout << "Loaded " << std::endl;
+    __LOG("Loading engine...", 2);
 
     // Try to find the window
-    this->hwndFlyff = FindWindow(0, "Insanity Flyff");
+    this->hwndFlyff = FindWindow(0, "FLYFF");
     if (!this->hwndFlyff) {
 #ifdef _DEBUG
-        std::cout << "Cannot find the FlyFF window!" << std::endl;
+        __LOG("Cannot find the FlyFF window!", 0);
 #endif
-        exit(1);
         return;
     }
 
@@ -38,22 +37,24 @@ Engine::Engine() {
     GetWindowThreadProcessId(this->hwndFlyff, &this->dwFlyffPID);
     if (this->dwFlyffPID == 0) {
 #ifdef _DEBUG
-        std::cout << "Cannot get the PID." << std::endl;
+        __LOG("Cannot get the PID.", 0);
 #endif
         return;
     }
 
     // Get the handle
-    //this->hFlyff = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, this->dwFlyffPID);
-    this->hFlyff = OpenProcess(PROCESS_ALL_ACCESS, false, this->dwFlyffPID);
+    this->hFlyff = OpenProcess(PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ, false, this->dwFlyffPID);
+    //this->hFlyff = OpenProcess(PROCESS_ALL_ACCESS, false, this->dwFlyffPID);
     if (this->hFlyff == NULL) {
 #ifdef _DEBUG
-        std::cout << "Cannot retrieve the handle" << std::endl;
+        __LOG("Cannot retrieve the handle", 0);
 #endif
     }
 
     // Find the base load address.
     this->dwNeuzBase = getNeuz(this->dwFlyffPID);
+
+    __LOG("Engine successfully initialized");
 
     // read test
     /*int temp; // Neuz.exe+0x008D947C

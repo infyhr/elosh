@@ -5,7 +5,7 @@
 class Patch {
     public:
         Patch(Engine *e);
-        void Range();
+        void Range(bool restore = false);
         void Ground();
 
         DWORD dwRange;

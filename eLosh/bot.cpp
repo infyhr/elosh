@@ -21,6 +21,7 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
 
             // No teleport, blacklist them...
             this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
+            __LOG("Current target blacklisted.", 2);
 
             this->objEngine->SendESC();
             this->objEntity->iCurrentTarget = 0;
@@ -62,12 +63,15 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
 
         // Check if a player.
         if(iCandidateTargetType == 2) {
+            __LOG("There is a player nearby, time to give up...", 2);
             return; // Don't do anything fishy.
         }
 
         // Check if out of bounds.
-        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"])
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"]) {
+            __LOG("Candidate out of bounds.", 2);
             continue;
+        }
 
         // Check if blacklisted?
         /*if (iCandidateTarget == this->iNewTargetLastBlacklist) {
@@ -75,7 +79,7 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
             continue;
         }*/
         if(std::find(this->ignoredEntities.begin(), this->ignoredEntities.end(), iCandidateTarget) != this->ignoredEntities.end()) {
-            std::cout << iCandidateTarget << " is blacklisted." << std::endl;
+            __LOG("Candidate blacklisted already!", 2);
             continue;
         }
 
@@ -86,7 +90,7 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
         delta = sqrt(delta);
         this->objEntity->iTargetDistance = delta;
         if (delta > data["distance"] && dataBool["ignore"]) {
-            std::cout << "Target too far away..." << std::endl;
+            __LOG("Target too far away...", 2);
             continue;
         }
 
@@ -108,6 +112,7 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
 
         // Teleport to target if we must.
         if(dataBool["targettp"]) {
+            __LOG("Teleporting to target...", 2);
             this->objEntity->TeleportTo(iCandidatePositionX, iCandidatePositionY, iCandidatePositionZ);
         }
 

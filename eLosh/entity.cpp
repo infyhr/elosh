@@ -5,8 +5,6 @@
 
 Entity::Entity(Engine *e) {
     this->objEngine = e;
-
-    printf("I can access, proof: %x", this->objEngine->dwXOffset);
 }
 
 void Entity::Tick() {
@@ -72,9 +70,16 @@ int Entity::getPlayers() {
 }
 
 void Entity::TeleportTo(float x, float y, float z) {
-    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &x);
-    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &y);
-    this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &z);
+    bool r1, r2, r3;
+    r1 = this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &x);
+    r2 = this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &y);
+    r3 = this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &z);
+    if(r1 & r2 & r3) {
+        __LOG("Teleported successfully.");
+        return;
+    }
+
+    __LOG("Teleportation failed.", 0);
 }
 
 void Entity::Food(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data) {

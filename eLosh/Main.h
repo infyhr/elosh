@@ -1434,9 +1434,7 @@ private: System::Windows::Forms::Label^  label10;
     private: System::Void trackbar_scroll_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
         this->trackbarValue = this->trackbar_scroll->Value;
     }
-    private: System::Void cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-
-    }
+    private: System::Void cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void numeric_speedhack_ValueChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e);

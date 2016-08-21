@@ -18,7 +18,8 @@ void Main(array<String^>^ args) {
     Application::EnableVisualStyles();
     Application::SetCompatibleTextRenderingDefault(false);
 
-    std::cout << "eLosh initialized..." << std::endl;
+    // Hello world!
+    __LOG(":: eLosh ::", 2);
 
     //eLosh::Main form(e);
     eLosh::Main form;
@@ -29,14 +30,19 @@ void Main(array<String^>^ args) {
 
 eLosh::Main::Main() {
     // Init all objects.
-    Engine *e  = new Engine;
+    this->objEngine = new Engine;
+    this->objEntity = new Entity(this->objEngine);
+    this->objBot    = new Bot(this->objEngine, this->objEntity);
+    this->objPatch  = new Patch(this->objEngine);
+    __LOG("Initialized all objects");
+    /*Engine *e  = new Engine;
     this->objEngine = e;
     Entity *e_ = new Entity(e);
     this->objEntity = e_;
     Bot *b = new Bot(e, e_);
     this->objBot = b;
     Patch *p = new Patch(e);
-    this->objPatch = p;
+    this->objPatch = p;*/
 
     InitializeComponent();
 
@@ -55,7 +61,7 @@ eLosh::Main::~Main() {
 }
 
 System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
-    std::cout << "tickBuff" << std::endl;
+    __LOG("tickBuff", 2);
 }
 
 /*System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
@@ -346,13 +352,36 @@ System::Void eLosh::Main::cb_flyingcamera_CheckedChanged(System::Object^  sender
     this->objEngine->WriteStaticMemory(this->objEngine->dwFlyingCamera, &iToWrite);
 }
 
-
+/// <summary>
+/// Range hack, range change.
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+/// <returns></returns>
+System::Void eLosh::Main::cb_range_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    this->objPatch->Range((this->cb_range->Checked ? 0 : 1));
+}
 System::Void eLosh::Main::numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-    int fToWrite = Convert::ToInt32(this->numeric_range->Value);
+    float fToWrite = Convert::ToDouble(this->numeric_range->Value);
+    DWORD dwRangeAddress = this->objEngine->dwNeuzBase + this->objPatch->dwRange;
 
-    if (this->objEngine->WriteStaticMemory(0x755644, &fToWrite)) {
-        printf("OK!\n");
-    }
+    DWORD Protect = NULL;
+    DWORD dummy = NULL;
+    VirtualProtectEx(this->objEngine->hFlyff, (LPVOID)dwRangeAddress, sizeof(fToWrite), PAGE_READWRITE, &Protect);
+    WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)(this->objEngine->dwNeuzBase + this->objPatch->dwRange), &fToWrite, sizeof(fToWrite), NULL);
+    VirtualProtectEx(this->objEngine->hFlyff, (LPVOID)dwRangeAddress, sizeof(fToWrite), Protect, &dummy);
 
-    WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)(this->objEngine->dwNeuzBase + this->objPatch->dwRange), &fToWrite, 2, NULL);
+    /*LPTSTR pTmp = NULL;
+    DWORD errnum = GetLastError();
+    FormatMessage(
+        FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ARGUMENT_ARRAY,
+        NULL,
+        errnum,
+        LANG_NEUTRAL,
+        (LPTSTR)&pTmp,
+        0,
+        NULL
+    );
+
+    std::cout << "Error(" << errnum << "): " << pTmp << std::endl;*/
 }

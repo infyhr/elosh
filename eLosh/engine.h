@@ -1,6 +1,9 @@
 #pragma once
 #include <windows.h>
-#define VERSION L"Version: 1.1"
+#include <iomanip>
+#include <ctime>
+#include <sstream>
+#include "termcolor.h"
 
 class Engine {
     public:
@@ -54,3 +57,31 @@ class Engine {
         DWORD dwTargetIdOffset = 0x20;   
         DWORD dwTargetLoopBaseOffset = 0xB68370; // This is gotten from inspecting dwMaxInView.
 };
+
+#include "termcolor.h"
+
+inline void __stdcall __LOG(char *szMessage, short level = 1) {
+    std::string message(szMessage);
+    std::string tab("    ");  // 4 spaces = tab. But no, \t in Windows is for some fucking reason 8 spaces...
+
+    // Print out the date first
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::cout << termcolor::white << std::put_time(&tm, "%H:%M:%S") << tab;
+
+    switch (level) {
+    case 0:
+        std::cout << termcolor::red << "[FAIL]" << tab;
+        break;
+    case 1:
+        std::cout << termcolor::green << "[OK]  " << tab; // 2 characters shorter.
+        break;
+    case 2:
+        std::cout << termcolor::cyan << "[INFO]" << tab;
+        break;
+    }
+
+    //std::cout << termcolor::white << message << termcolor::reset;
+
+    std::cout << termcolor::white << szMessage << std::endl;
+}
