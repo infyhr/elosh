@@ -78,7 +78,7 @@ void Patch::Range(bool restore) {
         return;
     }
 
-    r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)dwJAAddress,  &bRangeCallNew, 13, NULL);
+    r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)dwJAAddress,  &bRangeNew, 13, NULL);
     r2 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)dwJNEAddress, &bRangeCallNew, 2, NULL);
 
     if(r1 & r2) {

@@ -16,7 +16,7 @@ DWORD getNeuz(DWORD targetPID) {
     MODULEENTRY32 me32;
     me32.dwSize = sizeof(MODULEENTRY32);
     Module32First(hModuleSnap, &me32);
-    printf("Neuz.exe base address = %x\n", (DWORD)me32.modBaseAddr);
+    //printf("Neuz.exe base address = %x\n", (DWORD)me32.modBaseAddr);
     CloseHandle(hModuleSnap);
     return (DWORD)me32.modBaseAddr;
 }
