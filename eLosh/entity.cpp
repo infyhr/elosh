@@ -66,7 +66,7 @@ int Entity::getPlayers() {
         if (iNewTargetType == 2) iPlayerCount++;
     }
 
-    return iPlayerCount;
+    return (iPlayerCount > -1) ? iPlayerCount : 0;
 }
 
 void Entity::TeleportTo(float x, float y, float z) {

@@ -297,8 +297,9 @@ System::Void eLosh::Main::listView_SelectedIndexChanged(System::Object^  sender,
 /// <param name="e"></param>
 /// <returns></returns>
 System::Void eLosh::Main::cb_gm_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-    int iToWrite = (this->cb_gm->Checked ? 83 : 70);
+    int iToWrite = (this->cb_gm->Checked ? 90 : 70);
     this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwAuthOffset, &iToWrite);
+    __LOG("Auth level changed", 2);
 }
 
 /// <summary>

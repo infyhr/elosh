@@ -33,8 +33,10 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
     // Read maxInView (static)
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
+    // Distances to enemies.
+    std::map<int, float> distances;
 
-    float iClosestPosition = 100000; // Max distance.
+    float fClosestPosition = 100;
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
         if (this->objEntity->iCurrentTarget != 0) continue; // Do we have a target?
 
@@ -69,15 +71,11 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
 
         // Check if out of bounds.
         if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"]) {
-            __LOG("Candidate out of bounds.", 2);
+            //__LOG("Candidate out of bounds.", 2);
             continue;
         }
 
         // Check if blacklisted?
-        /*if (iCandidateTarget == this->iNewTargetLastBlacklist) {
-            std::cout << "This target is blacklisted!" << std::endl;
-            continue;
-        }*/
         if(std::find(this->ignoredEntities.begin(), this->ignoredEntities.end(), iCandidateTarget) != this->ignoredEntities.end()) {
             __LOG("Candidate blacklisted already!", 2);
             continue;
@@ -94,9 +92,9 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
             continue;
         }
 
-        if(delta <= iClosestPosition) {
+        if(delta <= fClosestPosition) {
             // Got new closest target.
-            iClosestPosition = delta;
+            fClosestPosition = delta;
 
             // Log the time when we got the target and their starting HP.
             this->iNewTargetTick = GetTickCount();
