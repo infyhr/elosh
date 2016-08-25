@@ -20,6 +20,61 @@ Patch::Patch(Engine *e) {
     __LOG("Anti-debug patched failed!", 0);
 }
 
+void Patch::Ground(bool restore) {
+    BYTE bGroundAOB_1[] = {
+        //0x8D, 0x45, 0xE4, 0x50, 0x8D, 0x45, 0xE0, 0x50, 0x8D, 0x45, 0xF0, 0x50
+        0xF3, 0x0F, 0x10, 0x45, 0xC8, 0x0F, 0x57, 0xC9, 0x0F, 0x2F, 0xC8, 0x0F, 0x86, 0x99, 0x01
+    };
+    BYTE bGroundAOB_2[] = {
+        0x6A, 0x02, 0x6A, 0x0E, 0x8B, 0xCF
+
+    };
+    BYTE bGroundOriginal_1[] = {
+        0x83, 0xBF, 0x04, 0x28, 0x00, 0x00, 0x01
+    };
+    BYTE bGroundOriginal_2[] = {
+        0x83, 0xBE, 0x04, 0x28, 0x00, 0x00, 0x00
+    };
+    BYTE bGroundModified_1[7] = {
+        0x83, 0xBF, 0x04, 0x28, 0x00, 0x00, 0x00 // last byte flipped
+    };
+    BYTE bGroundModified_2[7] = {
+        0x83, 0xBE, 0x04, 0x28, 0x00, 0x00, 0x01 // last byte flipped
+    };
+    int r1, r2;
+
+    this->dwGroundFirstAddress = this->dwFindPattern(this->objEngine->hFlyff, bGroundAOB_1, sizeof(bGroundAOB_1) / sizeof(BYTE));
+    this->dwGroundFirstAddress += 0x11;
+    printf("first address is: %x\n", dwGroundFirstAddress);
+    this->dwGroundSecondAddress = this->dwFindPattern(this->objEngine->hFlyff, bGroundAOB_2, sizeof(bGroundAOB_2) / sizeof(BYTE));
+    this->dwGroundSecondAddress += 0x7A;
+    printf("second address is: %x\n", this->dwGroundSecondAddress);
+
+    if(restore) {
+        r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwGroundFirstAddress, &bGroundOriginal_1, 7, NULL);
+        r2 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwGroundSecondAddress, &bGroundOriginal_2, 7, NULL);
+
+        if (r1 & r2) {
+            __LOG("Flyhack disabled.", 2);
+        }
+        else {
+            __LOG("Failed to disable flyhack!", 0);
+        }
+
+        return;
+    }
+
+    r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwGroundFirstAddress,  &bGroundModified_1, 7, NULL);
+    r2 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwGroundSecondAddress, &bGroundModified_2, 7, NULL);
+
+    if (r1 & r2) {
+        __LOG("Successfully patched fly hack.");
+    }
+    else {
+        __LOG("Failed to patch the fly hack!", 0);
+    }
+}
+
 void Patch::Range(bool restore) {
     /*
     015D9988 - 6A 00                 - push 00

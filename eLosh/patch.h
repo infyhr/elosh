@@ -6,7 +6,7 @@ class Patch {
     public:
         Patch(Engine *e);
         void Range(bool restore = false);
-        void Ground();
+        void Ground(bool restore = false);
 
         DWORD dwRange;
 
@@ -18,4 +18,8 @@ class Patch {
         DWORD dwPushAddress;
         DWORD dwJNEAddress;
         DWORD dwJAAddress;
+
+        // ToggleGround (flyhack)
+        DWORD dwGroundFirstAddress;
+        DWORD dwGroundSecondAddress;
 };

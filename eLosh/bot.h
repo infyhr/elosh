@@ -10,6 +10,7 @@ class Bot {
     public:
         Bot(Engine *e, Entity *_e);
         void _1v1(std::map<std::string, bool> &dataBool, std::map<std::string, int> &data);
+        void AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>& data);
 
     private:
         Engine *objEngine;
@@ -20,4 +21,8 @@ class Bot {
 
         int iNewTargetTick; // New target that has /just/ been selected.
         int iNewTargetHP; // and its HP.
+
+        // AoE
+        bool inAOE;
+        unsigned short j;
 };

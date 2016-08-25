@@ -55,6 +55,8 @@ namespace eLosh {
         Entity *objEntity;
         Engine *objEngine;
         Bot *objBot;
+    private: System::Windows::Forms::CheckBox^  cb_flyhack;
+    public:
         Patch *objPatch;
 
             Main();
@@ -330,6 +332,7 @@ private: System::Windows::Forms::Label^  label10;
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
             this->timerBuff = (gcnew System::Windows::Forms::Timer(this->components));
+            this->cb_flyhack = (gcnew System::Windows::Forms::CheckBox());
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
@@ -603,6 +606,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // Character
             // 
+            this->Character->Controls->Add(this->cb_flyhack);
             this->Character->Controls->Add(this->cb_dommt);
             this->Character->Controls->Add(this->label17);
             this->Character->Controls->Add(this->numeric_range);
@@ -639,7 +643,7 @@ private: System::Windows::Forms::Label^  label10;
             // label17
             // 
             this->label17->AutoSize = true;
-            this->label17->Location = System::Drawing::Point(5, 161);
+            this->label17->Location = System::Drawing::Point(5, 180);
             this->label17->Name = L"label17";
             this->label17->Size = System::Drawing::Size(39, 13);
             this->label17->TabIndex = 54;
@@ -647,7 +651,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // numeric_range
             // 
-            this->numeric_range->Location = System::Drawing::Point(49, 159);
+            this->numeric_range->Location = System::Drawing::Point(49, 178);
             this->numeric_range->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
             this->numeric_range->Name = L"numeric_range";
             this->numeric_range->Size = System::Drawing::Size(67, 20);
@@ -1375,6 +1379,19 @@ private: System::Windows::Forms::Label^  label10;
             this->timerBuff->Enabled = true;
             this->timerBuff->Tick += gcnew System::EventHandler(this, &Main::tickBuff);
             // 
+            // cb_flyhack
+            // 
+            this->cb_flyhack->AutoSize = true;
+            this->cb_flyhack->ForeColor = System::Drawing::Color::DarkCyan;
+            this->cb_flyhack->ImageKey = L"(none)";
+            this->cb_flyhack->Location = System::Drawing::Point(6, 155);
+            this->cb_flyhack->Name = L"cb_flyhack";
+            this->cb_flyhack->Size = System::Drawing::Size(66, 17);
+            this->cb_flyhack->TabIndex = 56;
+            this->cb_flyhack->Text = L"Fly hack";
+            this->cb_flyhack->UseVisualStyleBackColor = true;
+            this->cb_flyhack->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_flyhack_CheckedChanged);
+            // 
             // Main
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -1438,5 +1455,6 @@ private: System::Windows::Forms::Label^  label10;
     private: System::Void cb_flyingcamera_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void numeric_speedhack_ValueChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void cb_flyhack_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

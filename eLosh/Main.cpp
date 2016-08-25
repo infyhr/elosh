@@ -386,3 +386,13 @@ System::Void eLosh::Main::numeric_range_ValueChanged(System::Object^  sender, Sy
 
     std::cout << "Error(" << errnum << "): " << pTmp << std::endl;*/
 }
+
+/// <summary>
+/// flyhack
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+/// <returns></returns>
+System::Void eLosh::Main::cb_flyhack_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    this->objPatch->Ground((this->cb_flyhack->Checked ? 0 : 1));
+}

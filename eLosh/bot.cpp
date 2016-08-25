@@ -1,4 +1,5 @@
 #include "bot.h"
+#define VERBOSE
 
 Bot::Bot(Engine *e, Entity *_e) {
     this->objEngine = e; // Assign engine.
@@ -33,8 +34,6 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
     // Read maxInView (static)
     int iMaxInView;
     this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
-    // Distances to enemies.
-    std::map<int, float> distances;
 
     float fClosestPosition = 100;
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
@@ -66,6 +65,7 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
         // Check if a player.
         if(iCandidateTargetType == 2) {
             __LOG("There is a player nearby, time to give up...", 2);
+            this->objEngine->SendESC();
             return; // Don't do anything fishy.
         }
 
@@ -92,6 +92,10 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
             continue;
         }
 
+#ifdef VERBOSE
+        printf("%d\t%f\n", iCandidateTarget, delta);
+#endif
+
         if(delta <= fClosestPosition) {
             // Got new closest target.
             fClosestPosition = delta;
@@ -117,4 +121,107 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
         // Attack
         this->objEngine->SendKey(0); // F1
     }
+}
+
+void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>& data) {
+    this->inAOE = true;
+    int iMaxInView;
+    this->objEngine->ReadStaticMemory(this->objEngine->dwMaxInView, &iMaxInView);
+
+    float iClosestPosition = 100000; // Max distance.
+    this->objEntity->iPlayerCount = 0;
+
+    if (this->objEntity->iCurrentTarget != 0) {
+        std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
+        if (this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->objEntity->iTargetHP) {
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
+            //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
+            std::cout << "too far blacklisted~" << std::endl;
+            this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
+            this->objEngine->SendESC();
+            Sleep(200);
+            this->objEntity->iCurrentTarget = 0;
+
+            return;
+        }
+        if (this->iNewTargetHP == this->objEntity->iTargetHP) return;
+        j++;
+        this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
+        //std::cout << "Added " << this->iCurrentTarget << std::endl;
+        __LOG("Target added to the blacklist.", 2);
+        this->objEngine->SendESC();
+        Sleep(200);
+        this->objEntity->iCurrentTarget = 0;
+    }
+
+    for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
+        if (j == 10) {
+            __LOG("Starting AoE...");
+            this->objEngine->SendESC();
+            Sleep(500);
+            this->objEngine->SendKey(3);
+            Sleep(1000);
+            for (int k = 0; k < 10; k++) {
+                this->objEngine->SendKey(8);
+                Sleep(800);
+            }
+            Sleep(1000);
+            this->j = 0;
+            //std::cout << "I caught 5 now I stop!" << std::endl;
+            //Sleep(10000);
+            this->ignoredEntities.clear();
+            return;
+        }
+
+        //asdadsa
+        // This is our candidate.
+        int iCandidateTarget;
+        int iCandidateTargetType;
+        int iCandidateTargetHP;
+        float iCandidatePositionX;
+        float iCandidatePositionY;
+        float iCandidatePositionZ;
+        int iCandidateLevel;
+
+        // Read the ID, target type and their HP and position
+        this->objEngine->ReadStaticMemory(i * 4 + this->objEngine->dwTargetLoopBaseOffset, &iCandidateTarget); // This holds the ID now
+        this->objEngine->ReadStaticMemory(iCandidateTarget + 4, &iCandidateTargetType, false); // I don't know how this works. ID+4 = Type? But it should be address... :/
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwHPOffset, &iCandidateTargetHP, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwLevelOffset, &iCandidateLevel, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwXOffset, &iCandidatePositionX, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwYOffset, &iCandidatePositionY, false);
+        this->objEngine->ReadStaticMemory(iCandidateTarget + this->objEngine->dwZOffset, &iCandidatePositionZ, false);
+
+        // Now read our own ID and compare.
+        int iOwnId;
+        this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwIdOffset, &iOwnId);
+        if (iOwnId == iCandidateTarget) continue;  // No poin.
+
+                                                   // Check if a player.
+        if (iCandidateTargetType == 2) {
+            this->objEntity->iPlayerCount++;
+            return; // Don't do anything fishy.
+        }
+
+        // Check if out of bounds.
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1)
+            continue;
+
+        // Check if blacklisted?
+        if (std::find(ignoredEntities.begin(), ignoredEntities.end(), iCandidateTarget) != ignoredEntities.end()) {
+            continue; // blacklisted.
+        }
+
+        // Log the time when we got the target and their starting HP.
+        this->iNewTargetTick = GetTickCount();
+        this->iNewTargetHP = iCandidateTargetHP;
+
+        // Feed into current target selector
+        this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
+
+        // Attack
+        this->objEngine->SendKey(0); // F1
+    }
+    //Sleep(10000);
 }
