@@ -41,14 +41,11 @@ void Patch::Ground(bool restore) {
     BYTE bGroundModified_2[7] = {
         0x83, 0xBE, 0x04, 0x28, 0x00, 0x00, 0x01 // last byte flipped
     };
-    int r1, r2;
 
     this->dwGroundFirstAddress = this->dwFindPattern(this->objEngine->hFlyff, bGroundAOB_1, sizeof(bGroundAOB_1) / sizeof(BYTE));
     this->dwGroundFirstAddress += 0x11;
-    printf("first address is: %x\n", dwGroundFirstAddress);
     this->dwGroundSecondAddress = this->dwFindPattern(this->objEngine->hFlyff, bGroundAOB_2, sizeof(bGroundAOB_2) / sizeof(BYTE));
     this->dwGroundSecondAddress += 0x7A;
-    printf("second address is: %x\n", this->dwGroundSecondAddress);
 
     if(restore) {
         r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwGroundFirstAddress, &bGroundOriginal_1, 7, NULL);
@@ -114,7 +111,6 @@ void Patch::Range(bool restore) {
     };
     BYTE bRangeCallOriginal[] = { 0x75, 0x10 };
     BYTE bRangeCallNew[]      = { 0x90, 0x90 };
-    int r1, r2; // temp to store the results of calls.
 
     // Restore to original values.
     if (restore) {

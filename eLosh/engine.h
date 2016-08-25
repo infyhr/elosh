@@ -56,6 +56,9 @@ class Engine {
         DWORD dwTargetBase = 0x008DAA78;
         DWORD dwTargetIdOffset = 0x20;   
         DWORD dwTargetLoopBaseOffset = 0xB68370; // This is gotten from inspecting dwMaxInView.
+
+        DWORD DCTPtr = 0x8DA688; // This points to the real address Neuz.exe+8DA688 -> 0x19AA688 which points to 0x651700.
+        DWORD DCTOffset = 0x1390; // ^ + 0x1390 = 0x652A90.
 };
 
 #include "termcolor.h"

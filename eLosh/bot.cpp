@@ -63,14 +63,14 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
         if (iOwnId == iCandidateTarget) continue;  // No point.
 
         // Check if a player.
-        if(iCandidateTargetType == 2) {
+        if(iCandidateTargetType == 2 && dataBool["abortplayer"]) {
             __LOG("There is a player nearby, time to give up...", 2);
             this->objEngine->SendESC();
             return; // Don't do anything fishy.
         }
 
         // Check if out of bounds.
-        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"]) {
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"] || iCandidateLevel < data["minlvl"]) {
             //__LOG("Candidate out of bounds.", 2);
             continue;
         }
@@ -137,7 +137,7 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
-            std::cout << "too far blacklisted~" << std::endl;
+            __LOG("Too far, blacklisted", 2);
             this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
             this->objEngine->SendESC();
             Sleep(200);
@@ -156,21 +156,24 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
     }
 
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
-        if (j == 10) {
+        __LOG("Enemy caught!", 2);
+        if (j == data["mobs"]) {
             __LOG("Starting AoE...");
             this->objEngine->SendESC();
             Sleep(500);
-            this->objEngine->SendKey(3);
-            Sleep(1000);
-            for (int k = 0; k < 10; k++) {
+            this->objEngine->SendKey(2);
+            Sleep(5000);
+            for (int k = 0; k < 10; k++) { // Make this own thread.
                 this->objEngine->SendKey(8);
                 Sleep(800);
             }
             Sleep(1000);
             this->j = 0;
             //std::cout << "I caught 5 now I stop!" << std::endl;
-            //Sleep(10000);
+            __LOG("AoE finished. Sleeping now...", 2);
             this->ignoredEntities.clear();
+            //Sleep(10000);
+            Sleep((DWORD)data["delay"]*1000);
             return;
         }
 
@@ -198,14 +201,15 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
         this->objEngine->ReadMemory(this->objEngine->dwPlayerBase, this->objEngine->dwIdOffset, &iOwnId);
         if (iOwnId == iCandidateTarget) continue;  // No poin.
 
-                                                   // Check if a player.
-        if (iCandidateTargetType == 2) {
-            this->objEntity->iPlayerCount++;
+        // Check if a player.
+        if (iCandidateTargetType == 2 && dataBool["abortplayer"]) {
+            __LOG("There is a player nearby, time to give up...", 2);
+            this->objEngine->SendESC();
             return; // Don't do anything fishy.
         }
 
         // Check if out of bounds.
-        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel == 1)
+        if (iCandidateTarget >= 100000000 || iCandidateTargetType != 18 || iCandidateTargetHP == 0 || iCandidateLevel < 10 || iCandidateLevel > data["maxlvl"] || iCandidateLevel < data["minlvl"])
             continue;
 
         // Check if blacklisted?
@@ -215,7 +219,7 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
 
         // Log the time when we got the target and their starting HP.
         this->iNewTargetTick = GetTickCount();
-        this->iNewTargetHP = iCandidateTargetHP;
+        this->iNewTargetHP   = iCandidateTargetHP;
 
         // Feed into current target selector
         this->objEngine->WriteMemory(this->objEngine->dwTargetBase, this->objEngine->dwTargetIdOffset, &iCandidateTarget);
@@ -223,5 +227,4 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
         // Attack
         this->objEngine->SendKey(0); // F1
     }
-    //Sleep(10000);
 }

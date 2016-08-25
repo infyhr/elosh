@@ -24,5 +24,5 @@ class Bot {
 
         // AoE
         bool inAOE;
-        unsigned short j;
+        unsigned short j = 0;
 };

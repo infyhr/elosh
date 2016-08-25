@@ -12,6 +12,7 @@ class Patch {
 
     private:
         Engine *objEngine;
+        int r1, r2; // Results
         DWORD dwFindPattern(HANDLE hP, BYTE bSig[], unsigned const int uByteCount);
 
         // Range

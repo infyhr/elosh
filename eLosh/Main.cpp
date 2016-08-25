@@ -170,6 +170,8 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         data["pet_key"]  = this->combobox_bot_pet->SelectedIndex;
         data["distance"] = Convert::ToInt32(this->tb_bot_ignore->Text);
         data["maxlvl"]   = Convert::ToInt32(this->numeric_maxlvl->Text);
+        data["minlvl"]   = Convert::ToInt32(this->numeric_minlvl->Text);
+        data["mobs"]     = Convert::ToInt32(this->numeric_mobs->Text);
 
         // Contains boolean values.
         std::map<std::string, bool> data_bool;
@@ -180,10 +182,16 @@ System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
         data_bool["rotatecamera"]   = this->cb_bot_rotatecamera->Checked;
         data_bool["pet"]            = this->cb_bot_restartpet->Checked;
         data_bool["targettp"]       = this->cb_bot_targettp->Checked;
+        data_bool["abortplayer"]    = this->cb_bot_abort->Checked;
+        data_bool["aoe"]            = this->cb_bot_aoe->Checked;
 
-        this->objBot->_1v1(data_bool, data);
-
-        //this->objEntity->Food(data_bool, data);
+        //this->objBot->_1v1(data_bool, data);
+        this->objEntity->Food(data_bool, data);
+        if(data_bool["aoe"]) {
+            this->objBot->AoE(data_bool, data);
+        }else {
+            this->objBot->_1v1(data_bool, data);
+        }
 
         //this->objEntity->AoE();
     }
@@ -395,4 +403,19 @@ System::Void eLosh::Main::numeric_range_ValueChanged(System::Object^  sender, Sy
 /// <returns></returns>
 System::Void eLosh::Main::cb_flyhack_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
     this->objPatch->Ground((this->cb_flyhack->Checked ? 0 : 1));
+}
+
+/// <summary>
+/// max dommt
+/// </summary>
+System::Void eLosh::Main::cb_dommt_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    // First grab the real address.
+    DWORD dwHopAddr;
+    //int DCTValue;
+    this->objEngine->ReadStaticMemory(this->objEngine->DCTPtr, &dwHopAddr);
+    //this->objEngine->ReadStaticMemory(dwHopAddr + this->objEngine->DCTOffset, &DCTValue, false);
+
+    // Update :)
+    int __tmp = 3000;
+    this->objEngine->WriteStaticMemory(dwHopAddr + this->objEngine->DCTOffset, &__tmp, false);
 }
