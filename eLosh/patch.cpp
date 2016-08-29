@@ -72,6 +72,52 @@ void Patch::Ground(bool restore) {
     }
 }
 
+void Patch::DoubleDamage(bool restore) {
+    BYTE bDoubleDamageAOB[] = {
+        0x6A, 0x05, 0x6A, 0x01, 0x6A, 0x17
+    };
+    BYTE bDoubleDamageNew[2] = {
+        0x6A, 0x1A
+    };
+    BYTE bDoubleDamageOriginal[3][2] = {
+        { 0x6A, 0x17 },
+        { 0x6A, 0x18 },
+        { 0x6A, 0x19 }
+    };
+    DWORD dwAobAddress;
+    DWORD iFirstHop = 4;
+    DWORD iSecondHop = 0x1F;
+    DWORD iThirdHop = 0x3A;
+
+    if (restore) {
+        for (int i = 0; i < 3; i++) {
+            r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwDDAddresses[i], &bDoubleDamageOriginal[i], 2, NULL);
+        }
+        if (r1) {
+            __LOG("Successfully restored the double damage hack");
+        }
+        else {
+            __LOG("Failed to restore the double damage.", 0);
+        }
+        return;
+    }
+
+    dwAobAddress = this->dwFindPattern(this->objEngine->hFlyff, bDoubleDamageAOB, sizeof(bDoubleDamageAOB) / sizeof(BYTE));
+    this->dwDDAddresses[0] = dwAobAddress + iFirstHop;
+    this->dwDDAddresses[1] = dwAobAddress + iSecondHop;
+    this->dwDDAddresses[2] = dwAobAddress + iThirdHop;
+
+    for(int i = 0; i < 3; i++) {
+        r1 = WriteProcessMemory(this->objEngine->hFlyff, (LPVOID)this->dwDDAddresses[i], &bDoubleDamageNew, 2, NULL);
+    }
+
+    if(r1) {
+        __LOG("Successfully patched double damage");
+    }else {
+        __LOG("Failed to patch the double damage.", 0);
+    }
+}
+
 void Patch::Range(bool restore) {
     /*
     015D9988 - 6A 00                 - push 00

@@ -18,6 +18,7 @@ class Bot {
         std::vector<int> ignoredEntities;
         std::map<std::string, bool> dataBool;
         std::map<std::string, int> data;
+        void Buff();
 
         int iNewTargetTick; // New target that has /just/ been selected.
         int iNewTargetHP; // and its HP.
@@ -25,4 +26,5 @@ class Bot {
         // AoE
         bool inAOE;
         unsigned short j = 0;
+        unsigned short n = 0;
 };

@@ -64,6 +64,7 @@ namespace eLosh {
     private: System::Windows::Forms::Label^  label18;
     private: System::Windows::Forms::NumericUpDown^  numeric_minlvl;
     private: System::Windows::Forms::CheckBox^  cb_bot_abort;
+    private: System::Windows::Forms::CheckBox^  cb_doubledmg;
 
     public:
         Patch *objPatch;
@@ -281,6 +282,12 @@ private: System::Windows::Forms::Label^  label10;
             this->trackbar_speed = (gcnew System::Windows::Forms::TrackBar());
             this->cb_gm = (gcnew System::Windows::Forms::CheckBox());
             this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+            this->cb_bot_abort = (gcnew System::Windows::Forms::CheckBox());
+            this->label19 = (gcnew System::Windows::Forms::Label());
+            this->numeric_mobs = (gcnew System::Windows::Forms::NumericUpDown());
+            this->cb_bot_aoe = (gcnew System::Windows::Forms::CheckBox());
+            this->label18 = (gcnew System::Windows::Forms::Label());
+            this->numeric_minlvl = (gcnew System::Windows::Forms::NumericUpDown());
             this->label15 = (gcnew System::Windows::Forms::Label());
             this->numeric_maxlvl = (gcnew System::Windows::Forms::NumericUpDown());
             this->cb_bot_autobuff = (gcnew System::Windows::Forms::CheckBox());
@@ -342,12 +349,7 @@ private: System::Windows::Forms::Label^  label10;
             this->timer = (gcnew System::Windows::Forms::Timer(this->components));
             this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
             this->timerBuff = (gcnew System::Windows::Forms::Timer(this->components));
-            this->label18 = (gcnew System::Windows::Forms::Label());
-            this->numeric_minlvl = (gcnew System::Windows::Forms::NumericUpDown());
-            this->cb_bot_aoe = (gcnew System::Windows::Forms::CheckBox());
-            this->label19 = (gcnew System::Windows::Forms::Label());
-            this->numeric_mobs = (gcnew System::Windows::Forms::NumericUpDown());
-            this->cb_bot_abort = (gcnew System::Windows::Forms::CheckBox());
+            this->cb_doubledmg = (gcnew System::Windows::Forms::CheckBox());
             this->tabControl1->SuspendLayout();
             this->tabPage1->SuspendLayout();
             this->groupBox2->SuspendLayout();
@@ -357,14 +359,14 @@ private: System::Windows::Forms::Label^  label10;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_scroll))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->BeginInit();
             this->groupBox1->SuspendLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_mobs))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_minlvl))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
             this->gb_misc->SuspendLayout();
             this->gb_teleport->SuspendLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_minlvl))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_mobs))->BeginInit();
             this->SuspendLayout();
             // 
             // tabControl1
@@ -623,6 +625,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // Character
             // 
+            this->Character->Controls->Add(this->cb_doubledmg);
             this->Character->Controls->Add(this->cb_flyhack);
             this->Character->Controls->Add(this->cb_dommt);
             this->Character->Controls->Add(this->label17);
@@ -650,7 +653,7 @@ private: System::Windows::Forms::Label^  label10;
             this->cb_flyhack->AutoSize = true;
             this->cb_flyhack->ForeColor = System::Drawing::Color::DarkCyan;
             this->cb_flyhack->ImageKey = L"(none)";
-            this->cb_flyhack->Location = System::Drawing::Point(6, 155);
+            this->cb_flyhack->Location = System::Drawing::Point(6, 186);
             this->cb_flyhack->Name = L"cb_flyhack";
             this->cb_flyhack->Size = System::Drawing::Size(66, 17);
             this->cb_flyhack->TabIndex = 56;
@@ -674,7 +677,7 @@ private: System::Windows::Forms::Label^  label10;
             // label17
             // 
             this->label17->AutoSize = true;
-            this->label17->Location = System::Drawing::Point(5, 180);
+            this->label17->Location = System::Drawing::Point(3, 162);
             this->label17->Name = L"label17";
             this->label17->Size = System::Drawing::Size(39, 13);
             this->label17->TabIndex = 54;
@@ -682,7 +685,7 @@ private: System::Windows::Forms::Label^  label10;
             // 
             // numeric_range
             // 
-            this->numeric_range->Location = System::Drawing::Point(49, 178);
+            this->numeric_range->Location = System::Drawing::Point(48, 160);
             this->numeric_range->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2000, 0, 0, 0 });
             this->numeric_range->Name = L"numeric_range";
             this->numeric_range->Size = System::Drawing::Size(67, 20);
@@ -844,6 +847,64 @@ private: System::Windows::Forms::Label^  label10;
             this->groupBox1->TabIndex = 13;
             this->groupBox1->TabStop = false;
             this->groupBox1->Text = L"Bot";
+            // 
+            // cb_bot_abort
+            // 
+            this->cb_bot_abort->AutoSize = true;
+            this->cb_bot_abort->Location = System::Drawing::Point(6, 148);
+            this->cb_bot_abort->Name = L"cb_bot_abort";
+            this->cb_bot_abort->Size = System::Drawing::Size(119, 17);
+            this->cb_bot_abort->TabIndex = 56;
+            this->cb_bot_abort->Text = L"Abort at player sight";
+            this->cb_bot_abort->UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this->label19->AutoSize = true;
+            this->label19->Location = System::Drawing::Point(161, 133);
+            this->label19->Name = L"label19";
+            this->label19->Size = System::Drawing::Size(55, 13);
+            this->label19->TabIndex = 55;
+            this->label19->Text = L"AoE mobs";
+            // 
+            // numeric_mobs
+            // 
+            this->numeric_mobs->Location = System::Drawing::Point(220, 131);
+            this->numeric_mobs->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
+            this->numeric_mobs->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            this->numeric_mobs->Name = L"numeric_mobs";
+            this->numeric_mobs->Size = System::Drawing::Size(48, 20);
+            this->numeric_mobs->TabIndex = 54;
+            this->numeric_mobs->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
+            // 
+            // cb_bot_aoe
+            // 
+            this->cb_bot_aoe->AutoSize = true;
+            this->cb_bot_aoe->Location = System::Drawing::Point(164, 18);
+            this->cb_bot_aoe->Name = L"cb_bot_aoe";
+            this->cb_bot_aoe->Size = System::Drawing::Size(75, 17);
+            this->cb_bot_aoe->TabIndex = 53;
+            this->cb_bot_aoe->Text = L"AoE mode";
+            this->cb_bot_aoe->UseVisualStyleBackColor = true;
+            // 
+            // label18
+            // 
+            this->label18->AutoSize = true;
+            this->label18->Location = System::Drawing::Point(161, 105);
+            this->label18->Name = L"label18";
+            this->label18->Size = System::Drawing::Size(49, 13);
+            this->label18->TabIndex = 52;
+            this->label18->Text = L"Min level";
+            // 
+            // numeric_minlvl
+            // 
+            this->numeric_minlvl->Location = System::Drawing::Point(220, 103);
+            this->numeric_minlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
+            this->numeric_minlvl->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+            this->numeric_minlvl->Name = L"numeric_minlvl";
+            this->numeric_minlvl->Size = System::Drawing::Size(48, 20);
+            this->numeric_minlvl->TabIndex = 51;
+            this->numeric_minlvl->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
             // 
             // label15
             // 
@@ -1416,63 +1477,19 @@ private: System::Windows::Forms::Label^  label10;
             this->timerBuff->Enabled = true;
             this->timerBuff->Tick += gcnew System::EventHandler(this, &Main::tickBuff);
             // 
-            // label18
+            // cb_doubledmg
             // 
-            this->label18->AutoSize = true;
-            this->label18->Location = System::Drawing::Point(161, 105);
-            this->label18->Name = L"label18";
-            this->label18->Size = System::Drawing::Size(49, 13);
-            this->label18->TabIndex = 52;
-            this->label18->Text = L"Min level";
-            // 
-            // numeric_minlvl
-            // 
-            this->numeric_minlvl->Location = System::Drawing::Point(220, 103);
-            this->numeric_minlvl->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
-            this->numeric_minlvl->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-            this->numeric_minlvl->Name = L"numeric_minlvl";
-            this->numeric_minlvl->Size = System::Drawing::Size(48, 20);
-            this->numeric_minlvl->TabIndex = 51;
-            this->numeric_minlvl->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-            // 
-            // cb_bot_aoe
-            // 
-            this->cb_bot_aoe->AutoSize = true;
-            this->cb_bot_aoe->Location = System::Drawing::Point(164, 18);
-            this->cb_bot_aoe->Name = L"cb_bot_aoe";
-            this->cb_bot_aoe->Size = System::Drawing::Size(75, 17);
-            this->cb_bot_aoe->TabIndex = 53;
-            this->cb_bot_aoe->Text = L"AoE mode";
-            this->cb_bot_aoe->UseVisualStyleBackColor = true;
-            // 
-            // label19
-            // 
-            this->label19->AutoSize = true;
-            this->label19->Location = System::Drawing::Point(161, 133);
-            this->label19->Name = L"label19";
-            this->label19->Size = System::Drawing::Size(55, 13);
-            this->label19->TabIndex = 55;
-            this->label19->Text = L"AoE mobs";
-            // 
-            // numeric_mobs
-            // 
-            this->numeric_mobs->Location = System::Drawing::Point(220, 131);
-            this->numeric_mobs->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 300, 0, 0, 0 });
-            this->numeric_mobs->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
-            this->numeric_mobs->Name = L"numeric_mobs";
-            this->numeric_mobs->Size = System::Drawing::Size(48, 20);
-            this->numeric_mobs->TabIndex = 54;
-            this->numeric_mobs->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
-            // 
-            // cb_bot_abort
-            // 
-            this->cb_bot_abort->AutoSize = true;
-            this->cb_bot_abort->Location = System::Drawing::Point(6, 148);
-            this->cb_bot_abort->Name = L"cb_bot_abort";
-            this->cb_bot_abort->Size = System::Drawing::Size(119, 17);
-            this->cb_bot_abort->TabIndex = 56;
-            this->cb_bot_abort->Text = L"Abort at player sight";
-            this->cb_bot_abort->UseVisualStyleBackColor = true;
+            this->cb_doubledmg->AutoSize = true;
+            this->cb_doubledmg->ForeColor = System::Drawing::Color::MidnightBlue;
+            this->cb_doubledmg->ImageKey = L"(none)";
+            this->cb_doubledmg->Location = System::Drawing::Point(6, 209);
+            this->cb_doubledmg->Name = L"cb_doubledmg";
+            this->cb_doubledmg->RightToLeft = System::Windows::Forms::RightToLeft::No;
+            this->cb_doubledmg->Size = System::Drawing::Size(129, 17);
+            this->cb_doubledmg->TabIndex = 57;
+            this->cb_doubledmg->Text = L"Blade double damage";
+            this->cb_doubledmg->UseVisualStyleBackColor = true;
+            this->cb_doubledmg->CheckedChanged += gcnew System::EventHandler(this, &Main::cb_doubledmg_CheckedChanged);
             // 
             // Main
             // 
@@ -1497,6 +1514,8 @@ private: System::Windows::Forms::Label^  label10;
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackbar_speed))->EndInit();
             this->groupBox1->ResumeLayout(false);
             this->groupBox1->PerformLayout();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_mobs))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_minlvl))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_maxlvl))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_bot_delay))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -1505,8 +1524,6 @@ private: System::Windows::Forms::Label^  label10;
             this->gb_teleport->ResumeLayout(false);
             this->gb_teleport->PerformLayout();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_minlvl))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numeric_mobs))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -1541,5 +1558,6 @@ private: System::Windows::Forms::Label^  label10;
     private: System::Void numeric_range_ValueChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void cb_flyhack_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
     private: System::Void cb_dommt_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+    private: System::Void cb_doubledmg_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

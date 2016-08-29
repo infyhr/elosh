@@ -7,6 +7,7 @@ class Patch {
         Patch(Engine *e);
         void Range(bool restore = false);
         void Ground(bool restore = false);
+        void DoubleDamage(bool restore = false);
 
         DWORD dwRange;
 
@@ -23,4 +24,7 @@ class Patch {
         // ToggleGround (flyhack)
         DWORD dwGroundFirstAddress;
         DWORD dwGroundSecondAddress;
+
+        // DoubleDamage
+        DWORD dwDDAddresses[3];
 };

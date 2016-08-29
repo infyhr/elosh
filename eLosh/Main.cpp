@@ -51,7 +51,7 @@ eLosh::Main::Main() {
     this->combobox_bot_eatmp->SelectedIndex = 1;
     this->combobox_bot_eathp->SelectedIndex = 0;
 
-    this->timerBuff->Interval = 600000; // 10 min
+    this->timerBuff->Interval = 900000; // 10 min 900000
 }
 
 eLosh::Main::~Main() {
@@ -60,30 +60,36 @@ eLosh::Main::~Main() {
     }
 }
 
-System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
-    __LOG("tickBuff", 2);
-}
-
 /*System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
-    std::cout << "Taking autobuff..." << std::endl;
-    if (!cb_autobuff->Checked) return;
+    __LOG("tickBuff", 2);
+}*/
+
+System::Void eLosh::Main::tickBuff(System::Object ^ sender, System::EventArgs ^ e) {
+    __LOG("Autobuffing...");
+    /*if (!cb_bot_autobuff->Checked) return;
+    this->objEngine->SendESC();
+    Sleep(500);
     this->cb_bot_active->Checked = false;
     Sleep(500);
     this->objEngine->SendESC();
     Sleep(500);
-    this->objEntity->SendAtk(0);
+    this->objEngine->SendESC();
+    Sleep(500);
+    //this->objEntity->fY += 10;
+    this->objEntity->TeleportTo(this->objEntity->fX, this->objEntity->fY + 10, this->objEntity->fZ);
     Sleep(500);
     this->objEntity->iCurrentTarget = 0;
     Sleep(500);
     this->objEngine->SendESC();
-    Sleep(15000);
-    this->objEngine->SendKey(9);
+    Sleep(5000);
+    this->objEngine->SendKey(7);
     Sleep(15000);
     this->objEngine->SendESC();
-    Sleep(500);
-    this->objEntity->iNewTargetLastBlacklist = NULL; // Remove any blacklists.
+    Sleep(1000);
     this->cb_bot_active->Checked = true;
-}*/
+    Sleep(500);
+    this->objEngine->SendESC();*/
+}
 
 // Tick event, update everything here
 System::Void eLosh::Main::tick(System::Object ^ sender, System::EventArgs ^ e) {
@@ -418,4 +424,14 @@ System::Void eLosh::Main::cb_dommt_CheckedChanged(System::Object^  sender, Syste
     // Update :)
     int __tmp = 3000;
     this->objEngine->WriteStaticMemory(dwHopAddr + this->objEngine->DCTOffset, &__tmp, false);
+}
+
+/// <summary>
+/// Blade double dmg on every aa
+/// </summary>
+/// <param name="sender"></param>
+/// <param name="e"></param>
+/// <returns></returns>
+System::Void eLosh::Main::cb_doubledmg_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+    this->objPatch->DoubleDamage((this->cb_doubledmg->Checked ? 0 : 1));
 }

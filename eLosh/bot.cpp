@@ -123,6 +123,28 @@ void Bot::_1v1(std::map<std::string, bool>& dataBool, std::map<std::string, int>
     }
 }
 
+void Bot::Buff() {
+    __LOG("Autobuffing...");
+    this->objEngine->SendESC();
+    Sleep(500);
+    this->objEngine->SendESC();
+    Sleep(500);
+    this->objEngine->SendESC();
+    Sleep(500);
+    //this->objEntity->fY += 10;
+    this->objEntity->TeleportTo(this->objEntity->fX, this->objEntity->fY + 10, this->objEntity->fZ);
+    Sleep(500);
+    this->objEntity->iCurrentTarget = 0;
+    Sleep(500);
+    this->objEngine->SendESC();
+    Sleep(5000);
+    this->objEngine->SendKey(7);
+    Sleep(15000);
+    this->objEngine->SendESC();
+    Sleep(1000);
+    this->objEngine->SendESC();
+}
+
 void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>& data) {
     this->inAOE = true;
     int iMaxInView;
@@ -132,8 +154,8 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
     this->objEntity->iPlayerCount = 0;
 
     if (this->objEntity->iCurrentTarget != 0) {
-        std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
-        if (this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->objEntity->iTargetHP) {
+        //std::cout << "tick: " << GetTickCount() - this->iNewTargetTick << std::endl;
+        /*if (this->iNewTargetTick && this->iNewTargetHP && (GetTickCount() - this->iNewTargetTick) > 5000 && this->iNewTargetHP == this->objEntity->iTargetHP) {
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwXOffset, &fTargetX);
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwYOffset, &fTargetY);
             //this->objEngine->WriteMemory(this->objEngine->dwPlayerBase, this->objEngine->dwZOffset, &fTargetZ);
@@ -144,19 +166,19 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
             this->objEntity->iCurrentTarget = 0;
 
             return;
-        }
+        }*/
         if (this->iNewTargetHP == this->objEntity->iTargetHP) return;
         j++;
         this->ignoredEntities.push_back(this->objEntity->iCurrentTarget);
         //std::cout << "Added " << this->iCurrentTarget << std::endl;
-        __LOG("Target added to the blacklist.", 2);
+        //__LOG("Target added to the blacklist.", 2);
         this->objEngine->SendESC();
         Sleep(200);
         this->objEntity->iCurrentTarget = 0;
     }
 
     for (register unsigned short i = 0; i < iMaxInView; i++) { // For each possible target...
-        __LOG("Enemy caught!", 2);
+        //__LOG("Enemy caught!", 2);
         if (j == data["mobs"]) {
             __LOG("Starting AoE...");
             this->objEngine->SendESC();
@@ -169,10 +191,14 @@ void Bot::AoE(std::map<std::string, bool>& dataBool, std::map<std::string, int>&
             }
             Sleep(1000);
             this->j = 0;
-            //std::cout << "I caught 5 now I stop!" << std::endl;
             __LOG("AoE finished. Sleeping now...", 2);
             this->ignoredEntities.clear();
-            //Sleep(10000);
+            this->objEngine->SendESC();
+            n++;
+            if (n % 20 == 0) {
+                __LOG("20 AoEs done, buffing...");
+                this->Buff();
+            }
             Sleep((DWORD)data["delay"]*1000);
             return;
         }
